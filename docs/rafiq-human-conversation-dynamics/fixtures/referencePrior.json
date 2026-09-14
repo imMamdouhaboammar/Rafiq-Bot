@@ -1,0 +1,24 @@
+{
+  "source": "aggregate_only_private_reference_corpus",
+  "rawTranscriptIncluded": false,
+  "dateSpan": ["2026-03-21", "2026-07-24"],
+  "parsedMessages": 2731,
+  "speakerShare": [0.515, 0.485],
+  "shortTextRatioAtOrBelow20Chars": 0.795,
+  "quoteReplyEvents": 250,
+  "codeSwitchEvents": 190,
+  "burst": {
+    "median": 1,
+    "mean": 1.65,
+    "p90": 3,
+    "max": 16
+  },
+  "contentRatios": {
+    "text": 0.848,
+    "sticker": 0.063,
+    "voice": 0.047,
+    "media": 0.027,
+    "link": 0.014,
+    "deleted": 0.001
+  }
+}

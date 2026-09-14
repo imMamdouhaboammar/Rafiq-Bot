@@ -1,0 +1,26 @@
+PDF UPLOAD INSTRUCTIONS
+=======================
+
+arXiv accepts DOCX but PDF is preferred because PDF renders consistently across
+all browsers, screen-readers, and PDF tools.
+
+Quickest way (macOS, no extra software):
+
+1. Open rafiq-paper.docx in any compatible app:
+   - Word
+   - Pages (free, in your Applications folder)
+   - Quick Look (preview, then click "Open with Pages")
+
+2. Generate PDF:
+   - Cmd+P (print dialog)
+   - Click the "PDF" dropdown at the bottom-left
+   - Select "Save as PDF"
+   - Save to: /Users/mamdouhaboammar/Documents/Rafiq-Vercel/docs/research-paper/arxiv-submission-package/
+   - Filename: rafiq-paper.pdf
+
+3. Upload rafiq-paper.pdf to arXiv submission form (it's the rendered version of the DOCX).
+
+If you have LaTeX preferred:
+- pandoc + tectonic can convert the markdown source to a publication-quality PDF.
+- This is the path I (orchestrator) would take if a LaTeX environment were pre-installed.
+- Since neither pandoc nor texlive is currently installed, the Cmd+P route is fastest.

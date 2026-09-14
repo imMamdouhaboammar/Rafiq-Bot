@@ -1,0 +1,10 @@
+{
+  "name": "Remix: Rafiq (Human-like AI)",
+  "description": "A deeply sentient, Arabic-speaking AI companion with advanced multimodal capabilities including video generation, live voice conversation, and image editing.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ],
+  "majorCapabilities": []
+}

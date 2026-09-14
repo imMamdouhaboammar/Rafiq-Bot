@@ -1,0 +1,4531 @@
+{
+  "version": "2.0.0",
+  "generatedAt": "2026-09-13T15:12:57.030Z",
+  "targetDir": "/Users/mamdouhaboammar/Documents/antigravity/zealous-hypatia",
+  "totalSourceFiles": 336,
+  "totalNodes": 336,
+  "totalEdges": 598,
+  "hubNodes": [
+    {
+      "file": "types.ts",
+      "connections": 73
+    },
+    {
+      "file": "services/geminiService.server.ts",
+      "connections": 34
+    },
+    {
+      "file": "hooks/useChatController.ts",
+      "connections": 25
+    },
+    {
+      "file": "components/ChatInterface.tsx",
+      "connections": 24
+    },
+    {
+      "file": "services/eventBus.ts",
+      "connections": 24
+    },
+    {
+      "file": "services/db.ts",
+      "connections": 21
+    },
+    {
+      "file": "App.tsx",
+      "connections": 19
+    },
+    {
+      "file": "contracts/rafiqV6.ts",
+      "connections": 18
+    },
+    {
+      "file": "services/googleClient.server.ts",
+      "connections": 16
+    },
+    {
+      "file": "services/personaEngine.ts",
+      "connections": 15
+    }
+  ],
+  "nodes": [
+    {
+      "id": "App.tsx",
+      "type": "file",
+      "functions": [
+        "App",
+        "RafiqApp",
+        "closeDialog",
+        "handleAdaptationUpdated",
+        "handleGroupPreview",
+        "handleDialog",
+        "handleSaveProfile",
+        "handleImportChat",
+        "handleEditChat",
+        "handleDeleteChat"
+      ],
+      "classes": [
+        "DialogState"
+      ],
+      "imports": [
+        "./types.js",
+        "./components/AppDialog.js",
+        "./components/ChatInterface.js",
+        "./components/NewChatModal.js",
+        "./components/PasswordGate.js",
+        "./components/ResponsiveWhatsAppShell.js",
+        "./components/Sidebar.js",
+        "./components/ToastHost.js",
+        "./components/UserProfileModal.js",
+        "./services/db.js",
+        "./services/eventBus.js",
+        "./services/geminiService.js",
+        "./services/groupEngine.js",
+        "./services/chatTransfer.js",
+        "./services/memoryEngine.js",
+        "./services/progressiveCloneJob.js",
+        "./hooks/useAppController.js",
+        "./stores/useRafiqStore.js"
+      ],
+      "exports": [
+        "App"
+      ],
+      "inDegree": 1,
+      "outDegree": 18
+    },
+    {
+      "id": "api/auth-login.ts",
+      "type": "file",
+      "functions": [
+        "handler"
+      ],
+      "classes": [],
+      "imports": [
+        "../services/appAuth.server.js"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 1
+    },
+    {
+      "id": "api/capability-test.ts",
+      "type": "file",
+      "functions": [
+        "handler"
+      ],
+      "classes": [],
+      "imports": [
+        "../services/appAuth.server.js",
+        "../services/googleClient.server.js",
+        "../services/geminiSafety.server.js",
+        "../services/tools/webSearchTool.server.js"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 4
+    },
+    {
+      "id": "api/gemini-stream.ts",
+      "type": "file",
+      "functions": [
+        "handler"
+      ],
+      "classes": [],
+      "imports": [
+        "../services/appAuth.server.js",
+        "../services/geminiService.server.js"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 2
+    },
+    {
+      "id": "api/gemini.ts",
+      "type": "file",
+      "functions": [
+        "handler"
+      ],
+      "classes": [],
+      "imports": [
+        "node:crypto",
+        "../services/appAuth.server.js",
+        "../services/geminiService.server.js",
+        "../services/reflectionEngine.server.js",
+        "../services/fileProcessor.server.js",
+        "../services/cloneActionRegistry.server.js"
+      ],
+      "exports": [
+        "validateReflectionArgs"
+      ],
+      "inDegree": 0,
+      "outDegree": 6
+    },
+    {
+      "id": "components/AppDialog.tsx",
+      "type": "file",
+      "functions": [
+        "confirm",
+        "cancel"
+      ],
+      "classes": [
+        "AppDialogProps",
+        "AppDialogTone"
+      ],
+      "imports": [
+        "lucide-react",
+        "./Modal.js"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 2
+    },
+    {
+      "id": "components/Avatar.tsx",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "AvatarProps"
+      ],
+      "imports": [
+        "react"
+      ],
+      "exports": [],
+      "inDegree": 7,
+      "outDegree": 1
+    },
+    {
+      "id": "components/BotStoryPanel.tsx",
+      "type": "file",
+      "functions": [
+        "beginCorrection",
+        "cancelCorrection",
+        "saveCorrection",
+        "confirmDelete",
+        "focusSourceMessage",
+        "scrollToSource"
+      ],
+      "classes": [
+        "CorrectionDraft"
+      ],
+      "imports": [
+        "lucide-react",
+        "../services/eventBus.js",
+        "../services/storyRepository.js",
+        "../stores/useRafiqStore.js"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 4
+    },
+    {
+      "id": "components/CapabilityHealthDashboard.tsx",
+      "type": "file",
+      "functions": [
+        "refresh",
+        "handleTest"
+      ],
+      "classes": [
+        "CapabilityHealthDashboardProps"
+      ],
+      "imports": [
+        "lucide-react",
+        "../services/capabilityHealthRepository.js",
+        "../services/browserCapabilityProbes.js"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 3
+    },
+    {
+      "id": "components/ChatBubble.tsx",
+      "type": "file",
+      "functions": [
+        "handlePointerDown",
+        "handleScroll",
+        "handleKeyDown",
+        "handleContextMenu",
+        "handleCopy",
+        "handleReply",
+        "handleDelete"
+      ],
+      "classes": [
+        "ChatBubbleProps"
+      ],
+      "imports": [
+        "lucide-react",
+        "../hooks/useLongPress.js",
+        "../services/chatBubbleComparator.js",
+        "./Avatar.js",
+        "./FilePreviewCard.js",
+        "./chat/MessageMarkdown.js",
+        "./chat/ResolvedAttachmentAudio.js",
+        "./chat/ResolvedAttachmentImage.js"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 8
+    },
+    {
+      "id": "components/ChatInterface.tsx",
+      "type": "file",
+      "functions": [
+        "ComposerEmojiIcon",
+        "ComposerAttachmentIcon",
+        "ComposerCameraIcon",
+        "ComposerMicIcon",
+        "handleExportChat",
+        "closeTransientPopovers",
+        "handleTriggerSend",
+        "insertEmoji",
+        "submitMessage",
+        "submitStudioPrompt",
+        "updateStudioConfig",
+        "handleDragOver",
+        "handleDragLeave",
+        "handleDrop",
+        "handleDeleteMessage",
+        "startRecording",
+        "stopRecording",
+        "formatTime",
+        "getMoodColor",
+        "renderMessage"
+      ],
+      "classes": [
+        "ChatInterfaceProps"
+      ],
+      "imports": [
+        "lucide-react",
+        "../types.js",
+        "./ChatBubble.js",
+        "./Avatar.js",
+        "./LiveVoice.js",
+        "./ProfileImageViewer.js",
+        "./ComposerAttachmentTray.js",
+        "./PagedMessageList.js",
+        "./SkillsHubModal.js",
+        "../services/skillMatcher.js",
+        "../services/skillRegistry.js",
+        "../hooks/useChatController.js",
+        "../hooks/useGroupController.js",
+        "../stores/useRafiqStore.js",
+        "../stores/groupStore.js",
+        "../services/db.js",
+        "../services/geminiModels.js",
+        "../services/chatTransfer.js",
+        "./WhatsAppAttachmentSheet.js",
+        "./WhatsAppContactInfoDrawer.js",
+        "../utils/haptics.js",
+        "./RandomPromptsSettings.js",
+        "../services/randomPrompts.js"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 23
+    },
+    {
+      "id": "components/CloneAnalysisEditor.tsx",
+      "type": "file",
+      "functions": [
+        "updateSpeechStyle"
+      ],
+      "classes": [
+        "CloneAnalysisEditorProps",
+        "CloneProfile",
+        "EditableCloneProfile"
+      ],
+      "imports": [
+        "react",
+        "lucide-react"
+      ],
+      "exports": [
+        "EditableCloneProfile"
+      ],
+      "inDegree": 0,
+      "outDegree": 2
+    },
+    {
+      "id": "components/CloneAnalysisStatus.tsx",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "CloneAnalysisStatusProps",
+        "CloneProfile"
+      ],
+      "imports": [
+        "react"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 1
+    },
+    {
+      "id": "components/ComposerAttachmentOverlayHost.tsx",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        "react",
+        "../stores/composerAttachmentUiStore.js",
+        "./ComposerAttachmentTray.js"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 3
+    },
+    {
+      "id": "components/ComposerAttachmentTray.tsx",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "ComposerAttachmentUpload",
+        "ReadyComposerAttachment",
+        "ComposerAttachmentTrayProps"
+      ],
+      "imports": [
+        "react",
+        "lucide-react",
+        "./FilePreviewCard.js"
+      ],
+      "exports": [
+        "ComposerAttachmentUpload",
+        "ReadyComposerAttachment"
+      ],
+      "inDegree": 2,
+      "outDegree": 3
+    },
+    {
+      "id": "components/EventConsole.tsx",
+      "type": "file",
+      "functions": [
+        "getEventColor"
+      ],
+      "classes": [],
+      "imports": [
+        "../services/eventBus.js",
+        "lucide-react"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 2
+    },
+    {
+      "id": "components/FilePreviewCard.tsx",
+      "type": "file",
+      "functions": [
+        "iconForCategory"
+      ],
+      "classes": [
+        "FilePreviewCardProps"
+      ],
+      "imports": [
+        "react",
+        "lucide-react",
+        "../services/fileProcessor.js"
+      ],
+      "exports": [],
+      "inDegree": 2,
+      "outDegree": 3
+    },
+    {
+      "id": "components/FloatingTriggerButton.tsx",
+      "type": "file",
+      "functions": [
+        "handleStorageChange",
+        "hideHelperPermanently"
+      ],
+      "classes": [
+        "FloatingTriggerButtonProps"
+      ],
+      "imports": [
+        "lucide-react",
+        "../stores/useRafiqStore.js",
+        "../services/randomPrompts.js",
+        "./PresetRepliesDock.js",
+        "../services/eventBus.js"
+      ],
+      "exports": [
+        "FloatingTriggerButton"
+      ],
+      "inDegree": 0,
+      "outDegree": 5
+    },
+    {
+      "id": "components/HumanIdTimeline.tsx",
+      "type": "file",
+      "functions": [
+        "closeEditor",
+        "startCreate",
+        "startEdit",
+        "toggleBot",
+        "saveDraft",
+        "requestDelete"
+      ],
+      "classes": [],
+      "imports": [
+        "lucide-react",
+        "../services/eventBus.js",
+        "../services/lifeStoryForm.js",
+        "../services/storyRepository.js",
+        "../stores/useRafiqStore.js"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 5
+    },
+    {
+      "id": "components/LiveVoice.tsx",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "LiveVoiceProps"
+      ],
+      "imports": [
+        "@google/genai",
+        "lucide-react",
+        "../types.js",
+        "../services/personaEngine.js",
+        "../services/eventBus.js"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 5
+    },
+    {
+      "id": "components/MemoryInspector.tsx",
+      "type": "file",
+      "functions": [
+        "confirmForget"
+      ],
+      "classes": [],
+      "imports": [
+        "lucide-react",
+        "../services/eventBus.js",
+        "../services/memoryRepository.js",
+        "../stores/useRafiqStore.js"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 4
+    },
+    {
+      "id": "components/MobileNavigationPane.tsx",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "MobileNavigationPaneProps",
+        "MobileNavigationTab",
+        "FilterChip"
+      ],
+      "imports": [
+        "lucide-react",
+        "./Avatar.js",
+        "./PwaToolsTab.js",
+        "./UpdatesTab.js",
+        "./UserProfileModal.js",
+        "../utils/haptics.js"
+      ],
+      "exports": [
+        "MobileNavigationTab"
+      ],
+      "inDegree": 0,
+      "outDegree": 6
+    },
+    {
+      "id": "components/Modal.tsx",
+      "type": "file",
+      "functions": [
+        "handleKeyDown"
+      ],
+      "classes": [
+        "ModalProps"
+      ],
+      "imports": [],
+      "exports": [
+        "ModalProps"
+      ],
+      "inDegree": 1,
+      "outDegree": 0
+    },
+    {
+      "id": "components/NewChatModal.tsx",
+      "type": "file",
+      "functions": [
+        "handleCloneProfileChange",
+        "handleAvatarUpload",
+        "handleGenerateAvatar",
+        "handleGenerateBio",
+        "handleSoulSelect",
+        "handleResetAdaptation",
+        "handleToggleAdaptation",
+        "detectImportParticipants",
+        "handleImportFileSelect",
+        "handleImportFileDrop",
+        "handleStartAnalysis",
+        "handleImportCreate",
+        "getStageEmoji",
+        "handleSave",
+        "renderSoulCard"
+      ],
+      "classes": [
+        "NewChatModalProps"
+      ],
+      "imports": [
+        "lucide-react",
+        "../types.js",
+        "./Avatar.js",
+        "./ProfileImageViewer.js",
+        "../services/geminiService.js",
+        "../services/visualEngine.js",
+        "../services/eventBus.js",
+        "../services/soulSynthesizer.js",
+        "../services/soulRegistry.js",
+        "../services/geminiModels.js",
+        "../services/livingPersonaCore.js",
+        "./CloneAnalysisStatus.js"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 12
+    },
+    {
+      "id": "components/PagedMessageList.tsx",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "IdentifiedMessage",
+        "PagedMessageListProps"
+      ],
+      "imports": [
+        "../services/messageWindow.js"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 1
+    },
+    {
+      "id": "components/PasswordGate.tsx",
+      "type": "file",
+      "functions": [
+        "handleSubmit"
+      ],
+      "classes": [
+        "PasswordGateProps"
+      ],
+      "imports": [],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 0
+    },
+    {
+      "id": "components/PresetRepliesDock.tsx",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "PresetReply",
+        "PresetRepliesDockProps"
+      ],
+      "imports": [
+        "react",
+        "lucide-react"
+      ],
+      "exports": [
+        "PresetReply"
+      ],
+      "inDegree": 1,
+      "outDegree": 2
+    },
+    {
+      "id": "components/ProfileImageViewer.tsx",
+      "type": "file",
+      "functions": [
+        "handleKeyDown"
+      ],
+      "classes": [
+        "ProfileImageViewerProps"
+      ],
+      "imports": [
+        "lucide-react"
+      ],
+      "exports": [],
+      "inDegree": 2,
+      "outDegree": 1
+    },
+    {
+      "id": "components/PwaToolsTab.tsx",
+      "type": "file",
+      "functions": [
+        "handleBeforeInstallPrompt",
+        "handleInstallClick"
+      ],
+      "classes": [
+        "DeferredInstallPrompt"
+      ],
+      "imports": [
+        "lucide-react",
+        "../services/eventBus.js",
+        "./BotStoryPanel.js",
+        "./CapabilityHealthDashboard.js",
+        "./MemoryInspector.js",
+        "./SocialAgencyControlsPanel.js",
+        "./TransferV2Panel.js"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 7
+    },
+    {
+      "id": "components/RandomPromptsSettings.tsx",
+      "type": "file",
+      "functions": [
+        "handleAdd",
+        "handleToggle",
+        "handleDelete"
+      ],
+      "classes": [
+        "RandomPromptsSettingsProps"
+      ],
+      "imports": [
+        "lucide-react",
+        "../stores/useRafiqStore.js",
+        "../services/randomPrompts.js",
+        "../types.js"
+      ],
+      "exports": [
+        "RandomPromptsSettings"
+      ],
+      "inDegree": 1,
+      "outDegree": 4
+    },
+    {
+      "id": "components/ResponsiveWhatsAppShell.tsx",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "ResponsiveWhatsAppShellProps"
+      ],
+      "imports": [
+        "react",
+        "../hooks/useVisualViewportLayout.js"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 2
+    },
+    {
+      "id": "components/Sidebar.tsx",
+      "type": "file",
+      "functions": [
+        "handleComingSoon",
+        "handleMenuClick"
+      ],
+      "classes": [
+        "SidebarProps"
+      ],
+      "imports": [
+        "lucide-react",
+        "../types.js",
+        "./Avatar.js",
+        "../services/eventBus.js"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 4
+    },
+    {
+      "id": "components/SkillsHubModal.tsx",
+      "type": "file",
+      "functions": [
+        "loadInstalled",
+        "handleToggle"
+      ],
+      "classes": [
+        "SkillsHubModalProps"
+      ],
+      "imports": [
+        "lucide-react",
+        "../services/skillRegistry.js"
+      ],
+      "exports": [
+        "SkillsHubModal"
+      ],
+      "inDegree": 1,
+      "outDegree": 2
+    },
+    {
+      "id": "components/SocialAgencyControlsPanel.tsx",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        "lucide-react",
+        "../stores/useRafiqStore.js",
+        "./SocialAgencySettings.js"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 3
+    },
+    {
+      "id": "components/SocialAgencySettings.tsx",
+      "type": "file",
+      "functions": [
+        "save"
+      ],
+      "classes": [
+        "SocialAgencySettingsProps"
+      ],
+      "imports": [
+        "lucide-react",
+        "../services/eventBus.js",
+        "../services/socialAgencyRepository.js"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 3
+    },
+    {
+      "id": "components/StatusViewer.tsx",
+      "type": "file",
+      "functions": [
+        "handleKeyDown"
+      ],
+      "classes": [
+        "Story",
+        "StatusItem",
+        "StatusViewerProps"
+      ],
+      "imports": [
+        "lucide-react",
+        "framer-motion",
+        "../services/storyNavigation.js"
+      ],
+      "exports": [
+        "Story",
+        "StatusItem"
+      ],
+      "inDegree": 0,
+      "outDegree": 3
+    },
+    {
+      "id": "components/ToastHost.tsx",
+      "type": "file",
+      "functions": [
+        "onToast"
+      ],
+      "classes": [
+        "ToastItem",
+        "ToastType"
+      ],
+      "imports": [
+        "lucide-react",
+        "../services/eventBus.js",
+        "./ComposerAttachmentOverlayHost.js"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 3
+    },
+    {
+      "id": "components/TransferV2Panel.tsx",
+      "type": "file",
+      "functions": [
+        "exportStandard",
+        "exportEncrypted",
+        "selectImportFile",
+        "runImport",
+        "confirmImport"
+      ],
+      "classes": [
+        "PendingImport"
+      ],
+      "imports": [
+        "lucide-react",
+        "../services/eventBus.js",
+        "../services/transferRuntime.js"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 3
+    },
+    {
+      "id": "components/UpdatesTab.tsx",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "UpdatesTabProps"
+      ],
+      "imports": [
+        "lucide-react",
+        "../types.js",
+        "./Avatar.js"
+      ],
+      "exports": [
+        "generateBotStatuses"
+      ],
+      "inDegree": 1,
+      "outDegree": 3
+    },
+    {
+      "id": "components/UserProfileModal.tsx",
+      "type": "file",
+      "functions": [
+        "handleErrorsUpdated",
+        "handleSave",
+        "handleGenerateAvatar",
+        "handleFileUpload",
+        "toggleInterest",
+        "tabButton"
+      ],
+      "classes": [
+        "UserProfileModalProps",
+        "Tab"
+      ],
+      "imports": [
+        "lucide-react",
+        "../services/geminiService.js",
+        "../services/eventBus.js",
+        "./HumanIdTimeline.js"
+      ],
+      "exports": [],
+      "inDegree": 2,
+      "outDegree": 4
+    },
+    {
+      "id": "components/WhatsAppAttachmentSheet.tsx",
+      "type": "file",
+      "functions": [
+        "handleKeyDown"
+      ],
+      "classes": [
+        "WhatsAppAttachmentSheetProps"
+      ],
+      "imports": [
+        "lucide-react",
+        "../utils/haptics.js"
+      ],
+      "exports": [
+        "WhatsAppAttachmentSheet"
+      ],
+      "inDegree": 1,
+      "outDegree": 2
+    },
+    {
+      "id": "components/WhatsAppContactInfoDrawer.tsx",
+      "type": "file",
+      "functions": [
+        "handleKeyDown"
+      ],
+      "classes": [
+        "WhatsAppContactInfoDrawerProps"
+      ],
+      "imports": [
+        "lucide-react",
+        "./Avatar.js",
+        "../services/geminiModels.js",
+        "../utils/haptics.js"
+      ],
+      "exports": [
+        "WhatsAppContactInfoDrawer"
+      ],
+      "inDegree": 1,
+      "outDegree": 4
+    },
+    {
+      "id": "components/chat/AudioAttachmentPlayer.tsx",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "AudioAttachmentPlayerProps"
+      ],
+      "imports": [
+        "lucide-react",
+        "../../hooks/useAudioPlayback.js",
+        "../../hooks/useResolvedAttachmentUrl.js"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 3
+    },
+    {
+      "id": "components/chat/ImageAttachmentView.tsx",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "ImageAttachmentViewProps"
+      ],
+      "imports": [
+        "react",
+        "lucide-react",
+        "../../hooks/useResolvedAttachmentUrl.js"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 3
+    },
+    {
+      "id": "components/chat/MessageMarkdown.tsx",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        "react"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 1
+    },
+    {
+      "id": "components/chat/ResolvedAttachmentAudio.tsx",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "ResolvedAttachmentAudioProps"
+      ],
+      "imports": [
+        "lucide-react",
+        "../../hooks/useAudioPlayback.js",
+        "../../hooks/useResolvedAttachmentUrl.js"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 3
+    },
+    {
+      "id": "components/chat/ResolvedAttachmentImage.tsx",
+      "type": "file",
+      "functions": [
+        "downloadImage"
+      ],
+      "classes": [
+        "ResolvedAttachmentImageProps"
+      ],
+      "imports": [
+        "react",
+        "lucide-react",
+        "../../hooks/useResolvedAttachmentUrl.js"
+      ],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 3
+    },
+    {
+      "id": "components/chat/VideoAttachmentView.tsx",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "VideoAttachmentViewProps"
+      ],
+      "imports": [
+        "lucide-react",
+        "../../hooks/useResolvedAttachmentUrl.js"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 2
+    },
+    {
+      "id": "contracts/rafiqV6.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "MemoryRetention",
+        "StoryVisibility",
+        "StoryAcl",
+        "LifeStoryEvent",
+        "StorySignal",
+        "BotStoryEvent",
+        "MemoryScope",
+        "MemoryRecord",
+        "SocialAgency",
+        "AttachmentRecord",
+        "RequiredGroupTurnJob",
+        "GroupTurnJob",
+        "CapabilityHealth",
+        "RafiqTransferV2"
+      ],
+      "imports": [
+        "zod"
+      ],
+      "exports": [
+        "MainUserIdSchema",
+        "StoryVisibilitySchema",
+        "MemoryScopeSchema",
+        "MemorySensitivitySchema",
+        "MemoryRetentionSchema",
+        "MemoryRetention",
+        "StoryAclSchema",
+        "LifeStoryEventSchema",
+        "StorySignalSchema",
+        "BotStoryEventSchema",
+        "MemoryProvenanceSchema",
+        "MemoryRecordSchema",
+        "SocialAgencySchema",
+        "AttachmentAvailabilitySchema",
+        "AttachmentRecordSchema",
+        "GroupTurnJobSchema",
+        "CapabilityStatusSchema",
+        "CapabilityHealthSchema",
+        "RafiqTransferV2ManifestSchema",
+        "RafiqTransferV2Schema"
+      ],
+      "inDegree": 17,
+      "outDegree": 1
+    },
+    {
+      "id": "docs/rafiq-human-conversation-dynamics/fixtures/sanitizedEpisodes.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "SanitizedEpisode"
+      ],
+      "imports": [],
+      "exports": [
+        "SanitizedEpisode",
+        "SANITIZED_EPISODES"
+      ],
+      "inDegree": 0,
+      "outDegree": 0
+    },
+    {
+      "id": "docs/rafiq-human-conversation-dynamics/src/continuityAffordance.ts",
+      "type": "file",
+      "functions": [
+        "selectContinuityAffordance"
+      ],
+      "classes": [
+        "ContinuitySelectionContext"
+      ],
+      "imports": [],
+      "exports": [
+        "ContinuitySelectionContext",
+        "selectContinuityAffordance"
+      ],
+      "inDegree": 2,
+      "outDegree": 0
+    },
+    {
+      "id": "docs/rafiq-human-conversation-dynamics/src/conversationSafetyGate.ts",
+      "type": "file",
+      "functions": [
+        "applyConversationSafetyGate"
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "applyConversationSafetyGate"
+      ],
+      "inDegree": 2,
+      "outDegree": 0
+    },
+    {
+      "id": "docs/rafiq-human-conversation-dynamics/src/dynamicsPromptCompiler.ts",
+      "type": "file",
+      "functions": [
+        "compileDynamicsPrompt"
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "compileDynamicsPrompt"
+      ],
+      "inDegree": 1,
+      "outDegree": 0
+    },
+    {
+      "id": "docs/rafiq-human-conversation-dynamics/src/humanConversationPrior.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "REFERENCE_HUMAN_CONVERSATION_PRIOR_V1"
+      ],
+      "inDegree": 0,
+      "outDegree": 0
+    },
+    {
+      "id": "docs/rafiq-human-conversation-dynamics/src/index.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 0
+    },
+    {
+      "id": "docs/rafiq-human-conversation-dynamics/src/planConversation.ts",
+      "type": "file",
+      "functions": [
+        "planConversation"
+      ],
+      "classes": [
+        "PlanConversationArgs"
+      ],
+      "imports": [
+        "./conversationSafetyGate.ts",
+        "./continuityAffordance.ts",
+        "./relationshipCalibration.ts",
+        "./relationalMovePlanner.ts",
+        "./replyShapePlanner.ts"
+      ],
+      "exports": [
+        "PlanConversationArgs",
+        "planConversation"
+      ],
+      "inDegree": 1,
+      "outDegree": 5
+    },
+    {
+      "id": "docs/rafiq-human-conversation-dynamics/src/referencePriorExtractor.ts",
+      "type": "file",
+      "functions": [
+        "deriveHumanConversationPrior"
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "deriveHumanConversationPrior"
+      ],
+      "inDegree": 1,
+      "outDegree": 0
+    },
+    {
+      "id": "docs/rafiq-human-conversation-dynamics/src/relationalMovePlanner.ts",
+      "type": "file",
+      "functions": [
+        "planRelationalMove"
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "planRelationalMove"
+      ],
+      "inDegree": 2,
+      "outDegree": 0
+    },
+    {
+      "id": "docs/rafiq-human-conversation-dynamics/src/relationshipCalibration.ts",
+      "type": "file",
+      "functions": [
+        "calibrateRelationship"
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "calibrateRelationship"
+      ],
+      "inDegree": 2,
+      "outDegree": 0
+    },
+    {
+      "id": "docs/rafiq-human-conversation-dynamics/src/replyShapePlanner.ts",
+      "type": "file",
+      "functions": [
+        "planReplyShape"
+      ],
+      "classes": [
+        "ReplyShapeContext"
+      ],
+      "imports": [],
+      "exports": [
+        "ReplyShapeContext",
+        "planReplyShape"
+      ],
+      "inDegree": 2,
+      "outDegree": 0
+    },
+    {
+      "id": "docs/rafiq-human-conversation-dynamics/src/types.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "ReferenceEvent",
+        "HumanConversationPrior",
+        "RelationshipEvidence",
+        "RelationshipCalibration",
+        "ContinuityCandidate",
+        "ContinuityAffordance",
+        "DynamicsInput",
+        "SafetyContext",
+        "SafetyResult",
+        "ReplyShape",
+        "ConversationPlan",
+        "ContentKind",
+        "ConversationMove",
+        "SensitivityLevel"
+      ],
+      "imports": [],
+      "exports": [
+        "ContentKind",
+        "ReferenceEvent",
+        "HumanConversationPrior",
+        "ConversationMove",
+        "RelationshipEvidence",
+        "RelationshipCalibration",
+        "SensitivityLevel",
+        "ContinuityCandidate",
+        "ContinuityAffordance",
+        "DynamicsInput",
+        "SafetyContext",
+        "SafetyResult",
+        "ReplyShape",
+        "ConversationPlan"
+      ],
+      "inDegree": 0,
+      "outDegree": 0
+    },
+    {
+      "id": "docs/rafiq-human-conversation-dynamics/tests/continuityAffordance.test.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        "node:test",
+        "node:assert/strict",
+        "../src/continuityAffordance.ts"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 3
+    },
+    {
+      "id": "docs/rafiq-human-conversation-dynamics/tests/conversationSafetyGate.test.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        "node:test",
+        "node:assert/strict",
+        "../src/conversationSafetyGate.ts"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 3
+    },
+    {
+      "id": "docs/rafiq-human-conversation-dynamics/tests/dynamicsPromptCompiler.test.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        "node:test",
+        "node:assert/strict",
+        "../src/dynamicsPromptCompiler.ts"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 3
+    },
+    {
+      "id": "docs/rafiq-human-conversation-dynamics/tests/planConversation.test.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        "node:test",
+        "node:assert/strict",
+        "../src/planConversation.ts"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 3
+    },
+    {
+      "id": "docs/rafiq-human-conversation-dynamics/tests/referencePriorExtractor.test.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        "node:test",
+        "node:assert/strict",
+        "../src/referencePriorExtractor.ts"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 3
+    },
+    {
+      "id": "docs/rafiq-human-conversation-dynamics/tests/relationalMovePlanner.test.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        "node:test",
+        "node:assert/strict",
+        "../src/relationalMovePlanner.ts"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 3
+    },
+    {
+      "id": "docs/rafiq-human-conversation-dynamics/tests/relationshipCalibration.test.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        "node:test",
+        "node:assert/strict",
+        "../src/relationshipCalibration.ts"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 3
+    },
+    {
+      "id": "docs/rafiq-human-conversation-dynamics/tests/replyShapePlanner.test.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        "node:test",
+        "node:assert/strict",
+        "../src/replyShapePlanner.ts"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 3
+    },
+    {
+      "id": "fix.cjs",
+      "type": "file",
+      "functions": [
+        "processDir"
+      ],
+      "classes": [],
+      "imports": [
+        "fs",
+        "path"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 2
+    },
+    {
+      "id": "hooks/useAppController.ts",
+      "type": "file",
+      "functions": [
+        "useAppController",
+        "runBackgroundStartupWork",
+        "init"
+      ],
+      "classes": [],
+      "imports": [
+        "react",
+        "../stores/useRafiqStore.js",
+        "../services/db.js",
+        "../services/geminiService.js",
+        "../services/eventBus.js",
+        "../types.js"
+      ],
+      "exports": [
+        "useAppController"
+      ],
+      "inDegree": 1,
+      "outDegree": 6
+    },
+    {
+      "id": "hooks/useAudioPlayback.ts",
+      "type": "file",
+      "functions": [
+        "useAudioPlayback",
+        "syncTiming",
+        "handleEnded",
+        "handleError"
+      ],
+      "classes": [],
+      "imports": [
+        "react"
+      ],
+      "exports": [
+        "useAudioPlayback"
+      ],
+      "inDegree": 2,
+      "outDegree": 1
+    },
+    {
+      "id": "hooks/useChatController.ts",
+      "type": "file",
+      "functions": [
+        "handleAbort",
+        "useChatController",
+        "replaceAttachmentUploads",
+        "loadMessages",
+        "setSelectedModel",
+        "setSelectedThinkingLevel",
+        "showToast",
+        "addBotMessage",
+        "processBotResponse",
+        "handleSend",
+        "requestSelfie",
+        "addAttachment",
+        "cancelAttachmentUpload",
+        "removeComposerAttachment",
+        "addAttachments",
+        "handleFile",
+        "handleFileDrop",
+        "handleChatExport"
+      ],
+      "classes": [
+        "ComposerAttachmentUpload"
+      ],
+      "imports": [
+        "react",
+        "../stores/useRafiqStore.js",
+        "../stores/composerAttachmentUiStore.js",
+        "../services/geminiService.js",
+        "../services/db.js",
+        "../services/dynamicEngines.js",
+        "../types.js",
+        "../services/eventBus.js",
+        "../services/geminiModels.js",
+        "../services/memoryEngine.js",
+        "../services/conversationRouter.js",
+        "../services/messageBurst.js",
+        "../services/imageRequestRouter.js",
+        "../services/personalityEvolution.js",
+        "../services/conversationShapedPersona.js",
+        "../services/attachmentComposer.js",
+        "../services/attachmentRepository.js",
+        "../services/aiAttachmentPayload.js",
+        "../services/asyncGenerationGuard.js",
+        "../services/slowBurnStoryEngine.js",
+        "../services/continuityCoordinator.js",
+        "../services/companionContinuity.js",
+        "../services/continuityPrompt.js",
+        "../services/conversationDynamics/index.js"
+      ],
+      "exports": [
+        "ComposerAttachmentUpload",
+        "useChatController"
+      ],
+      "inDegree": 1,
+      "outDegree": 24
+    },
+    {
+      "id": "hooks/useEvent.ts",
+      "type": "file",
+      "functions": [
+        "to",
+        "useEvent",
+        "stableHandler"
+      ],
+      "classes": [],
+      "imports": [
+        "react",
+        "../services/eventBus.js"
+      ],
+      "exports": [
+        "useEvent"
+      ],
+      "inDegree": 0,
+      "outDegree": 2
+    },
+    {
+      "id": "hooks/useGroupController.ts",
+      "type": "file",
+      "functions": [
+        "useGroupController",
+        "replaceAttachmentUploads",
+        "init",
+        "retryInitialization",
+        "showAttachmentError",
+        "addAttachment",
+        "addAttachments",
+        "handleFile",
+        "handleFileDrop",
+        "cancelAttachmentUpload",
+        "removeComposerAttachment",
+        "handleNewMessage",
+        "handleReaction",
+        "handleThinkingStart",
+        "handleThinkingEnd",
+        "handleSend"
+      ],
+      "classes": [
+        "GroupComposerAttachmentUpload"
+      ],
+      "imports": [
+        "react",
+        "../stores/groupStore.js",
+        "../services/groupEngine.js",
+        "../services/db.js",
+        "../types.js",
+        "../services/eventBus.js",
+        "../services/attachmentComposer.js",
+        "../services/attachmentRepository.js"
+      ],
+      "exports": [
+        "GroupComposerAttachmentUpload",
+        "useGroupController"
+      ],
+      "inDegree": 1,
+      "outDegree": 8
+    },
+    {
+      "id": "hooks/useLongPress.ts",
+      "type": "file",
+      "functions": [
+        "useLongPress"
+      ],
+      "classes": [
+        "LongPressHandlers"
+      ],
+      "imports": [
+        "react"
+      ],
+      "exports": [
+        "LongPressHandlers",
+        "useLongPress"
+      ],
+      "inDegree": 1,
+      "outDegree": 1
+    },
+    {
+      "id": "hooks/useResolvedAttachmentUrl.ts",
+      "type": "file",
+      "functions": [
+        "useResolvedAttachmentUrl"
+      ],
+      "classes": [],
+      "imports": [
+        "react",
+        "../services/attachmentRepository.js"
+      ],
+      "exports": [
+        "getLocalAttachmentId",
+        "createLocalAttachmentReference",
+        "useResolvedAttachmentUrl"
+      ],
+      "inDegree": 6,
+      "outDegree": 2
+    },
+    {
+      "id": "hooks/useVisualViewportLayout.ts",
+      "type": "file",
+      "functions": [
+        "readLayout",
+        "useVisualViewportLayout",
+        "update"
+      ],
+      "classes": [],
+      "imports": [
+        "react",
+        "../services/mobileViewportLayout.js"
+      ],
+      "exports": [
+        "useVisualViewportLayout"
+      ],
+      "inDegree": 1,
+      "outDegree": 2
+    },
+    {
+      "id": "index.tsx",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        "react",
+        "react-dom/client",
+        "./App"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 3
+    },
+    {
+      "id": "public/sw.js",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 0
+    },
+    {
+      "id": "scripts/run-test-suite.mjs",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        "node:child_process",
+        "node:fs/promises",
+        "node:path"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 3
+    },
+    {
+      "id": "scripts/security/check-tracked-sensitive-files.mjs",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        "node:child_process",
+        "node:path"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 2
+    },
+    {
+      "id": "scripts/security/scan-secrets.integration.test.mjs",
+      "type": "file",
+      "functions": [
+        "git",
+        "commitAll",
+        "expectSecretFailure"
+      ],
+      "classes": [],
+      "imports": [
+        "node:assert/strict",
+        "node:child_process",
+        "node:fs",
+        "node:os",
+        "node:path",
+        "node:url"
+      ],
+      "exports": [
+        "configured",
+        "mode"
+      ],
+      "inDegree": 0,
+      "outDegree": 6
+    },
+    {
+      "id": "scripts/security/scan-secrets.mjs",
+      "type": "file",
+      "functions": [
+        "gitText",
+        "scanPath",
+        "scanBuffer",
+        "scanWorktree",
+        "scanIndex",
+        "listReachableObjects",
+        "scanReachableHistory"
+      ],
+      "classes": [],
+      "imports": [
+        "node:child_process",
+        "node:crypto",
+        "node:fs",
+        "./secret-detectors.mjs"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 4
+    },
+    {
+      "id": "scripts/security/secret-detectors.mjs",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "findSecretMatches"
+      ],
+      "inDegree": 2,
+      "outDegree": 0
+    },
+    {
+      "id": "scripts/security/secret-detectors.test.mjs",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        "node:assert/strict",
+        "./secret-detectors.mjs"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 2
+    },
+    {
+      "id": "server.ts",
+      "type": "file",
+      "functions": [
+        "startServer",
+        "requireAppSession"
+      ],
+      "classes": [],
+      "imports": [
+        "express",
+        "vite",
+        "path",
+        "fs",
+        "./services/appAuth.server.ts",
+        "./services/geminiService.server.ts",
+        "./services/reflectionEngine.server.ts",
+        "./services/fileProcessor.server.ts",
+        "./services/cloneActionRegistry.server.ts"
+      ],
+      "exports": [],
+      "inDegree": 0,
+      "outDegree": 9
+    },
+    {
+      "id": "services/agentRouter.server.ts",
+      "type": "file",
+      "functions": [
+        "cleanThoughtLeaks",
+        "buildSystemFraming"
+      ],
+      "classes": [
+        "AgentRouterConfigurationError",
+        "AgentRouterCredentials",
+        "AgentRouterGenerateOptions"
+      ],
+      "imports": [
+        "node:https",
+        "node:fs",
+        "node:os",
+        "node:path"
+      ],
+      "exports": [
+        "cleanThoughtLeaks",
+        "AgentRouterCredentials",
+        "AgentRouterConfigurationError",
+        "resolveAgentRouterCredentials",
+        "AgentRouterGenerateOptions",
+        "generateAgentRouterResponse"
+      ],
+      "inDegree": 2,
+      "outDegree": 4
+    },
+    {
+      "id": "services/aiAttachmentPayload.server.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "AiAttachmentValidationError",
+        "ServerAiAttachment"
+      ],
+      "imports": [
+        "./largeFilePolicy.js"
+      ],
+      "exports": [
+        "MAX_SERVER_AI_ATTACHMENTS",
+        "MAX_SERVER_AI_ATTACHMENT_BYTES",
+        "MAX_SERVER_ATTACHMENT_FILE_NAME_CHARS",
+        "MAX_SERVER_ATTACHMENT_MIME_CHARS",
+        "ATTACHMENT_TEXT_TRUNCATION_MARKER",
+        "ServerAiAttachment",
+        "AiAttachmentValidationError",
+        "isServerTextAttachment",
+        "isServerInlineBinaryAttachment",
+        "normalizeServerAiAttachments",
+        "buildBoundedAttachmentText",
+        "buildAttachmentMemoryIndexText"
+      ],
+      "inDegree": 2,
+      "outDegree": 1
+    },
+    {
+      "id": "services/aiAttachmentPayload.ts",
+      "type": "file",
+      "functions": [
+        "cleanup",
+        "handleSignalAbort"
+      ],
+      "classes": [
+        "AiAttachmentPayloadItem",
+        "SkippedAiAttachment",
+        "PrepareAttachmentsForAiOptions",
+        "PreparedAiAttachments",
+        "SkippedAiAttachmentReason"
+      ],
+      "imports": [
+        "./attachmentRepository.js",
+        "./localAttachmentReference.js",
+        "./mediaOptimizer.js"
+      ],
+      "exports": [
+        "MAX_AI_ATTACHMENTS",
+        "MAX_AI_INLINE_RAW_BYTES",
+        "AiAttachmentPayloadItem",
+        "SkippedAiAttachmentReason",
+        "SkippedAiAttachment",
+        "PrepareAttachmentsForAiOptions",
+        "PreparedAiAttachments",
+        "browserBlobToBase64",
+        "prepareAttachmentsForAi",
+        "describeSkippedAiAttachments"
+      ],
+      "inDegree": 2,
+      "outDegree": 3
+    },
+    {
+      "id": "services/appAuth.server.ts",
+      "type": "file",
+      "functions": [
+        "getAppAuthConfiguration",
+        "assertAppSession"
+      ],
+      "classes": [
+        "AppAuthConfigurationError"
+      ],
+      "imports": [
+        "node:crypto"
+      ],
+      "exports": [
+        "AppAuthConfigurationError",
+        "getAppAuthConfiguration",
+        "verifyAppPassword",
+        "createAppSessionCookie",
+        "hasValidAppSession",
+        "assertAppSession"
+      ],
+      "inDegree": 6,
+      "outDegree": 1
+    },
+    {
+      "id": "services/asyncGenerationGuard.ts",
+      "type": "file",
+      "functions": [
+        "isCurrent"
+      ],
+      "classes": [
+        "StaleGenerationError",
+        "AsyncGenerationGuard",
+        "GenerationLease"
+      ],
+      "imports": [],
+      "exports": [
+        "GenerationLease",
+        "StaleGenerationError",
+        "AsyncGenerationGuard",
+        "isAbortLikeError"
+      ],
+      "inDegree": 2,
+      "outDegree": 0
+    },
+    {
+      "id": "services/attachmentComposer.ts",
+      "type": "file",
+      "functions": [
+        "stageComposerAttachment"
+      ],
+      "classes": [
+        "StagedComposerAttachment"
+      ],
+      "imports": [
+        "./attachmentRepository.js",
+        "./fileProcessor.js",
+        "./largeFilePolicy.js",
+        "./localAttachmentReference.js"
+      ],
+      "exports": [
+        "StagedComposerAttachment",
+        "stageComposerAttachment",
+        "finalizeComposerAttachments",
+        "releaseComposerAttachments"
+      ],
+      "inDegree": 3,
+      "outDegree": 4
+    },
+    {
+      "id": "services/attachmentDerivatives.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "AttachmentDerivativePlan",
+        "LocalAttachmentMetadata"
+      ],
+      "imports": [
+        "./largeFilePolicy.js"
+      ],
+      "exports": [
+        "AttachmentDerivativePlan",
+        "createAttachmentDerivativePlan",
+        "sanitizeDerivedText",
+        "LocalAttachmentMetadata",
+        "buildLocalAttachmentMetadata"
+      ],
+      "inDegree": 2,
+      "outDegree": 1
+    },
+    {
+      "id": "services/attachmentRepository.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "AttachmentRepository",
+        "AttachmentMetadataStore",
+        "LocalAttachmentFile",
+        "SaveLocalAttachmentInput"
+      ],
+      "imports": [
+        "../contracts/rafiqV6.js",
+        "./opfsAttachmentStore.js",
+        "./v6Tables.js"
+      ],
+      "exports": [
+        "AttachmentMetadataStore",
+        "LocalAttachmentFile",
+        "SaveLocalAttachmentInput",
+        "AttachmentRepository",
+        "attachmentRepository"
+      ],
+      "inDegree": 8,
+      "outDegree": 3
+    },
+    {
+      "id": "services/autonomousEvolution.server.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "EvolutionAnalysis"
+      ],
+      "imports": [
+        "@google/genai",
+        "zod",
+        "../types.js",
+        "./db.js",
+        "./googleClient.server.js",
+        "./geminiSafety.server.js",
+        "./redisVectorMemory.server.js",
+        "./tools/webSearchTool.server.js",
+        "./graphMemory.server.js",
+        "./boundedAsyncQueue.js"
+      ],
+      "exports": [
+        "EvolutionAnalysis",
+        "cancelBackgroundSelfEvolution",
+        "triggerBackgroundSelfEvolution",
+        "normalizeAutonomousMood",
+        "runSelfEvolutionStep"
+      ],
+      "inDegree": 2,
+      "outDegree": 10
+    },
+    {
+      "id": "services/avatarEngine.ts",
+      "type": "file",
+      "functions": [
+        "inferAgeFromBio",
+        "normalizeProfileVisualSeed"
+      ],
+      "classes": [],
+      "imports": [
+        "./visualEngine.js",
+        "./googleClient.server.js",
+        "./geminiSafety.server.js"
+      ],
+      "exports": [
+        "PROFILE_AVATAR_MODEL_CHAIN",
+        "buildProfileAvatarPrompt",
+        "generateRealisticAvatar"
+      ],
+      "inDegree": 2,
+      "outDegree": 3
+    },
+    {
+      "id": "services/backgroundPersonaCompiler.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "BackgroundPersonaCompilation"
+      ],
+      "imports": [
+        "../types.js",
+        "../contracts/rafiqV6.js",
+        "./socialAgencyPolicy.js"
+      ],
+      "exports": [
+        "BACKGROUND_PERSONA_BASELINE",
+        "convertLegacySoulTraitsToEvidence",
+        "BackgroundPersonaCompilation",
+        "compileBackgroundPersona"
+      ],
+      "inDegree": 3,
+      "outDegree": 3
+    },
+    {
+      "id": "services/boundedAsyncQueue.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "BoundedAsyncQueue",
+        "BoundedAsyncQueueOptions",
+        "QueueEntry"
+      ],
+      "imports": [],
+      "exports": [
+        "BoundedAsyncQueueOptions",
+        "BoundedAsyncQueue"
+      ],
+      "inDegree": 2,
+      "outDegree": 0
+    },
+    {
+      "id": "services/boundedLru.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "BoundedLru",
+        "BoundedLruOptions"
+      ],
+      "imports": [],
+      "exports": [
+        "BoundedLruOptions",
+        "BoundedLru"
+      ],
+      "inDegree": 3,
+      "outDegree": 0
+    },
+    {
+      "id": "services/browserCapabilityProbes.ts",
+      "type": "file",
+      "functions": [
+        "runServerProbe",
+        "runOpfsProbe",
+        "runTransferContractProbe"
+      ],
+      "classes": [
+        "OpfsStorageManager"
+      ],
+      "imports": [
+        "../contracts/rafiqV6.js"
+      ],
+      "exports": [
+        "createDefaultCapabilityProbes"
+      ],
+      "inDegree": 1,
+      "outDegree": 1
+    },
+    {
+      "id": "services/cadenceMaestro.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "CadenceMaestro",
+        "CadenceQueueItem",
+        "BubbleChunk"
+      ],
+      "imports": [
+        "../types"
+      ],
+      "exports": [
+        "CadenceQueueItem",
+        "BubbleChunk",
+        "CadenceMaestro",
+        "cadenceMaestro"
+      ],
+      "inDegree": 2,
+      "outDegree": 1
+    },
+    {
+      "id": "services/capabilityHealth.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "CapabilityRequirement",
+        "CapabilityTestResult"
+      ],
+      "imports": [
+        "../contracts/rafiqV6.js"
+      ],
+      "exports": [
+        "CapabilityRequirement",
+        "CapabilityTestResult",
+        "deriveCapabilityHealth",
+        "canClaimCapabilityWorks"
+      ],
+      "inDegree": 2,
+      "outDegree": 1
+    },
+    {
+      "id": "services/capabilityHealthRepository.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "CapabilityHealthRepository",
+        "CapabilityHealthStore",
+        "CapabilityProbe"
+      ],
+      "imports": [
+        "../contracts/rafiqV6.js",
+        "./capabilityHealth.js",
+        "./v6Tables.js"
+      ],
+      "exports": [
+        "CapabilityHealthStore",
+        "CapabilityProbe",
+        "CapabilityHealthRepository",
+        "capabilityHealthRepository"
+      ],
+      "inDegree": 2,
+      "outDegree": 3
+    },
+    {
+      "id": "services/chatBubbleComparator.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "ChatBubbleComparableProps"
+      ],
+      "imports": [],
+      "exports": [
+        "ChatBubbleComparableProps",
+        "areChatBubblePropsEqual"
+      ],
+      "inDegree": 2,
+      "outDegree": 0
+    },
+    {
+      "id": "services/chatStatistics.ts",
+      "type": "file",
+      "functions": [
+        "computeStatistics",
+        "detectDominantLanguage",
+        "resolveTargetName",
+        "assertTargetEvidenceFloor",
+        "prepareSmartSample",
+        "extractConversationPairs",
+        "extractTargetReplyExamples",
+        "scrubPII"
+      ],
+      "classes": [
+        "TargetParticipantError",
+        "ParsedMessage"
+      ],
+      "imports": [],
+      "exports": [
+        "ParsedMessage",
+        "MIN_TARGET_MESSAGE_COUNT",
+        "TargetParticipantError",
+        "computeStatistics",
+        "resolveTargetName",
+        "assertTargetEvidenceFloor",
+        "prepareSmartSample",
+        "extractConversationPairs",
+        "extractTargetReplyExamples",
+        "scrubPII"
+      ],
+      "inDegree": 3,
+      "outDegree": 0
+    },
+    {
+      "id": "services/chatTransfer.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "RafiqExportFile"
+      ],
+      "imports": [
+        "../types.js",
+        "./db.js"
+      ],
+      "exports": [
+        "RafiqExportFile",
+        "validateExportFile",
+        "exportChat",
+        "importChat",
+        "downloadBlob"
+      ],
+      "inDegree": 2,
+      "outDegree": 2
+    },
+    {
+      "id": "services/cloneActionRegistry.server.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "CloneActionError",
+        "CloneActionStage"
+      ],
+      "imports": [
+        "./whatsappImporter.server.js",
+        "./soulSynthesizer.server.js",
+        "./progressiveCloneAnalysis.server.js"
+      ],
+      "exports": [
+        "CloneActionStage",
+        "CloneActionError",
+        "CLONE_ACTIONS",
+        "CLONE_ACTION_NAMES",
+        "getCloneActionStage"
+      ],
+      "inDegree": 3,
+      "outDegree": 3
+    },
+    {
+      "id": "services/cloneRuntimeContext.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "CloneRuntimeContextOptions",
+        "CloneProfile"
+      ],
+      "imports": [],
+      "exports": [
+        "CloneRuntimeContextOptions",
+        "compileCloneRuntimeContext"
+      ],
+      "inDegree": 1,
+      "outDegree": 0
+    },
+    {
+      "id": "services/companionContinuity.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "ContinuityThread",
+        "CompanionOpinion",
+        "RelationshipExpectation",
+        "SharedRitual",
+        "CompanionContinuityState",
+        "ContinuityProposal",
+        "ContinuityEvidence",
+        "ContinuityContextItem"
+      ],
+      "imports": [
+        "zod"
+      ],
+      "exports": [
+        "ContinuityThreadStatusSchema",
+        "ContinuityThreadKindSchema",
+        "ContinuityThreadSchema",
+        "CompanionOpinionSchema",
+        "RelationshipExpectationSchema",
+        "SharedRitualSchema",
+        "CompanionContinuityStateSchema",
+        "ContinuityThread",
+        "CompanionOpinion",
+        "RelationshipExpectation",
+        "SharedRitual",
+        "CompanionContinuityState",
+        "ContinuityProposalSchema",
+        "ContinuityProposal",
+        "ContinuityEvidence",
+        "createInitialContinuityState",
+        "advanceContinuityTime",
+        "applyContinuityProposal",
+        "ContinuityContextItem",
+        "selectContinuityContext"
+      ],
+      "inDegree": 8,
+      "outDegree": 1
+    },
+    {
+      "id": "services/continuityCoordinator.ts",
+      "type": "file",
+      "functions": [
+        "createContinuityCoordinator"
+      ],
+      "classes": [
+        "ContinuityReflectionInput",
+        "ContinuityReflectionResult",
+        "ContinuityCoordinatorOptions",
+        "SessionResumeInput",
+        "ConversationSettledInput",
+        "ContinuityCoordinatorResult",
+        "ContinuityCoordinator",
+        "ReflectionMessage"
+      ],
+      "imports": [
+        "../types.js",
+        "./companionContinuity.js",
+        "./socialHeartbeat.js"
+      ],
+      "exports": [
+        "ReflectionMessage",
+        "ContinuityReflectionInput",
+        "ContinuityReflectionResult",
+        "ContinuityCoordinatorOptions",
+        "SessionResumeInput",
+        "ConversationSettledInput",
+        "ContinuityCoordinatorResult",
+        "ContinuityCoordinator",
+        "createContinuityCoordinator"
+      ],
+      "inDegree": 2,
+      "outDegree": 3
+    },
+    {
+      "id": "services/continuityPrompt.ts",
+      "type": "file",
+      "functions": [
+        "compileContinuityContextInstruction"
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "compileContinuityContextInstruction"
+      ],
+      "inDegree": 2,
+      "outDegree": 0
+    },
+    {
+      "id": "services/continuityProposalValidation.ts",
+      "type": "file",
+      "functions": [
+        "validateContinuityProposals"
+      ],
+      "classes": [],
+      "imports": [
+        "./companionContinuity.js"
+      ],
+      "exports": [
+        "validateContinuityProposals"
+      ],
+      "inDegree": 2,
+      "outDegree": 1
+    },
+    {
+      "id": "services/conversationDynamics/adapter.ts",
+      "type": "file",
+      "functions": [
+        "deriveSensitivity",
+        "deriveDynamicsInput",
+        "deriveRelationshipEvidence",
+        "mapThreadKindToCandidateKind",
+        "computeWordRelevance",
+        "deriveContinuityCandidates",
+        "resolveConversationDynamics"
+      ],
+      "classes": [
+        "DynamicsAdapterContext",
+        "ConversationDynamicsResult"
+      ],
+      "imports": [
+        "../conversationRouter.js",
+        "./planConversation.js",
+        "./dynamicsPromptCompiler.js"
+      ],
+      "exports": [
+        "DynamicsAdapterContext",
+        "deriveSensitivity",
+        "deriveDynamicsInput",
+        "deriveRelationshipEvidence",
+        "deriveContinuityCandidates",
+        "ConversationDynamicsResult",
+        "resolveConversationDynamics"
+      ],
+      "inDegree": 1,
+      "outDegree": 3
+    },
+    {
+      "id": "services/conversationDynamics/continuityAffordance.ts",
+      "type": "file",
+      "functions": [
+        "selectContinuityAffordance"
+      ],
+      "classes": [
+        "ContinuitySelectionContext"
+      ],
+      "imports": [],
+      "exports": [
+        "ContinuitySelectionContext",
+        "selectContinuityAffordance"
+      ],
+      "inDegree": 2,
+      "outDegree": 0
+    },
+    {
+      "id": "services/conversationDynamics/conversationSafetyGate.ts",
+      "type": "file",
+      "functions": [
+        "applyConversationSafetyGate"
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "applyConversationSafetyGate"
+      ],
+      "inDegree": 2,
+      "outDegree": 0
+    },
+    {
+      "id": "services/conversationDynamics/dynamicsPromptCompiler.ts",
+      "type": "file",
+      "functions": [
+        "compileDynamicsPrompt"
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "compileDynamicsPrompt"
+      ],
+      "inDegree": 2,
+      "outDegree": 0
+    },
+    {
+      "id": "services/conversationDynamics/humanConversationPrior.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "REFERENCE_HUMAN_CONVERSATION_PRIOR_V1"
+      ],
+      "inDegree": 1,
+      "outDegree": 0
+    },
+    {
+      "id": "services/conversationDynamics/index.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "inDegree": 1,
+      "outDegree": 0
+    },
+    {
+      "id": "services/conversationDynamics/planConversation.ts",
+      "type": "file",
+      "functions": [
+        "planConversation"
+      ],
+      "classes": [
+        "PlanConversationArgs"
+      ],
+      "imports": [
+        "./conversationSafetyGate.js",
+        "./continuityAffordance.js",
+        "./relationshipCalibration.js",
+        "./relationalMovePlanner.js",
+        "./replyShapePlanner.js"
+      ],
+      "exports": [
+        "PlanConversationArgs",
+        "planConversation"
+      ],
+      "inDegree": 2,
+      "outDegree": 5
+    },
+    {
+      "id": "services/conversationDynamics/referencePriorExtractor.ts",
+      "type": "file",
+      "functions": [
+        "deriveHumanConversationPrior"
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "deriveHumanConversationPrior"
+      ],
+      "inDegree": 1,
+      "outDegree": 0
+    },
+    {
+      "id": "services/conversationDynamics/relationalMovePlanner.ts",
+      "type": "file",
+      "functions": [
+        "planRelationalMove"
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "planRelationalMove"
+      ],
+      "inDegree": 2,
+      "outDegree": 0
+    },
+    {
+      "id": "services/conversationDynamics/relationshipCalibration.ts",
+      "type": "file",
+      "functions": [
+        "calibrateRelationship"
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "calibrateRelationship"
+      ],
+      "inDegree": 2,
+      "outDegree": 0
+    },
+    {
+      "id": "services/conversationDynamics/replyShapePlanner.ts",
+      "type": "file",
+      "functions": [
+        "planReplyShape"
+      ],
+      "classes": [
+        "ReplyShapeContext"
+      ],
+      "imports": [],
+      "exports": [
+        "ReplyShapeContext",
+        "planReplyShape"
+      ],
+      "inDegree": 2,
+      "outDegree": 0
+    },
+    {
+      "id": "services/conversationDynamics/types.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "ReferenceEvent",
+        "HumanConversationPrior",
+        "RelationshipEvidence",
+        "RelationshipCalibration",
+        "ContinuityCandidate",
+        "ContinuityAffordance",
+        "DynamicsInput",
+        "SafetyContext",
+        "SafetyResult",
+        "ReplyShape",
+        "ConversationPlan",
+        "ContentKind",
+        "ConversationMove",
+        "SensitivityLevel"
+      ],
+      "imports": [],
+      "exports": [
+        "ContentKind",
+        "ReferenceEvent",
+        "HumanConversationPrior",
+        "ConversationMove",
+        "RelationshipEvidence",
+        "RelationshipCalibration",
+        "SensitivityLevel",
+        "ContinuityCandidate",
+        "ContinuityAffordance",
+        "DynamicsInput",
+        "SafetyContext",
+        "SafetyResult",
+        "ReplyShape",
+        "ConversationPlan"
+      ],
+      "inDegree": 0,
+      "outDegree": 0
+    },
+    {
+      "id": "services/conversationRouter.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "ConversationRouteId",
+        "ConversationRoute"
+      ],
+      "imports": [],
+      "exports": [
+        "ConversationRouteId",
+        "ConversationRoute",
+        "classifyConversationRoute",
+        "compileConversationRouteInstruction"
+      ],
+      "inDegree": 7,
+      "outDegree": 0
+    },
+    {
+      "id": "services/conversationShapedPersona.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "ConversationShapedPersonaInput",
+        "PersonaReplyGuardContext",
+        "SufferingCategory"
+      ],
+      "imports": [],
+      "exports": [
+        "ConversationShapedPersonaInput",
+        "CLEAN_BASELINE_TRAITS",
+        "PersonaReplyGuardContext",
+        "hasAuthoredPersonaSource",
+        "compileConversationShapedPersonaInstruction",
+        "detectUnpromptedSelfSuffering",
+        "stripChatbotResidue",
+        "removeRepeatedAssistantBubbles",
+        "sanitizePersonaReply"
+      ],
+      "inDegree": 5,
+      "outDegree": 0
+    },
+    {
+      "id": "services/culturalMuezzin.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "CulturalMuezzin",
+        "PrayerTimeSlot"
+      ],
+      "imports": [],
+      "exports": [
+        "PrayerTimeSlot",
+        "CulturalMuezzin",
+        "culturalMuezzin"
+      ],
+      "inDegree": 2,
+      "outDegree": 0
+    },
+    {
+      "id": "services/dailyStageDirector.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "DailyStageDirector"
+      ],
+      "imports": [
+        "../types.js"
+      ],
+      "exports": [
+        "DailyStageDirector",
+        "dailyStageDirector"
+      ],
+      "inDegree": 2,
+      "outDegree": 1
+    },
+    {
+      "id": "services/db.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "RafiqDatabase",
+        "ProgressiveCloneSnapshotRecord",
+        "ProgressiveCloneJobRecord",
+        "ProgressiveCloneStagingRecord",
+        "BackupSnapshot",
+        "ProgressiveCloneJobStatus",
+        "SafeChatSessionFields"
+      ],
+      "imports": [
+        "../types.js",
+        "./livingPersonaCore.js"
+      ],
+      "exports": [
+        "BackupSnapshot",
+        "ProgressiveCloneJobStatus",
+        "ProgressiveCloneSnapshotRecord",
+        "ProgressiveCloneJobRecord",
+        "db",
+        "saveUserProfile",
+        "getUserProfile",
+        "saveChatSession",
+        "saveCloneMemoryRecords",
+        "isCloneSeededLegacyMemory",
+        "isCloneSeededMemoryRecord",
+        "patchChatAndReplaceCloneMemories",
+        "getCloneMemorySeedsForChat",
+        "saveClonedChatSession",
+        "saveProgressiveCloneJob",
+        "getProgressiveCloneJob",
+        "commitProgressiveCloneBatch",
+        "patchChatSession",
+        "commitAdaptivePersonality",
+        "getChatSession"
+      ],
+      "inDegree": 19,
+      "outDegree": 2
+    },
+    {
+      "id": "services/dbV6Migration.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "SocialAgencyRecord"
+      ],
+      "imports": [
+        "../types.js",
+        "../contracts/rafiqV6.js",
+        "./memoryPolicy.js"
+      ],
+      "exports": [
+        "SocialAgencyRecord",
+        "migrateLegacyMemoryEntry",
+        "normalizeLegacyChatForV6",
+        "buildDefaultSocialAgencyRecord"
+      ],
+      "inDegree": 3,
+      "outDegree": 3
+    },
+    {
+      "id": "services/dexieTransferStore.ts",
+      "type": "file",
+      "functions": [
+        "report"
+      ],
+      "classes": [
+        "DexieTransactionalTransferStore"
+      ],
+      "imports": [
+        "../contracts/rafiqV6.js",
+        "../types.js",
+        "./db.js",
+        "./v6Tables.js"
+      ],
+      "exports": [
+        "splitTransferMessages",
+        "DexieTransactionalTransferStore",
+        "dexieTransactionalTransferStore"
+      ],
+      "inDegree": 2,
+      "outDegree": 4
+    },
+    {
+      "id": "services/dignityGuardian.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "DignityGuardian",
+        "DignityEvaluationResult",
+        "DignityLevel"
+      ],
+      "imports": [
+        "../types"
+      ],
+      "exports": [
+        "DignityLevel",
+        "DignityEvaluationResult",
+        "DignityGuardian",
+        "dignityGuardian"
+      ],
+      "inDegree": 1,
+      "outDegree": 1
+    },
+    {
+      "id": "services/dynamicEngines.ts",
+      "type": "file",
+      "functions": [
+        "to"
+      ],
+      "classes": [
+        "MoodDriftResult"
+      ],
+      "imports": [
+        "../types.js"
+      ],
+      "exports": [
+        "MoodDriftResult",
+        "groundedMoodDrift",
+        "driftMood",
+        "getExpressionStyle",
+        "getResponseLength",
+        "getRelationshipStageInstruction",
+        "evolvePsychology",
+        "calculateEmotionalDecay"
+      ],
+      "inDegree": 7,
+      "outDegree": 1
+    },
+    {
+      "id": "services/egyptianSpintaxEngine.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "EgyptianSpintaxEngine"
+      ],
+      "imports": [],
+      "exports": [
+        "EgyptianSpintaxEngine",
+        "egyptianSpintaxEngine"
+      ],
+      "inDegree": 2,
+      "outDegree": 0
+    },
+    {
+      "id": "services/encryptedTransfer.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "EncryptedTransferError",
+        "EncryptedTransferEnvelope"
+      ],
+      "imports": [
+        "zod"
+      ],
+      "exports": [
+        "EncryptedTransferEnvelope",
+        "EncryptedTransferError",
+        "encryptTextualTransfer",
+        "decryptTextualTransfer",
+        "serializeEncryptedTransfer",
+        "parseEncryptedTransfer"
+      ],
+      "inDegree": 3,
+      "outDegree": 1
+    },
+    {
+      "id": "services/env.server.ts",
+      "type": "file",
+      "functions": [
+        "loadLocalEnv",
+        "loadFile"
+      ],
+      "classes": [],
+      "imports": [
+        "fs",
+        "path"
+      ],
+      "exports": [
+        "loadLocalEnv"
+      ],
+      "inDegree": 0,
+      "outDegree": 2
+    },
+    {
+      "id": "services/eventBus.ts",
+      "type": "file",
+      "functions": [
+        "clearErrorLogs",
+        "logErrorLocally",
+        "emitError"
+      ],
+      "classes": [
+        "GroupReactionContext",
+        "EventMeta",
+        "SmartEvent",
+        "ErrorLogEntry",
+        "RafiqEventMap"
+      ],
+      "imports": [
+        "rxjs"
+      ],
+      "exports": [
+        "GroupReactionContext",
+        "RafiqEventMap",
+        "EventMeta",
+        "SmartEvent",
+        "emit",
+        "on",
+        "off",
+        "observe",
+        "ErrorLogEntry",
+        "getErrorLogs",
+        "clearErrorLogs",
+        "logErrorLocally",
+        "emitError",
+        "eventBus"
+      ],
+      "inDegree": 23,
+      "outDegree": 1
+    },
+    {
+      "id": "services/fileProcessor.server.ts",
+      "type": "file",
+      "functions": [
+        "processFileUpload"
+      ],
+      "classes": [],
+      "imports": [
+        "./fileProcessor.js"
+      ],
+      "exports": [
+        "processFileUpload"
+      ],
+      "inDegree": 3,
+      "outDegree": 1
+    },
+    {
+      "id": "services/fileProcessor.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "FileLike",
+        "FileValidationResult",
+        "FileUploadMetadata"
+      ],
+      "imports": [],
+      "exports": [
+        "MAX_FILE_SIZE_BYTES",
+        "MAX_ATTACHMENT_COUNT",
+        "FileLike",
+        "FileValidationResult",
+        "FileUploadMetadata",
+        "categorizeFile",
+        "formatFileSize",
+        "validateAttachmentCount",
+        "validateFileUpload",
+        "getFileMetadata",
+        "buildFileContextInstruction"
+      ],
+      "inDegree": 4,
+      "outDegree": 0
+    },
+    {
+      "id": "services/geminiModels.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "ChatModelDefinition",
+        "ChatModelId",
+        "ChatThinkingLevelId"
+      ],
+      "imports": [],
+      "exports": [
+        "PRO_3_1_MODEL",
+        "FLASH_3_8_MODEL",
+        "DEFAULT_CHAT_MODEL",
+        "FAST_CHAT_MODEL",
+        "FLASH_3_6_MODEL",
+        "FLASH_3_7_MODEL",
+        "DEFAULT_THINKING_LEVEL",
+        "STUDIO_IMAGE_MODEL",
+        "STUDIO_IMAGE_MODEL_CHAIN",
+        "STUDIO_STYLE_PROMPTS",
+        "AGENTROUTER_GPT_5_6_SOL",
+        "AGENTROUTER_CLAUDE_OPUS_5",
+        "ChatModelDefinition",
+        "CHAT_MODELS",
+        "VISIBLE_CHAT_MODELS",
+        "ChatModelId",
+        "isAgentRouterModel",
+        "THINKING_LEVELS",
+        "ChatThinkingLevelId",
+        "isSupportedChatModel"
+      ],
+      "inDegree": 7,
+      "outDegree": 0
+    },
+    {
+      "id": "services/geminiSafety.server.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        "@google/genai"
+      ],
+      "exports": [
+        "GEMINI_SAFETY_OFF_SETTINGS"
+      ],
+      "inDegree": 9,
+      "outDegree": 1
+    },
+    {
+      "id": "services/geminiService.server.ts",
+      "type": "file",
+      "functions": [
+        "cleanChainOfThoughtLeaks",
+        "getNativeClient",
+        "userContent",
+        "shouldUseGoogleSearch",
+        "executeToolsAndPreparePrompt",
+        "sendMessageToGemini",
+        "generateGroupResponse",
+        "generateInitiativeMessage",
+        "generateImage",
+        "generateSelfie",
+        "generateProfileAvatar",
+        "generateVideo"
+      ],
+      "classes": [
+        "ResolvedSkillContext",
+        "BioSemanticBucket",
+        "BioSemanticProfile",
+        "AvatarImagePromptPlan"
+      ],
+      "imports": [
+        "@google/genai",
+        "./personaEngine.js",
+        "./avatarEngine.js",
+        "./visualEngine.js",
+        "./googleClient.server.js",
+        "./geminiSafety.server.js",
+        "./geminiModels.js",
+        "./agentRouter.server.js",
+        "./soulRegistry.js",
+        "./conversationShapedPersona.js",
+        "./conversationRouter.js",
+        "./redisVectorMemory.server.js",
+        "./langCache.server.js",
+        "./fileProcessor.server.js",
+        "./aiAttachmentPayload.server.js",
+        "./realtimeAwareness.server.js",
+        "./tools/toolRouter.server.js",
+        "./tools/timeTool.server.js",
+        "./tools/webSearchTool.server.js",
+        "./tools/webReaderTool.server.js",
+        "./tools/researchTool.server.js",
+        "./tools/toolResultFormatter.js",
+        "./responseRouter.js",
+        "./promptBudget.js",
+        "./personaRuntimeCache.js",
+        "./livingPersonaCore.js",
+        "./modelRouter.js",
+        "./autonomousEvolution.server.js",
+        "./graphMemory.server.js"
+      ],
+      "exports": [
+        "resolveChatTemperature",
+        "cleanChainOfThoughtLeaks",
+        "fileToGenAIInlineData",
+        "withTimeout",
+        "sendMessageToGemini",
+        "sendMessageToGeminiStream",
+        "generateGroupResponse",
+        "analyzeChatExport",
+        "generateInitiativeMessage",
+        "generateBioFromTraits",
+        "analyzePersonalitySignals",
+        "generateImage",
+        "generateStudioImage",
+        "generateSelfie",
+        "AvatarImagePromptPlan",
+        "buildAvatarImagePrompt",
+        "generateProfileAvatar",
+        "generateUserAvatar",
+        "generateVideo"
+      ],
+      "inDegree": 4,
+      "outDegree": 30
+    },
+    {
+      "id": "services/geminiService.ts",
+      "type": "file",
+      "functions": [
+        "rpc",
+        "sendMessageToGemini",
+        "sendMessageToGeminiStream",
+        "generateGroupResponse",
+        "analyzeChatExport",
+        "generateInitiativeMessage",
+        "generateBioFromTraits",
+        "generateImage",
+        "generateSelfie",
+        "buildAvatarImagePrompt",
+        "generateStudioImage",
+        "generateProfileAvatar",
+        "generateUserAvatar",
+        "analyzePersonalitySignals",
+        "runReflectionConsolidation",
+        "generateVideo",
+        "processFileUpload"
+      ],
+      "classes": [
+        "GeminiStreamRequestOptions"
+      ],
+      "imports": [
+        "../types.js",
+        "./sseStreamParser.js"
+      ],
+      "exports": [
+        "fileToGenAIInlineData",
+        "sendMessageToGemini",
+        "GeminiStreamRequestOptions",
+        "createGeminiStreamRequestOptions",
+        "sendMessageToGeminiStream",
+        "generateGroupResponse",
+        "analyzeChatExport",
+        "generateInitiativeMessage",
+        "generateBioFromTraits",
+        "generateImage",
+        "generateSelfie",
+        "buildAvatarImagePrompt",
+        "generateStudioImage",
+        "generateProfileAvatar",
+        "generateUserAvatar",
+        "analyzePersonalitySignals",
+        "runReflectionConsolidation",
+        "generateVideo",
+        "processFileUpload"
+      ],
+      "inDegree": 7,
+      "outDegree": 2
+    },
+    {
+      "id": "services/googleClient.server.ts",
+      "type": "file",
+      "functions": [
+        "createGoogleGenAIClient"
+      ],
+      "classes": [
+        "GoogleAiConfigurationError",
+        "GoogleAiConfiguration"
+      ],
+      "imports": [
+        "@google/genai",
+        "google-auth-library",
+        "node:child_process",
+        "node:fs",
+        "node:os",
+        "node:path"
+      ],
+      "exports": [
+        "GoogleAiConfigurationError",
+        "GoogleAiConfiguration",
+        "resolveGoogleAiConfiguration",
+        "createGoogleGenAIClient"
+      ],
+      "inDegree": 10,
+      "outDegree": 6
+    },
+    {
+      "id": "services/graphMemory.server.ts",
+      "type": "file",
+      "functions": [
+        "ensureGraphsDir",
+        "clearGraphCache"
+      ],
+      "classes": [
+        "GraphNode",
+        "GraphEdge",
+        "GraphData"
+      ],
+      "imports": [
+        "node:fs",
+        "node:path",
+        "os"
+      ],
+      "exports": [
+        "GraphNode",
+        "GraphEdge",
+        "GraphData",
+        "normalizeNodeId",
+        "loadGraph",
+        "saveGraph",
+        "mergeIntoGraph",
+        "queryGraphContext",
+        "clearGraphCache"
+      ],
+      "inDegree": 4,
+      "outDegree": 3
+    },
+    {
+      "id": "services/groupConversation.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "GroupTurnCoordinator",
+        "GroupTurnReservation",
+        "GroupTurnState",
+        "GroupTurnCoordinatorOptions",
+        "GroupReplyScoreInput"
+      ],
+      "imports": [
+        "../types.js"
+      ],
+      "exports": [
+        "MAX_GROUP_PRIMARY_REPLIES",
+        "MAX_GROUP_FOLLOW_UP_REPLIES",
+        "MAX_GROUP_BOT_MESSAGES",
+        "MAX_GROUP_TRIGGER_DEPTH",
+        "GroupTurnReservation",
+        "GroupTurnCoordinatorOptions",
+        "GroupTurnCoordinator",
+        "containsGroupMention",
+        "getGroupReplyThreshold",
+        "calculateGroupReplyScore"
+      ],
+      "inDegree": 3,
+      "outDegree": 1
+    },
+    {
+      "id": "services/groupEngine.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "GroupEngine",
+        "GroupEngineDependencies",
+        "LastGroupMessage"
+      ],
+      "imports": [
+        "./personaMind.js",
+        "./eventBus.js",
+        "./db.js",
+        "./groupConversation.js",
+        "./groupTurnCoordinator.js"
+      ],
+      "exports": [
+        "GroupEngine",
+        "groupEngine"
+      ],
+      "inDegree": 4,
+      "outDegree": 5
+    },
+    {
+      "id": "services/groupTurnCoordinator.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "GroupBudgetExceededError",
+        "PersistentGroupTurnCoordinator",
+        "GroupTurnJobStore",
+        "EnqueueGroupTurnInput",
+        "GroupTurnExecutionResult",
+        "CoordinatedGroupTurnJob",
+        "GroupTurnExecutor"
+      ],
+      "imports": [
+        "../contracts/rafiqV6.js",
+        "./v6Tables.js"
+      ],
+      "exports": [
+        "CoordinatedGroupTurnJob",
+        "GroupTurnJobStore",
+        "EnqueueGroupTurnInput",
+        "GroupTurnExecutionResult",
+        "GroupTurnExecutor",
+        "GroupBudgetExceededError",
+        "PersistentGroupTurnCoordinator",
+        "persistentGroupTurnCoordinator"
+      ],
+      "inDegree": 3,
+      "outDegree": 2
+    },
+    {
+      "id": "services/humanRealism.ts",
+      "type": "file",
+      "functions": [],
+      "classes": [
+        "HumanRealismContext"
+      ],
+      "imports": [],
+      "exports": [
+        "compileDreamscapeInstruction",
+        "compileHumanRealismInstruction",
+        "compileDriftGuardInstruction"
+      ],
+      "inDegree": 5,
+      "outDegree": 0
+    }
+  ],
+  "edges": [
+    {
+      "from": "App.tsx",
+      "to": "types.ts",
+      "type": "imports"
+    },
+    {
+      "from": "App.tsx",
+      "to": "components/AppDialog.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "App.tsx",
+      "to": "components/ChatInterface.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "App.tsx",
+      "to": "components/NewChatModal.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "App.tsx",
+      "to": "components/PasswordGate.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "App.tsx",
+      "to": "components/ResponsiveWhatsAppShell.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "App.tsx",
+      "to": "components/Sidebar.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "App.tsx",
+      "to": "components/ToastHost.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "App.tsx",
+      "to": "components/UserProfileModal.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "App.tsx",
+      "to": "services/db.ts",
+      "type": "imports"
+    },
+    {
+      "from": "App.tsx",
+      "to": "services/eventBus.ts",
+      "type": "imports"
+    },
+    {
+      "from": "App.tsx",
+      "to": "services/geminiService.ts",
+      "type": "imports"
+    },
+    {
+      "from": "App.tsx",
+      "to": "services/groupEngine.ts",
+      "type": "imports"
+    },
+    {
+      "from": "App.tsx",
+      "to": "services/chatTransfer.ts",
+      "type": "imports"
+    },
+    {
+      "from": "App.tsx",
+      "to": "services/memoryEngine.ts",
+      "type": "imports"
+    },
+    {
+      "from": "App.tsx",
+      "to": "services/progressiveCloneJob.ts",
+      "type": "imports"
+    },
+    {
+      "from": "App.tsx",
+      "to": "hooks/useAppController.ts",
+      "type": "imports"
+    },
+    {
+      "from": "App.tsx",
+      "to": "stores/useRafiqStore.ts",
+      "type": "imports"
+    },
+    {
+      "from": "api/auth-login.ts",
+      "to": "services/appAuth.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "api/capability-test.ts",
+      "to": "services/appAuth.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "api/capability-test.ts",
+      "to": "services/googleClient.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "api/capability-test.ts",
+      "to": "services/geminiSafety.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "api/capability-test.ts",
+      "to": "services/tools/webSearchTool.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "api/gemini-stream.ts",
+      "to": "services/appAuth.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "api/gemini-stream.ts",
+      "to": "services/geminiService.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "api/gemini.ts",
+      "to": "services/appAuth.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "api/gemini.ts",
+      "to": "services/geminiService.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "api/gemini.ts",
+      "to": "services/reflectionEngine.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "api/gemini.ts",
+      "to": "services/fileProcessor.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "api/gemini.ts",
+      "to": "services/cloneActionRegistry.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/AppDialog.tsx",
+      "to": "components/Modal.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/BotStoryPanel.tsx",
+      "to": "services/eventBus.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/BotStoryPanel.tsx",
+      "to": "services/storyRepository.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/BotStoryPanel.tsx",
+      "to": "stores/useRafiqStore.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/CapabilityHealthDashboard.tsx",
+      "to": "services/capabilityHealthRepository.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/CapabilityHealthDashboard.tsx",
+      "to": "services/browserCapabilityProbes.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatBubble.tsx",
+      "to": "hooks/useLongPress.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatBubble.tsx",
+      "to": "services/chatBubbleComparator.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatBubble.tsx",
+      "to": "components/Avatar.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatBubble.tsx",
+      "to": "components/FilePreviewCard.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatBubble.tsx",
+      "to": "components/chat/MessageMarkdown.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatBubble.tsx",
+      "to": "components/chat/ResolvedAttachmentAudio.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatBubble.tsx",
+      "to": "components/chat/ResolvedAttachmentImage.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "types.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "components/ChatBubble.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "components/Avatar.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "components/LiveVoice.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "components/ProfileImageViewer.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "components/ComposerAttachmentTray.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "components/PagedMessageList.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "components/SkillsHubModal.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "services/skillMatcher.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "services/skillRegistry.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "hooks/useChatController.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "hooks/useGroupController.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "stores/useRafiqStore.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "stores/groupStore.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "services/db.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "services/geminiModels.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "services/chatTransfer.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "components/WhatsAppAttachmentSheet.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "components/WhatsAppContactInfoDrawer.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "utils/haptics.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "components/RandomPromptsSettings.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/ChatInterface.tsx",
+      "to": "services/randomPrompts.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/ComposerAttachmentOverlayHost.tsx",
+      "to": "stores/composerAttachmentUiStore.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/ComposerAttachmentOverlayHost.tsx",
+      "to": "components/ComposerAttachmentTray.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/ComposerAttachmentTray.tsx",
+      "to": "components/FilePreviewCard.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/EventConsole.tsx",
+      "to": "services/eventBus.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/FilePreviewCard.tsx",
+      "to": "services/fileProcessor.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/FloatingTriggerButton.tsx",
+      "to": "stores/useRafiqStore.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/FloatingTriggerButton.tsx",
+      "to": "services/randomPrompts.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/FloatingTriggerButton.tsx",
+      "to": "components/PresetRepliesDock.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/FloatingTriggerButton.tsx",
+      "to": "services/eventBus.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/HumanIdTimeline.tsx",
+      "to": "services/eventBus.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/HumanIdTimeline.tsx",
+      "to": "services/lifeStoryForm.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/HumanIdTimeline.tsx",
+      "to": "services/storyRepository.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/HumanIdTimeline.tsx",
+      "to": "stores/useRafiqStore.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/LiveVoice.tsx",
+      "to": "types.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/LiveVoice.tsx",
+      "to": "services/personaEngine.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/LiveVoice.tsx",
+      "to": "services/eventBus.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/MemoryInspector.tsx",
+      "to": "services/eventBus.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/MemoryInspector.tsx",
+      "to": "services/memoryRepository.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/MemoryInspector.tsx",
+      "to": "stores/useRafiqStore.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/MobileNavigationPane.tsx",
+      "to": "components/Avatar.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/MobileNavigationPane.tsx",
+      "to": "components/PwaToolsTab.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/MobileNavigationPane.tsx",
+      "to": "components/UpdatesTab.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/MobileNavigationPane.tsx",
+      "to": "components/UserProfileModal.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/MobileNavigationPane.tsx",
+      "to": "utils/haptics.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/NewChatModal.tsx",
+      "to": "types.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/NewChatModal.tsx",
+      "to": "components/Avatar.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/NewChatModal.tsx",
+      "to": "components/ProfileImageViewer.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/NewChatModal.tsx",
+      "to": "services/geminiService.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/NewChatModal.tsx",
+      "to": "services/visualEngine.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/NewChatModal.tsx",
+      "to": "services/eventBus.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/NewChatModal.tsx",
+      "to": "services/soulSynthesizer.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/NewChatModal.tsx",
+      "to": "services/soulRegistry.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/NewChatModal.tsx",
+      "to": "services/geminiModels.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/NewChatModal.tsx",
+      "to": "services/livingPersonaCore.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/NewChatModal.tsx",
+      "to": "components/CloneAnalysisStatus.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/PagedMessageList.tsx",
+      "to": "services/messageWindow.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/PwaToolsTab.tsx",
+      "to": "services/eventBus.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/PwaToolsTab.tsx",
+      "to": "components/BotStoryPanel.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/PwaToolsTab.tsx",
+      "to": "components/CapabilityHealthDashboard.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/PwaToolsTab.tsx",
+      "to": "components/MemoryInspector.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/PwaToolsTab.tsx",
+      "to": "components/SocialAgencyControlsPanel.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/PwaToolsTab.tsx",
+      "to": "components/TransferV2Panel.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/RandomPromptsSettings.tsx",
+      "to": "stores/useRafiqStore.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/RandomPromptsSettings.tsx",
+      "to": "services/randomPrompts.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/RandomPromptsSettings.tsx",
+      "to": "types.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/ResponsiveWhatsAppShell.tsx",
+      "to": "hooks/useVisualViewportLayout.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/Sidebar.tsx",
+      "to": "types.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/Sidebar.tsx",
+      "to": "components/Avatar.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/Sidebar.tsx",
+      "to": "services/eventBus.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/SkillsHubModal.tsx",
+      "to": "services/skillRegistry.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/SocialAgencyControlsPanel.tsx",
+      "to": "stores/useRafiqStore.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/SocialAgencyControlsPanel.tsx",
+      "to": "components/SocialAgencySettings.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/SocialAgencySettings.tsx",
+      "to": "services/eventBus.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/SocialAgencySettings.tsx",
+      "to": "services/socialAgencyRepository.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/StatusViewer.tsx",
+      "to": "services/storyNavigation.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/ToastHost.tsx",
+      "to": "services/eventBus.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/ToastHost.tsx",
+      "to": "components/ComposerAttachmentOverlayHost.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/TransferV2Panel.tsx",
+      "to": "services/eventBus.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/TransferV2Panel.tsx",
+      "to": "services/transferRuntime.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/UpdatesTab.tsx",
+      "to": "types.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/UpdatesTab.tsx",
+      "to": "components/Avatar.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/UserProfileModal.tsx",
+      "to": "services/geminiService.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/UserProfileModal.tsx",
+      "to": "services/eventBus.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/UserProfileModal.tsx",
+      "to": "components/HumanIdTimeline.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/WhatsAppAttachmentSheet.tsx",
+      "to": "utils/haptics.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/WhatsAppContactInfoDrawer.tsx",
+      "to": "components/Avatar.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "components/WhatsAppContactInfoDrawer.tsx",
+      "to": "services/geminiModels.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/WhatsAppContactInfoDrawer.tsx",
+      "to": "utils/haptics.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/chat/AudioAttachmentPlayer.tsx",
+      "to": "hooks/useAudioPlayback.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/chat/AudioAttachmentPlayer.tsx",
+      "to": "hooks/useResolvedAttachmentUrl.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/chat/ImageAttachmentView.tsx",
+      "to": "hooks/useResolvedAttachmentUrl.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/chat/ResolvedAttachmentAudio.tsx",
+      "to": "hooks/useAudioPlayback.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/chat/ResolvedAttachmentAudio.tsx",
+      "to": "hooks/useResolvedAttachmentUrl.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/chat/ResolvedAttachmentImage.tsx",
+      "to": "hooks/useResolvedAttachmentUrl.ts",
+      "type": "imports"
+    },
+    {
+      "from": "components/chat/VideoAttachmentView.tsx",
+      "to": "hooks/useResolvedAttachmentUrl.ts",
+      "type": "imports"
+    },
+    {
+      "from": "docs/rafiq-human-conversation-dynamics/src/planConversation.ts",
+      "to": "docs/rafiq-human-conversation-dynamics/src/conversationSafetyGate.ts",
+      "type": "imports"
+    },
+    {
+      "from": "docs/rafiq-human-conversation-dynamics/src/planConversation.ts",
+      "to": "docs/rafiq-human-conversation-dynamics/src/continuityAffordance.ts",
+      "type": "imports"
+    },
+    {
+      "from": "docs/rafiq-human-conversation-dynamics/src/planConversation.ts",
+      "to": "docs/rafiq-human-conversation-dynamics/src/relationshipCalibration.ts",
+      "type": "imports"
+    },
+    {
+      "from": "docs/rafiq-human-conversation-dynamics/src/planConversation.ts",
+      "to": "docs/rafiq-human-conversation-dynamics/src/relationalMovePlanner.ts",
+      "type": "imports"
+    },
+    {
+      "from": "docs/rafiq-human-conversation-dynamics/src/planConversation.ts",
+      "to": "docs/rafiq-human-conversation-dynamics/src/replyShapePlanner.ts",
+      "type": "imports"
+    },
+    {
+      "from": "docs/rafiq-human-conversation-dynamics/tests/continuityAffordance.test.ts",
+      "to": "docs/rafiq-human-conversation-dynamics/src/continuityAffordance.ts",
+      "type": "imports"
+    },
+    {
+      "from": "docs/rafiq-human-conversation-dynamics/tests/conversationSafetyGate.test.ts",
+      "to": "docs/rafiq-human-conversation-dynamics/src/conversationSafetyGate.ts",
+      "type": "imports"
+    },
+    {
+      "from": "docs/rafiq-human-conversation-dynamics/tests/dynamicsPromptCompiler.test.ts",
+      "to": "docs/rafiq-human-conversation-dynamics/src/dynamicsPromptCompiler.ts",
+      "type": "imports"
+    },
+    {
+      "from": "docs/rafiq-human-conversation-dynamics/tests/planConversation.test.ts",
+      "to": "docs/rafiq-human-conversation-dynamics/src/planConversation.ts",
+      "type": "imports"
+    },
+    {
+      "from": "docs/rafiq-human-conversation-dynamics/tests/referencePriorExtractor.test.ts",
+      "to": "docs/rafiq-human-conversation-dynamics/src/referencePriorExtractor.ts",
+      "type": "imports"
+    },
+    {
+      "from": "docs/rafiq-human-conversation-dynamics/tests/relationalMovePlanner.test.ts",
+      "to": "docs/rafiq-human-conversation-dynamics/src/relationalMovePlanner.ts",
+      "type": "imports"
+    },
+    {
+      "from": "docs/rafiq-human-conversation-dynamics/tests/relationshipCalibration.test.ts",
+      "to": "docs/rafiq-human-conversation-dynamics/src/relationshipCalibration.ts",
+      "type": "imports"
+    },
+    {
+      "from": "docs/rafiq-human-conversation-dynamics/tests/replyShapePlanner.test.ts",
+      "to": "docs/rafiq-human-conversation-dynamics/src/replyShapePlanner.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useAppController.ts",
+      "to": "stores/useRafiqStore.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useAppController.ts",
+      "to": "services/db.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useAppController.ts",
+      "to": "services/geminiService.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useAppController.ts",
+      "to": "services/eventBus.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useAppController.ts",
+      "to": "types.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "stores/useRafiqStore.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "stores/composerAttachmentUiStore.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "services/geminiService.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "services/db.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "services/dynamicEngines.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "types.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "services/eventBus.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "services/geminiModels.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "services/memoryEngine.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "services/conversationRouter.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "services/messageBurst.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "services/imageRequestRouter.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "services/personalityEvolution.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "services/conversationShapedPersona.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "services/attachmentComposer.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "services/attachmentRepository.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "services/aiAttachmentPayload.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "services/asyncGenerationGuard.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "services/slowBurnStoryEngine.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "services/continuityCoordinator.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "services/companionContinuity.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "services/continuityPrompt.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useChatController.ts",
+      "to": "services/conversationDynamics/index.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useEvent.ts",
+      "to": "services/eventBus.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useGroupController.ts",
+      "to": "stores/groupStore.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useGroupController.ts",
+      "to": "services/groupEngine.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useGroupController.ts",
+      "to": "services/db.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useGroupController.ts",
+      "to": "types.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useGroupController.ts",
+      "to": "services/eventBus.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useGroupController.ts",
+      "to": "services/attachmentComposer.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useGroupController.ts",
+      "to": "services/attachmentRepository.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useResolvedAttachmentUrl.ts",
+      "to": "services/attachmentRepository.ts",
+      "type": "imports"
+    },
+    {
+      "from": "hooks/useVisualViewportLayout.ts",
+      "to": "services/mobileViewportLayout.ts",
+      "type": "imports"
+    },
+    {
+      "from": "index.tsx",
+      "to": "App.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "scripts/security/scan-secrets.mjs",
+      "to": "scripts/security/secret-detectors.mjs",
+      "type": "imports"
+    },
+    {
+      "from": "scripts/security/secret-detectors.test.mjs",
+      "to": "scripts/security/secret-detectors.mjs",
+      "type": "imports"
+    },
+    {
+      "from": "server.ts",
+      "to": "services/appAuth.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "server.ts",
+      "to": "services/geminiService.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "server.ts",
+      "to": "services/reflectionEngine.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "server.ts",
+      "to": "services/fileProcessor.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "server.ts",
+      "to": "services/cloneActionRegistry.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/aiAttachmentPayload.server.ts",
+      "to": "services/largeFilePolicy.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/aiAttachmentPayload.ts",
+      "to": "services/attachmentRepository.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/aiAttachmentPayload.ts",
+      "to": "services/localAttachmentReference.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/aiAttachmentPayload.ts",
+      "to": "services/mediaOptimizer.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/attachmentComposer.ts",
+      "to": "services/attachmentRepository.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/attachmentComposer.ts",
+      "to": "services/fileProcessor.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/attachmentComposer.ts",
+      "to": "services/largeFilePolicy.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/attachmentComposer.ts",
+      "to": "services/localAttachmentReference.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/attachmentDerivatives.ts",
+      "to": "services/largeFilePolicy.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/attachmentRepository.ts",
+      "to": "contracts/rafiqV6.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/attachmentRepository.ts",
+      "to": "services/opfsAttachmentStore.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/attachmentRepository.ts",
+      "to": "services/v6Tables.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/autonomousEvolution.server.ts",
+      "to": "types.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/autonomousEvolution.server.ts",
+      "to": "services/db.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/autonomousEvolution.server.ts",
+      "to": "services/googleClient.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/autonomousEvolution.server.ts",
+      "to": "services/geminiSafety.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/autonomousEvolution.server.ts",
+      "to": "services/redisVectorMemory.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/autonomousEvolution.server.ts",
+      "to": "services/tools/webSearchTool.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/autonomousEvolution.server.ts",
+      "to": "services/graphMemory.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/autonomousEvolution.server.ts",
+      "to": "services/boundedAsyncQueue.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/avatarEngine.ts",
+      "to": "services/visualEngine.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/avatarEngine.ts",
+      "to": "services/googleClient.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/avatarEngine.ts",
+      "to": "services/geminiSafety.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/backgroundPersonaCompiler.ts",
+      "to": "types.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/backgroundPersonaCompiler.ts",
+      "to": "contracts/rafiqV6.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/backgroundPersonaCompiler.ts",
+      "to": "services/socialAgencyPolicy.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/browserCapabilityProbes.ts",
+      "to": "contracts/rafiqV6.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/cadenceMaestro.ts",
+      "to": "types.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/capabilityHealth.ts",
+      "to": "contracts/rafiqV6.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/capabilityHealthRepository.ts",
+      "to": "contracts/rafiqV6.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/capabilityHealthRepository.ts",
+      "to": "services/capabilityHealth.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/capabilityHealthRepository.ts",
+      "to": "services/v6Tables.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/chatTransfer.ts",
+      "to": "types.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/chatTransfer.ts",
+      "to": "services/db.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/cloneActionRegistry.server.ts",
+      "to": "services/whatsappImporter.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/cloneActionRegistry.server.ts",
+      "to": "services/soulSynthesizer.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/cloneActionRegistry.server.ts",
+      "to": "services/progressiveCloneAnalysis.server.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/continuityCoordinator.ts",
+      "to": "types.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/continuityCoordinator.ts",
+      "to": "services/companionContinuity.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/continuityCoordinator.ts",
+      "to": "services/socialHeartbeat.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/continuityProposalValidation.ts",
+      "to": "services/companionContinuity.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/conversationDynamics/adapter.ts",
+      "to": "services/conversationRouter.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/conversationDynamics/adapter.ts",
+      "to": "services/conversationDynamics/planConversation.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/conversationDynamics/adapter.ts",
+      "to": "services/conversationDynamics/dynamicsPromptCompiler.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/conversationDynamics/planConversation.ts",
+      "to": "services/conversationDynamics/conversationSafetyGate.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/conversationDynamics/planConversation.ts",
+      "to": "services/conversationDynamics/continuityAffordance.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/conversationDynamics/planConversation.ts",
+      "to": "services/conversationDynamics/relationshipCalibration.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/conversationDynamics/planConversation.ts",
+      "to": "services/conversationDynamics/relationalMovePlanner.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/conversationDynamics/planConversation.ts",
+      "to": "services/conversationDynamics/replyShapePlanner.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/dailyStageDirector.ts",
+      "to": "types.ts",
+      "type": "imports"
+    },
+    {
+      "from": "services/db.ts",
+      "to": "types.ts",
+      "type": "imports"
+    }
+  ],
+  "summaryText": "# Codebase Architecture Graph Summary\nGenerated at: 2026-09-13T15:12:57.030Z\nRoot: /Users/mamdouhaboammar/Documents/antigravity/zealous-hypatia\nTotal Source Files: 336\nTotal Dependencies/Edges: 598\n\n## Critical Hub Nodes (Highest Connectivity / Architectural Load):\n1. **`types.ts`** (73 connections: 71 in, 2 out)\n2. **`services/geminiService.server.ts`** (34 connections: 4 in, 30 out)\n3. **`hooks/useChatController.ts`** (25 connections: 1 in, 24 out)\n4. **`components/ChatInterface.tsx`** (24 connections: 1 in, 23 out)\n5. **`services/eventBus.ts`** (24 connections: 23 in, 1 out)\n6. **`services/db.ts`** (21 connections: 19 in, 2 out)\n7. **`App.tsx`** (19 connections: 1 in, 18 out)\n8. **`contracts/rafiqV6.ts`** (18 connections: 17 in, 1 out)\n9. **`services/googleClient.server.ts`** (16 connections: 10 in, 6 out)\n10. **`services/personaEngine.ts`** (15 connections: 8 in, 7 out)\n\n## Key Exported Classes & Symbols:\n- **`App.tsx`**: DialogState, App\n- **`api/gemini.ts`**: validateReflectionArgs\n- **`components/AppDialog.tsx`**: AppDialogProps, AppDialogTone\n- **`components/Avatar.tsx`**: AvatarProps\n- **`components/BotStoryPanel.tsx`**: CorrectionDraft\n- **`components/CapabilityHealthDashboard.tsx`**: CapabilityHealthDashboardProps\n- **`components/ChatBubble.tsx`**: ChatBubbleProps\n- **`components/ChatInterface.tsx`**: ChatInterfaceProps\n- **`components/CloneAnalysisEditor.tsx`**: CloneAnalysisEditorProps, CloneProfile, EditableCloneProfile, EditableCloneProfile\n- **`components/CloneAnalysisStatus.tsx`**: CloneAnalysisStatusProps, CloneProfile\n- **`components/ComposerAttachmentTray.tsx`**: ComposerAttachmentUpload, ReadyComposerAttachment, ComposerAttachmentTrayProps, ComposerAttachmentUpload, ReadyComposerAttachment\n- **`components/FilePreviewCard.tsx`**: FilePreviewCardProps\n- **`components/FloatingTriggerButton.tsx`**: FloatingTriggerButtonProps, FloatingTriggerButton\n- **`components/LiveVoice.tsx`**: LiveVoiceProps\n- **`components/MobileNavigationPane.tsx`**: MobileNavigationPaneProps, MobileNavigationTab, FilterChip, MobileNavigationTab"
+}

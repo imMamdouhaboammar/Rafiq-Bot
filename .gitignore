@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Environment files (NEVER commit secrets)
+.env*
+!.env.example
+
+# Vercel
+.vercel
+
+# OS / IDE noise
+.DS_Store
+.vscode/
+.idea/
+.cursor/
+*.swp
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Misc / project-local
+scratch/
+tmp/
+Archive.zip
+*.tsbuildinfo
+local_cache/
+.agent-kernel-backups/
+GEMINI.md
+
+# Local credentials and private keys
+service-account.json
+service-account-*.json
+credentials.json
+client_secret*.json
+*.pem
+*.p12
+
+# Mavis agent config (not part of project code)
+.agents/
+.specify/
+.mavis/
+skills-lock.json
+.unslop/

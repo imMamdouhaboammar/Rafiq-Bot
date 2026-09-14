@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Rafiq app icon</title>
+  <desc id="desc">A teal chat bubble with the Arabic letter ر.</desc>
+  <rect width="512" height="512" rx="112" fill="#008069"/>
+  <circle cx="256" cy="246" r="154" fill="#25D366"/>
+  <path d="M154 369l30-88 82 58-112 30z" fill="#25D366"/>
+  <circle cx="256" cy="246" r="122" fill="#ffffff"/>
+  <path d="M300 157c34 30 51 68 51 113 0 35-11 61-33 78-19 15-45 22-78 22h-64v-50h64c20 0 35-4 45-13 11-9 16-23 16-41 0-24-8-45-25-63-16-18-40-34-72-48l22-46c28 11 53 27 74 48z" fill="#008069"/>
+  <circle cx="205" cy="252" r="19" fill="#008069"/>
+  <circle cx="268" cy="252" r="19" fill="#008069"/>
+</svg>

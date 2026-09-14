@@ -1,0 +1,90 @@
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: "Noto Sans Arabic", "Cairo", "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  touch-action: manipulation;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* Mobile Touch & Disney Animation Principles */
+.touch-spring {
+  transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+  transition-duration: 250ms;
+}
+
+.touch-squash {
+  transition: transform 120ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.touch-squash:active {
+  transform: scale(0.95);
+}
+
+.touch-squash-subtle {
+  transition: transform 120ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.touch-squash-subtle:active {
+  transform: scale(0.98);
+}
+
+.momentum-scroll {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+}
+
+/* Safe Area Utilities (Notch & Dynamic Island & Home Indicator Handling) */
+.safe-area-pt {
+  padding-top: env(safe-area-inset-top);
+}
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.safe-area-pl {
+  padding-left: env(safe-area-inset-left);
+}
+.safe-area-pr {
+  padding-right: env(safe-area-inset-right);
+}
+.safe-area-p {
+  padding-top: env(safe-area-inset-top);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+}
+
+/* Touch Target Standards (WCAG 2.2 AA / Recommended 44x44px) */
+.touch-target-44 {
+  min-height: 44px;
+  min-width: 44px;
+}
+.touch-target-48 {
+  min-height: 48px;
+  min-width: 48px;
+}
+
+:focus-visible {
+  outline: 3px solid #0a84ff;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+

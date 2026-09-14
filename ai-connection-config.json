@@ -1,0 +1,68 @@
+{
+  "project_name": "Rafiq AI Connection reference",
+  "sdk_package": "@google/genai",
+  "environment_variables": {
+    "gemini_api_mode": {
+      "GEMINI_API_KEY": "YOUR_GEMINI_API_KEY"
+    },
+    "vertex_ai_mode": {
+      "GOOGLE_CLOUD_PROJECT": "YOUR_GOOGLE_CLOUD_PROJECT_ID",
+      "GOOGLE_CLOUD_LOCATION": "global",
+      "GOOGLE_APPLICATION_CREDENTIALS": "/path/to/service-account.json",
+      "GOOGLE_SERVICE_ACCOUNT_JSON": "YOUR_RAW_SERVICE_ACCOUNT_JSON_STRING",
+      "GOOGLE_SERVICE_ACCOUNT_JSON_BASE64": "YOUR_BASE64_ENCODED_SERVICE_ACCOUNT_JSON"
+    },
+    "web_search": {
+      "RAFIQ_WEB_SEARCH_PROVIDER": "google_custom_search",
+      "RAFIQ_WEB_SEARCH_API_KEY": "YOUR_WEB_SEARCH_API_KEY",
+      "RAFIQ_WEB_SEARCH_ENGINE_ID": "YOUR_SEARCH_ENGINE_ID",
+      "RAFIQ_WEB_SEARCH_LOCALE": "ar-EG",
+      "RAFIQ_WEB_SEARCH_REGION": "eg"
+    },
+    "vector_memory": {
+      "RAFIQ_VECTOR_MEMORY_ENABLED": "false",
+      "REDIS_URL": "YOUR_REDIS_URL",
+      "REDIS_AGENT_MEMORY_API_KEY": "YOUR_REDIS_API_KEY",
+      "REDIS_AGENT_MEMORY_SERVER_URL": "YOUR_REDIS_SERVER_URL",
+      "REDIS_AGENT_MEMORY_STORE_ID": "YOUR_REDIS_STORE_ID",
+      "REDIS_AGENT_MEMORY_NAMESPACE": "rafiq",
+      "RAFIQ_REDIS_VECTOR_INDEX": "idx:rafiq:mem:v1",
+      "RAFIQ_REDIS_VECTOR_PREFIX": "rafiq:mem:",
+      "RAFIQ_EMBEDDING_MODEL": "gemini-embedding-001",
+      "RAFIQ_EMBEDDING_DIM": 768
+    }
+  },
+  "models": {
+    "default_chat": "gemini-3.6-flash",
+    "fast_chat": "gemini-3.6-flash",
+    "latest_chat": "gemini-3.6-flash",
+    "default_embedding": "gemini-embedding-001",
+    "image_generation": "gemini-3.1-flash-image"
+  },
+  "initialization_methods": {
+    "description": "How the client is initialized in the code based on the chosen mode (Gemini API Key vs. Vertex AI)",
+    "sdk_import": "import { GoogleGenAI } from '@google/genai';",
+    "api_key_initialization": "const client = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });",
+    "vertex_ai_initialization": "const client = new GoogleGenAI({ vertexai: true, project: process.env.GOOGLE_CLOUD_PROJECT, location: process.env.GOOGLE_CLOUD_LOCATION || 'global' });"
+  },
+  "core_methods": [
+    {
+      "method_name": "generateContent",
+      "purpose": "Text Generation & Chat Response",
+      "example_call": "const response = await client.models.generateContent({ model: 'gemini-3.5-flash', contents: [{ role: 'user', parts: [{ text: 'Your prompt here' }] }], config: { temperature: 0.7, maxOutputTokens: 800 } });",
+      "response_parsing": "const text = response.text;"
+    },
+    {
+      "method_name": "embedContent",
+      "purpose": "Generate vector embeddings for semantic memory",
+      "example_call": "const response = await client.models.embedContent({ model: 'gemini-embedding-001', contents: [{ role: 'user', parts: [{ text: 'Text to embed' }] }] });",
+      "response_parsing": "const embeddingValues = response.embedding.values;"
+    },
+    {
+      "method_name": "generateImages",
+      "purpose": "Generate images for the avatar/studio engine",
+      "example_call": "const response = await client.models.generateImages({ model: 'gemini-3.1-flash-image', prompt: 'photorealistic portrait of a helper avatar...', config: { numberOfImages: 1, outputMimeType: 'image/jpeg' } });",
+      "response_parsing": "const base64Image = response.generatedImages[0].image.imageBytes;"
+    }
+  ]
+}

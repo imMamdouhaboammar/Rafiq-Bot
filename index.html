@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#008069" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="رفيق" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="application-name" content="رفيق" />
+    <meta name="description" content="رفيق: تطبيق محادثة ذكاء اصطناعي قابل للتثبيت من المتصفح." />
+    <title>Rafiq AI</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/icons/rafiq-icon.svg" />
+    <link rel="apple-touch-icon" href="/icons/rafiq-icon-192.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Noto Sans Arabic', 'Cairo', 'Helvetica Neue', 'Arial', 'sans-serif'],
+            },
+            colors: {
+              wa: {
+                teal: '#008069',      // Primary Header
+                dark: '#111b21',      // Dark Text
+                light: '#25D366',     // Accent Green
+                bg: '#efeae2',        // Chat Beige Background
+                user: '#d9fdd3',      // User Bubble
+                bot: '#ffffff',       // Bot Bubble
+                input: '#ffffff',     // Input Field
+                panel: '#f0f2f5',     // Sidebar/Input Background
+                blue: '#53bdeb',      // Read Checks
+              }
+            },
+            boxShadow: {
+              'bubble': '0 1px 0.5px rgba(0,0,0,0.13)',
+            },
+            backgroundImage: {
+              'doodle': "url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')"
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      html {
+        height: 100dvh;
+        width: 100%;
+        overflow: hidden;
+        overscroll-behavior: none;
+      }
+      body {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        overscroll-behavior: none;
+        margin: 0;
+        background-color: #d1d7db;
+        color: #111b21;
+        font-family: 'Noto Sans Arabic', 'Cairo', 'Helvetica Neue', Arial, sans-serif;
+      }
+      #root {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+      }
+      /* Custom Scrollbar - Slim and unintrusive */
+      ::-webkit-scrollbar {
+        width: 4px !important;
+        height: 4px !important;
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: rgba(0,0,0,0.2);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      /* Hide scrollbar for mobile experience but allow scroll */
+      @media (max-width: 768px) {
+        ::-webkit-scrollbar {
+          width: 2px;
+        }
+        ::-webkit-scrollbar-thumb {
+          background-color: rgba(0,0,0,0.1);
+        }
+      }
+      .safe-bottom {
+        padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+      }
+      .wa-doodle-bg {
+        background-color: #efeae2;
+        background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
+        background-blend-mode: overlay;
+        background-size: 400px;
+        opacity: 1;
+      }
+      /* Utility to ensure text wrapping */
+      .break-word {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+      /* Voice message waveform bars */
+      .voice-waveform {
+        display: flex;
+        align-items: center;
+        gap: 1.5px;
+        height: 28px;
+        flex: 1;
+      }
+      .voice-waveform .bar {
+        width: 2.5px;
+        border-radius: 2px;
+        background-color: rgba(0,0,0,0.2);
+        transition: background-color 0.15s;
+      }
+      .voice-waveform .bar.played {
+        background-color: #008069;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "ai": "https://esm.sh/ai@4.1.45?external=react,react-dom",
+    "@ai-sdk/google": "https://esm.sh/@ai-sdk/google@1.1.11?external=react,react-dom",
+    "dexie": "https://esm.sh/dexie@4.0.1",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "zod": "https://aistudiocdn.com/zod@^3.23.8",
+    "framer-motion": "https://aistudiocdn.com/framer-motion@^11.0.0",
+    "mitt": "https://esm.sh/mitt@3.0.1",
+    "rxjs": "https://esm.sh/rxjs@7.8.1",
+    "zustand": "https://esm.sh/zustand@^5.0.9?external=react"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
