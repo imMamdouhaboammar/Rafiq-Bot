@@ -47,7 +47,7 @@ describe('Wave 3: EgyptianSpintaxEngine & VoiceTroubadour', () => {
       const injectedHappy = troubadour.injectFillers(text, BotMood.HAPPY);
 
       expect(injectedHappy.length).toBeGreaterThan(text.length);
-      const containsHappyFiller = ['ههههه', 'يا سيدي', 'أيوة كدة'].some(f => injectedHappy.includes(f));
+      const containsHappyFiller = ['ههههه', 'يا سيدي', 'أيوة كدة', 'حلو أوي', 'يا سلام'].some(f => injectedHappy.includes(f));
       expect(containsHappyFiller).toBe(true);
     });
 

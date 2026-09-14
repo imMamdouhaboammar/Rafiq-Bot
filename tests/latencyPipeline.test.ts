@@ -91,8 +91,12 @@ console.log("✓ Persona Cache tests passed!");
 // 4. Test Model Routing
 console.log("Running Model Routing Tests...");
 
+const routeFastWithoutThinking = resolveModelRoute("fast_chat", settings.model);
+assert.equal(routeFastWithoutThinking.useThinking, false);
+assert.equal(routeFastWithoutThinking.maxOutputTokens, 8192);
+
 const routeFast = resolveModelRoute("fast_chat", settings.model, settings.thinkingLevel);
-assert.equal(routeFast.useThinking, false);
+assert.equal(routeFast.useThinking, true, "an explicit user thinking level must be honored on fast chat");
 assert.equal(routeFast.maxOutputTokens, 8192);
 
 const routeDeep = resolveModelRoute("deep_persona", settings.model, settings.thinkingLevel);
