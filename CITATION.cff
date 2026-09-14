@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use Rafiq in research, please cite the software using this metadata."
+title: "Rafiq-Bot: Open-source AI companion runtime"
+type: software
+authors:
+  - family-names: "Aboammar"
+    given-names: "Mamdouh"
+repository-code: "https://github.com/imMamdouhaboammar/Rafiq-Bot"
+license: "MIT"

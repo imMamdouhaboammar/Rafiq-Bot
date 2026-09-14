@@ -296,7 +296,7 @@ Event domains: `chat:*`, `ai:*`, `persona:*`, `group:*`, `import:*`, `ui:*`, `sy
 - `@/*` alias → project root (`./`)
 - `allowImportingTsExtensions: true` — allows importing `.ts` files directly (Vite resolves them)
 - `noEmit: true` — Vite owns the emit; `tsc` is type-check only
-- 5 test files excluded from type-checking due to mock patterns
+- Test-only mock-heavy modules may be excluded from type-checking; `tsconfig.json` is the canonical exclusion list
 
 ---
 

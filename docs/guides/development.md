@@ -183,12 +183,7 @@ Cache-Control headers are set to `no-store` in development to prevent stale Vite
 bun run typecheck   # tsc --noEmit (no emit — Vite owns the build)
 ```
 
-5 test files are excluded from type-checking in `tsconfig.json` due to mock patterns:
-- `tests/koboldInferenceProvider.test.ts`
-- `tests/lorebookEngine.test.ts`
-- `tests/reflectionEngine.test.ts`
-- `tests/roleplayEngine.test.ts`
-- `tests/socialHeartbeat.test.ts`
+Some test-only mock-heavy modules are excluded from the main type-check. `tsconfig.json` is the canonical exclusion list; do not duplicate that list or its count in documentation.
 
 ---
 

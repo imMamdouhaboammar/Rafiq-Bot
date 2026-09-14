@@ -250,6 +250,6 @@ Yes, but provider support should be implemented and tested before it is advertis
 - [Testing](docs/guides/testing.md)
 - [Agent Kernel maintainer workflow](docs/guides/agent-kernel.md)
 
-## License
+## License and citation
 
-Rafiq is available under the [MIT License](LICENSE).
+Rafiq is available under the [MIT License](LICENSE). For research use, GitHub can render the repository citation metadata from [CITATION.cff](CITATION.cff); the longer research manuscript lives under [docs/research-paper/](docs/research-paper/).
