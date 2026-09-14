@@ -230,8 +230,8 @@ Orchestrates conversations with N AI personas simultaneously:
 
 | Tool name | File | What it does |
 |-----------|------|-------------|
-| `current_time` | `timeTool.server.ts` | Returns date/time in Cairo timezone |
-| `web_search` | `webSearchTool.server.ts` | Google Search (`RAFIQ_WEB_SEARCH_PROVIDER`) |
+| `current_time` | `timeTool.server.ts` | Returns date/time using the resolved runtime locale and timezone |
+| `web_search` | `webSearchTool.server.ts` | Optional search via configured Tavily, SerpAPI, Google Custom Search, Brave, or Bing provider |
 | `open_url` | `webReaderTool.server.ts` | Fetch and extract text from a URL |
 | `search_and_read` | `webReaderTool.server.ts` | Combined search + URL read |
 | `research_tool` | `researchTool.server.ts` | Multi-step research synthesis |

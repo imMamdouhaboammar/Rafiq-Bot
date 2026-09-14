@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security policy
+    url: https://github.com/imMamdouhaboammar/Rafiq-Bot/security/policy
+    about: Report security issues privately. Do not open a public vulnerability issue.
+  - name: Support guide
+    url: https://github.com/imMamdouhaboammar/Rafiq-Bot/blob/main/SUPPORT.md
+    about: Choose the correct support channel and sanitize logs before posting.

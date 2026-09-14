@@ -10,10 +10,10 @@ Before changing behavior, inspect `README.md`, `PRODUCT.md`, `DESIGN.md`, `docs/
 
 - Install: `bun install`
 - Development: `bun run dev`
-- Typecheck: `npm run typecheck`
-- P0 checks: `npm run test:p0`
+- Typecheck: `bun run typecheck`
+- P0 checks: `bun run test:p0`
 - Full tests: `npm test`
-- Security scan: `npm run security:scan`
+- Security scan: `bun run security:scan`
 - Production build: `bun run build`
 
 ## Architecture boundaries

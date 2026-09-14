@@ -1,0 +1,43 @@
+name: Bug report
+description: Report a reproducible defect in Rafiq
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "Do not include API keys, cookies, private chat exports, service-account JSON, or other secrets."
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Describe the observed behavior and why it is a defect.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Minimal reproduction
+      description: List the smallest repeatable steps, inputs, or fixture needed to reproduce it.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: input
+    id: commit
+    attributes:
+      label: Commit or branch
+      placeholder: main or a commit SHA
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, browser, Bun or Node version, and relevant provider mode. Redact secrets.
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification already attempted
+      description: Include sanitized output from focused tests, typecheck, or security checks when relevant.

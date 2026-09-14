@@ -1,0 +1,25 @@
+name: Setup or contributor question
+description: Ask for help with a reproducible project setup or contribution problem
+title: "question: "
+body:
+  - type: markdown
+    attributes:
+      value: "Sanitize logs before posting. Never include .env values, cookies, service-account files, or private conversation data."
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+    validations:
+      required: true
+  - type: textarea
+    id: attempted
+    attributes:
+      label: What have you tried?
+      description: Include exact commands and sanitized output where useful.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, runtime, browser, commit or branch, and provider mode.

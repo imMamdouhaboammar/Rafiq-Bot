@@ -37,7 +37,7 @@ Rafiq is wired for **Vercel** out of the box. The `vercel.json` at the project r
 ### Deploy steps
 
 1. Push to your connected Git branch (GitHub, GitLab, or Bitbucket)
-2. Vercel runs `npm run build` → `vite build`
+2. Vercel runs the configured `npm run build` command → `vite build`
 3. Output is deployed from `dist/`
 4. `api/*.ts` files are deployed as Serverless Functions
 
@@ -76,8 +76,8 @@ Set these in **Project Settings → Environment Variables** on Vercel. Never com
 | `RAFIQ_WEB_SEARCH_PROVIDER` | Search provider |
 | `RAFIQ_WEB_SEARCH_API_KEY` | API key |
 | `RAFIQ_WEB_SEARCH_ENGINE_ID` | Engine ID |
-| `RAFIQ_WEB_SEARCH_LOCALE` | Default: `ar-EG` |
-| `RAFIQ_WEB_SEARCH_REGION` | Default: `eg` |
+| `RAFIQ_WEB_SEARCH_LOCALE` | Optional override; blank derives from the runtime locale |
+| `RAFIQ_WEB_SEARCH_REGION` | Optional override; blank derives from the locale region |
 
 ### Optional — vector memory (Redis)
 
@@ -98,7 +98,7 @@ Set these in **Project Settings → Environment Variables** on Vercel. Never com
 | Variable | Description |
 |----------|-------------|
 | `RAFIQ_LANGCACHE_ENABLED` | Set to `true` to enable |
-| `RAFIQ_LANGCACHE_TTL_SECONDS` | Default: `900` |
+| `RAFIQ_LANGCACHE_TTL_MS` | Default: `604800000` |
 
 > For the full variable reference with types, defaults, and effects, see [`docs/configuration/env-reference.md`](../configuration/env-reference.md).
 
@@ -119,8 +119,10 @@ In production mode, `server.ts` serves static files from `dist/` instead of usin
 
 ## Function timeout notes
 
-- `POST /api/gemini` — 60s: adequate for image generation, soul synthesis, and non-streaming chat. If soul synthesis times out on very large WhatsApp exports, consider chunking the batch size.
-- `POST /api/gemini-stream` — 120s: streaming keeps the connection alive for the duration. Vercel Fluid Compute keeps the function warm between requests; cold start latency is typically under 2s.
+- `POST /api/gemini` has a 60-second maximum duration in `vercel.json`.
+- `POST /api/gemini-stream` has a 120-second maximum duration for SSE responses.
+
+These are configured limits, not latency guarantees. Runtime duration still depends on the selected provider operation and hosting conditions.
 
 ---
 
@@ -137,4 +139,4 @@ In production mode, `server.ts` serves static files from `dist/` instead of usin
 - `.env*` files are in `.gitignore` — never committed.
 - All Gemini API keys and Redis credentials are server-only (`services/*.server.ts`). The browser never receives them.
 - The session cookie uses HMAC-SHA256 signing. Rotate `RAFIQ_APP_SESSION_SECRET` to invalidate all active sessions.
-- `npm run security:scan` detects accidentally committed secrets. Run before every deploy.
+- `bun run security:scan` detects accidentally committed secrets. Run before every deploy.

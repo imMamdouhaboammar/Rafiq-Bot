@@ -1,0 +1,32 @@
+name: Feature request
+description: Propose a user-facing or contributor-facing improvement
+title: "feature: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or job to be done
+      description: Explain the user or contributor problem before proposing implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence or examples
+      description: Link related issues, code paths, screenshots with synthetic data, or comparable behavior.
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints and compatibility
+      description: Note provider, localization, privacy, browser, migration, or deployment implications.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered

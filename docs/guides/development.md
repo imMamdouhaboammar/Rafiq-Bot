@@ -180,7 +180,7 @@ Cache-Control headers are set to `no-store` in development to prevent stale Vite
 ## TypeScript type-checking
 
 ```bash
-npm run typecheck   # tsc --noEmit (no emit — Vite owns the build)
+bun run typecheck   # tsc --noEmit (no emit — Vite owns the build)
 ```
 
 5 test files are excluded from type-checking in `tsconfig.json` due to mock patterns:
@@ -216,7 +216,7 @@ import { db } from '@/services/db';          // → ./services/db.ts
 ## Security scan
 
 ```bash
-npm run security:scan   # checks for tracked secrets + scans for API key patterns
+bun run security:scan   # checks for tracked secrets + scans for API key patterns
 ```
 
 Run this before every commit. The scan uses `scripts/security/` to detect accidentally committed credentials.

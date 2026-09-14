@@ -30,7 +30,7 @@ Human-like wording is not enough. Natural chat depends on deciding whether the n
 
 ```bash
 npm test
-npm run typecheck
+bun run typecheck
 ```
 
 Node 22 is used to run TypeScript tests through native type stripping. The source package has no runtime dependencies.

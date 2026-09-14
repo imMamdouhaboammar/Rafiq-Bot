@@ -1,119 +1,60 @@
-# Getting Started
+# Getting started
 
-Get Rafiq running locally in under 5 minutes.
+This guide starts Rafiq from a fresh clone without relying on machine-specific configuration.
 
----
-
-## Prerequisites
-
-- **Node.js ≥ 20** — Vite 6 and React 19 both require it
-- **Bun** (recommended) or npm — Bun is faster for install and dev scripts
-- **A Gemini API key** — get one free at [Google AI Studio](https://aistudio.google.com/)
-
----
-
-## 1. Clone the repository
+## 1. Clone and install
 
 ```bash
-git clone <repo-url>
-cd rafiq
+git clone https://github.com/imMamdouhaboammar/Rafiq-Bot.git
+cd Rafiq-Bot
+bun install --frozen-lockfile
 ```
 
----
-
-## 2. Install dependencies
-
-```bash
-bun install
-```
-
----
-
-## 3. Configure environment
+## 2. Create local configuration
 
 ```bash
 cp .env.example .env.local
 ```
 
-Open `.env.local` and set at minimum:
+For an AI-backed local chat, configure one Google inference path and the app access gate. The simplest inference path is `GEMINI_API_KEY`. The access gate requires both a SHA-256 password digest and an independent session secret.
 
 ```env
-GEMINI_API_KEY=your-key-here
+GEMINI_API_KEY=
+RAFIQ_APP_PASSWORD_HASH=
+RAFIQ_APP_SESSION_SECRET=
 ```
 
-That is the only required value for local development. The password gate accepts any input when `RAFIQ_APP_PASSWORD_HASH` is not set.
+You can generate a local password digest with any SHA-256 utility and generate the session secret with a cryptographically secure random generator. Do not reuse the password digest as the session secret. Do not paste either value into issues, screenshots, or documentation.
 
-> For a full list of all supported variables, see [`docs/configuration/env-reference.md`](../configuration/env-reference.md).
+For Vertex AI, Redis, AgentRouter, search, LangCache, and locale variables, use the [environment reference](../configuration/env-reference.md).
 
----
-
-## 4. Start the dev server
+## 3. Start the development server
 
 ```bash
 bun run dev
 ```
 
-This starts Express 5 with Vite in middleware mode on **http://localhost:3000**. Both the SPA and the `/api/*` backend run on the same port.
+Open `http://localhost:3000` and enter the local password whose SHA-256 digest you configured. Development and production both enforce the password configuration; there is no documented bypass mode.
 
----
+## 4. Create a companion
 
-## 5. Open the app
+Create a new chat from the interface, choose or author a persona, and start a conversation. Egyptian Arabic presets remain available, but the shared runtime defaults to `en-US`, `UTC`, and LTR unless another locale is selected.
 
-Navigate to **http://localhost:3000**.
-
-On first load you will see the **PasswordGate** screen (`components/PasswordGate.tsx`). In development without `RAFIQ_APP_PASSWORD_HASH` set, any password is accepted.
-
----
-
-## 6. Create your first companion
-
-1. Click **New Chat** in the sidebar.
-2. Choose a soul template (Amira is the default Egyptian companion).
-3. Select a dialect, relationship type, and name.
-4. Start chatting.
-
----
-
-## Optional: Set up the password gate for production use
-
-Generate a SHA-256 hash of your chosen password:
+## 5. Verify the checkout
 
 ```bash
-echo -n "mypassword" | shasum -a 256
-# a94a8fe5ccb19ba61c4c0873d391e987982fbbd3  -
+bun run typecheck
+bun run test:p0
+bun test
+bun run security:scan
+bun run build
 ```
-
-Add to `.env.local`:
-
-```env
-RAFIQ_APP_PASSWORD_HASH=a94a8fe5ccb19ba61c4c0873d391e987982fbbd3
-RAFIQ_APP_SESSION_SECRET=some-long-random-string-at-least-32-chars
-```
-
----
-
-## Optional: Enable vector memory
-
-Requires a Redis connection (Redis Stack locally, or Redis Iris managed):
-
-```env
-RAFIQ_VECTOR_MEMORY_ENABLED=true
-REDIS_URL=redis://localhost:6379
-```
-
----
-
-## Run the test suite
-
-```bash
-npm run test:p0   # fast P0 gate (security + core unit tests)
-npm test          # full suite (110 test files)
-```
-
----
 
 ## Next steps
 
-- [`docs/guides/development.md`](development.md) — project structure and how to add features
-- [`docs/guides/testing.md`](testing.md) — test runner details and test categories
-- [`docs/architecture/overview.md`](../architecture/overview.md) — full architecture reference
+- [Development guide](development.md)
+- [Testing guide](testing.md)
+- [Architecture overview](../architecture/overview.md)
+- [Provider matrix](../providers/README.md)
+- [Localization](../localization/README.md)
+- [Deployment](../deployment/deployment.md)

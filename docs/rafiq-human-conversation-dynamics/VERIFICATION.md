@@ -6,7 +6,7 @@ Date: 2026-09-13
 
 ```bash
 npm test
-npm run typecheck
+bun run typecheck
 ```
 
 ## Results

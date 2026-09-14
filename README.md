@@ -1,151 +1,103 @@
-# Rafiq (رفيق) — Open-Source Human-Like AI Companion Engine
+# Rafiq (رفيق)
 
-[![CI Pipeline](https://github.com/imMamdouhaboammar/Rafiq-Bot/actions/workflows/ci.yml/badge.svg)](https://github.com/imMamdouhaboammar/Rafiq-Bot/actions)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Bun](https://img.shields.io/badge/Bun-%23000000.svg?style=flat&logo=bun&logoColor=white)](https://bun.sh)
-[![React 19](https://img.shields.io/badge/React-19-61DAFB?style=flat&logo=react&logoColor=black)](https://react.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
-[![Vite](https://img.shields.io/badge/Vite-6.2-646CFF?style=flat&logo=vite&logoColor=white)](https://vitejs.dev)
-[![Express](https://img.shields.io/badge/Express-5.0-000000?style=flat&logo=express&logoColor=white)](https://expressjs.com)
+[![CI](https://github.com/imMamdouhaboammar/Rafiq-Bot/actions/workflows/ci.yml/badge.svg)](https://github.com/imMamdouhaboammar/Rafiq-Bot/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-> **Rafiq (رفيق — "companion")** is a production-grade, open-source multimodal AI companion engine engineered specifically for authentic Egyptian Arabic vernacular conversations. It combines a dynamic 11-variable psychological state machine, a customizable "Soul Engine" personality kernel, a WhatsApp export persona synthesizer, and multi-agent skill orchestration into a single-codebase full-stack architecture.
+Rafiq is an open-source, local-first AI companion application built with TypeScript, React, Vite, Express, and Bun. The core combines configurable personas, conversation continuity, memory, tools, media workflows, and WhatsApp-export persona analysis without making one locale or one provider the whole product identity.
 
----
+Egyptian Arabic is the first and most developed reference localization. The runtime now separates locale, timezone, text direction, culture, conversation language, and search region so other localizations can be added without inheriting Egyptian defaults.
 
-## ✨ Highlights & Capabilities
+## What exists today
 
-| Capability | Module & Location | Description |
-|---|---|---|
-| **Streaming Gemini AI** | `services/geminiService.server.ts` → `api/gemini-stream.ts` | Real-time thinking and fast-response SSE streaming |
-| **Soul Engine Kernel** | `services/soul.ts` → `services/soulRegistry.ts` | 5-trait personality axes (`chaos`, `empathy`, `slang`, `intellect`, `positivity`) |
-| **Psychological State Machine** | `services/dynamicEngines.ts` | Dynamic mood decay, intimacy levels, hunger, and emotional ledger |
-| **WhatsApp Persona Cloner** | `services/whatsappImporter.server.ts` → `soulSynthesizer.server.ts` | Parses raw chat logs into living, executable persona definitions |
-| **Multimodal Generation** | `services/visualEngine.ts` → `api/gemini.ts` | Image generation, selfies, profile avatars, studio editing, VEO video |
-| **Group Chat Simulation** | `services/groupEngine.ts` → `hooks/useGroupController.ts` | Orchestrates multi-bot conversations with turn control |
-| **Realtime Tools Router** | `services/tools/*.server.ts` | Web search, URL reader, Cairo timezone, food nutrition |
-| **IndexedDB Authority** | `services/db.ts` | Dexie 4 local state authority with schema versioning v1–v6 |
-| **Multi-Agent Skill Installer** | `install.sh` + `marketplace.json` + `.skills.json` | Compatible with Claude Code, Skills.sh, Cursor, Codex, Gemini CLI |
+- Streaming companion chat with persona and relationship context
+- Browser-local persistence through Dexie and IndexedDB
+- Optional Redis-backed vector memory and semantic cache paths
+- WhatsApp text export parsing and progressive persona analysis
+- Group conversation orchestration and continuity features
+- Image and media workflows routed through the current Google inference stack
+- Realtime time, web search, and URL-reading tools
+- Google Gemini API or Vertex AI as the primary inference path
+- Optional AgentRouter gateway support for recognized model IDs
+- A tested KoboldCpp adapter that is not yet wired into the main chat provider selector
+- Neutral runtime defaults with `ar-EG` preserved as a first-class reference culture
 
----
+See [PRODUCT.md](PRODUCT.md) for product boundaries and [docs/architecture/overview.md](docs/architecture/overview.md) for the runtime map.
 
-## 📐 System Architecture
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    Browser (React 19 SPA)                       │
-│  index.tsx ── App.tsx ── PasswordGate ── WhatsApp Chat UI       │
-│      │                        │                      │          │
-│      ▼                        ▼                      ▼          │
-│  Zustand Store          Dexie IndexedDB         Event Bus       │
-│  (useRafiqStore)        (Local State DB)       (Mitt + RxJS)    │
-└─────────────────────────────────────────────────────────────────┘
-                                │
-                      HTTPS Requests (/api/*)
-                                │
-                                ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    Server Runtime                               │
-│   Development: Express 5 + Vite Middleware (server.ts)          │
-│   Production:  Vercel Serverless Functions (api/*.ts)           │
-│                                                                 │
-│   assertAppSession ──► Dispatch Router                          │
-│                             ├── geminiService.server.ts         │
-│                             ├── soulSynthesizer.server.ts       │
-│                             ├── tools/toolRouter.server.ts      │
-│                             └── progressiveCloneAnalysis.ts     │
-└─────────────────────────────────────────────────────────────────┘
-                                │
-                    External Cloud Providers
-                                ├─ Google Gemini API / Vertex AI
-                                └─ Redis (Optional Vector Memory)
-```
-
----
-
-## 🚀 Quickstart
+## Quick start
 
 ### Prerequisites
 
-- **Node.js ≥ 20** or **Bun** (recommended)
-- A **Gemini API Key** from [Google AI Studio](https://aistudio.google.com/)
-
-### 1. Clone & Install
+Use Bun for the repository workflow. The current lockfile is `bun.lock`. You also need one configured Google inference path: a Gemini API key or Vertex AI credentials.
 
 ```bash
 git clone https://github.com/imMamdouhaboammar/Rafiq-Bot.git
 cd Rafiq-Bot
-bun install
-```
-
-### 2. Configure Environment
-
-```bash
+bun install --frozen-lockfile
 cp .env.example .env.local
 ```
 
-Set your Gemini API key in `.env.local`:
+For local use, configure an AI path plus the app access gate in `.env.local`:
 
 ```env
-GEMINI_API_KEY=your-api-key-here
+GEMINI_API_KEY=
+RAFIQ_APP_PASSWORD_HASH=
+RAFIQ_APP_SESSION_SECRET=
 ```
 
-### 3. Launch Application
+`RAFIQ_APP_PASSWORD_HASH` must be a SHA-256 hex digest. `RAFIQ_APP_SESSION_SECRET` must be an independent value of at least 32 characters. If you use Vertex AI instead of `GEMINI_API_KEY`, follow the [environment reference](docs/configuration/env-reference.md). Never commit `.env.local`.
+
+Start the combined Express and Vite development server:
 
 ```bash
 bun run dev
 ```
 
-Navigate to `http://localhost:3000` in your browser.
+Open `http://localhost:3000`.
 
----
-
-## 🧪 Testing & Code Quality
-
-Rafiq-Bot enforces zero-regression quality through a 110-file test suite run via `tsx`:
+## Verification
 
 ```bash
-npm run typecheck   # TypeScript static verification
-npm run test:p0     # Fast P0 gate (security + core unit tests)
-npm test            # Full test suite
-npm run security:scan # Secret detection scanner
+bun run typecheck
+bun run test:p0
+bun test
+bun run security:scan
+bun run build
 ```
 
----
+The full test command uses Bun test discovery, so new `*.test.ts` files do not need a hardcoded count in documentation.
 
-## 📖 Technical Documentation
+## Providers
 
-| Documentation Guide | Path | Focus Area |
-|---|---|---|
-| **Architecture** | [`docs/architecture/overview.md`](docs/architecture/overview.md) | Layer map, component graph, data flow, subsystems |
-| **Configuration** | [`docs/configuration/env-reference.md`](docs/configuration/env-reference.md) | Complete environment variable specification |
-| **Getting Started** | [`docs/guides/getting-started.md`](docs/guides/getting-started.md) | Setup, initialization, first companion creation |
-| **Development** | [`docs/guides/development.md`](docs/guides/development.md) | Code conventions, adding actions/souls/tools |
-| **Testing** | [`docs/guides/testing.md`](docs/guides/testing.md) | Test runner, assertion categories, P0 suite |
-| **API Reference** | [`docs/api/api-reference.md`](docs/api/api-reference.md) | Endpoints, SSE streaming, RPC actions |
-| **Deployment** | [`docs/deployment/deployment.md`](docs/deployment/deployment.md) | Vercel production deployment & environment setup |
+Provider status is documented from reachable code, not from model names:
 
----
+- [Provider matrix](docs/providers/README.md)
+- [Adding a provider](docs/providers/adding-a-provider.md)
 
-## 🤖 Multi-Agent Distribution & Skill Installation
+Direct consumer-subscription OAuth for ChatGPT, Claude, Gemini, or Grok is not a current Rafiq feature. A model name exposed through AgentRouter is not the same thing as direct authentication with that model vendor.
 
-Rafiq-Bot can be installed as an AI agent skill across host platforms:
+## Localization
 
-```bash
-# Skills.sh Registry
-npx skills add imMamdouhaboammar/Rafiq-Bot
+The global runtime defaults are `en-US`, `UTC`, and LTR. Egyptian Arabic remains a bundled reference path and can explicitly enable Egypt-specific conversational and cultural behavior. The interface still contains Arabic strings, so Rafiq should not yet be described as a fully translated application.
 
-# Universal Shell Installer
-./install.sh
-```
+See [docs/localization/README.md](docs/localization/README.md).
 
----
+## Documentation
 
-## 🤝 Contributing
+- [Documentation index](docs/README.md)
+- [Getting started](docs/guides/getting-started.md)
+- [Development guide](docs/guides/development.md)
+- [Testing guide](docs/guides/testing.md)
+- [Environment reference](docs/configuration/env-reference.md)
+- [Deployment](docs/deployment/deployment.md)
+- [API reference](docs/api/api-reference.md)
+- [Agent Kernel maintainer workflow](docs/guides/agent-kernel.md)
 
-We welcome community contributions! Please read [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`CLAUDE.md`](CLAUDE.md) before submitting a pull request.
+## Contributing and security
 
----
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Use [SUPPORT.md](SUPPORT.md) for support routing and [SECURITY.md](SECURITY.md) for private vulnerability reporting. Community participation is governed by [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
-## 🪪 License
+The project deliberately keeps secrets, service-account files, private chat data, and machine-local Agent Kernel state outside the repository.
 
-This project is licensed under the [MIT License](LICENSE).
+## License
+
+Rafiq is licensed under the [MIT License](LICENSE).
