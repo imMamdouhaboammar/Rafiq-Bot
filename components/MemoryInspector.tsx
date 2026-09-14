@@ -46,7 +46,7 @@ const sensitivityClasses: Record<MemoryRecord['sensitivity'], string> = {
   private: 'bg-rose-50 text-rose-700',
 };
 
-const formatDate = (value: Date): string => new Intl.DateTimeFormat('ar-EG', {
+const formatDate = (value: Date): string => new Intl.DateTimeFormat(undefined, {
   dateStyle: 'medium',
   timeStyle: 'short',
 }).format(new Date(value));

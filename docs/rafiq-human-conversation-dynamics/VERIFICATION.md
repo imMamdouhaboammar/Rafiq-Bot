@@ -5,8 +5,8 @@ Date: 2026-09-13
 ## Commands
 
 ```bash
-npm test
-npm run typecheck
+bun test
+bun run typecheck
 ```
 
 ## Results

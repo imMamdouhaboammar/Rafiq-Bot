@@ -155,21 +155,27 @@ describe("Gehad Natural Communication Patterns Injection", () => {
   });
 
   describe("6. Human Realism Layer Compilation", () => {
-    it("includes WhatsApp empirical rhythm and Egyptian nuances", () => {
-      const instruction = compileHumanRealismInstruction({
-        botName: "Kenzy",
+    it("keeps Egyptian nuance behind the explicit reference-culture flag", () => {
+      const genericInstruction = compileHumanRealismInstruction({
+        botName: "Nova",
         mood: BotMood.PLAYFUL,
         energy: 7,
         emotionalLedger: 20,
         intimacy: 60,
       });
+      expect(genericInstruction).toContain("Conversational texting rhythm");
+      expect(genericInstruction).not.toContain("Egyptian Arabic reference-culture notes");
 
-      expect(instruction).toContain("WhatsApp Empirical Texting Rhythm");
-      expect(instruction).toContain("15-45 characters");
-      expect(instruction).toContain("Pings & Nudges");
-      expect(instruction).toContain("Grounded Empathy");
-      expect(instruction).toContain("Unfiltered Mirror & Banter");
-      expect(instruction).toContain("Emoji Discipline");
+      const egyptianInstruction = compileHumanRealismInstruction({
+        botName: "Kenzy",
+        mood: BotMood.PLAYFUL,
+        energy: 7,
+        emotionalLedger: 20,
+        intimacy: 60,
+        isEgyptianReference: true,
+      });
+      expect(egyptianInstruction).toContain("Egyptian Arabic reference-culture notes");
+      expect(egyptianInstruction).toContain("Egyptian phrasing");
     });
   });
 });

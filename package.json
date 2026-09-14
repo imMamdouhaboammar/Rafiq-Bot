@@ -2,7 +2,7 @@
   "name": "rafiq-bot",
   "private": false,
   "version": "0.0.1",
-  "description": "Rafiq (رفيق) — Open-source human-like multimodal AI companion engine tailored for Egyptian Arabic vernacular, featuring psychological state dynamics, WhatsApp persona cloning, and multi-agent skill orchestration.",
+  "description": "Open-source, local-first AI companion runtime for persistent personas, memory, tools, multimodal workflows, and localizable conversation.",
   "type": "module",
   "author": "Mamdouh Aboammar <mamdouhfces1997@gmail.com>",
   "license": "MIT",
@@ -14,41 +14,38 @@
   "bugs": {
     "url": "https://github.com/imMamdouhaboammar/Rafiq-Bot/issues"
   },
-  "bin": {
-    "rafiq-bot": "./bin/cli.js"
-  },
   "keywords": [
     "ai-companion",
-    "egyptian-arabic",
-    "multimodal-ai",
+    "typescript",
+    "react",
     "gemini-api",
-    "react19",
-    "express",
-    "pwa",
-    "agent-skill",
-    "skills-sh",
-    "claude-code"
+    "vertex-ai",
+    "local-first",
+    "localization",
+    "egyptian-arabic",
+    "whatsapp-import",
+    "multimodal-ai"
   ],
   "scripts": {
     "dev": "tsx server.ts",
     "test:security": "node scripts/security/secret-detectors.test.mjs && node scripts/security/scan-secrets.integration.test.mjs",
-    "test:p0": "npm run test:security && tsx tests/boundedLru.test.ts && tsx tests/boundedAsyncQueue.test.ts && tsx tests/asyncGenerationGuard.test.ts && tsx tests/chatBubbleComparator.test.ts && tsx tests/storyNavigation.test.ts && tsx tests/rafiqV6Contracts.test.ts && tsx tests/dbV6Migration.test.ts && tsx tests/memoryPolicy.test.ts && tsx tests/storySignals.test.ts && tsx tests/socialAgencyPolicy.test.ts && tsx tests/capabilityHealth.test.ts && tsx tests/webSearchHonesty.test.ts && tsx tests/urlSafety.test.ts && tsx tests/appAuthConfiguration.test.ts && tsx tests/googleClientConfiguration.test.ts && tsx tests/geminiSafetySettings.test.ts && tsx tests/localVectorMemory.test.ts && tsx tests/sharedMemoriesPool.test.ts && tsx tests/vectorMemoryLegacyCleanup.test.ts && tsx tests/agentRouter.test.ts",
-    "test": "npm run test:p0 && tsx tests/slowBurnStoryEngine.test.ts && tsx tests/mediaOptimizer.test.ts && tsx tests/conversationRouterStory.test.ts && tsx tests/roleplayEngine.test.ts && tsx tests/lorebookEngine.test.ts && tsx tests/reflectionEngine.test.ts && tsx tests/socialHeartbeat.test.ts && tsx tests/continuityCoordinator.test.ts && tsx tests/companionContinuity.test.ts && tsx tests/continuitySessionPersistence.test.ts && tsx tests/reflectionRpcReachability.test.ts && tsx tests/continuityPrompt.test.ts && tsx tests/continuityChatRuntimeReachability.test.ts && tsx tests/koboldInferenceProvider.test.ts && tsx tests/sseStreamParser.test.ts && tsx tests/streamCancellationReachability.test.ts && tsx tests/activeOpfsAttachmentReachability.test.ts && tsx tests/composerAttachmentControlsReachability.test.ts && tsx tests/messageAttachmentLifecycle.test.ts && tsx tests/transferV2PanelReachability.test.ts && tsx tests/pagedMessageListReachability.test.ts && tsx tests/lifeStoryForm.test.ts && tsx tests/humanIdTimelineReachability.test.ts && tsx tests/memoryInspectorReachability.test.ts && tsx tests/botStoryPanelReachability.test.ts && tsx tests/socialAgencySettingsReachability.test.ts && tsx tests/appDialogLifecycle.test.ts && tsx tests/presetRepliesDockReachability.test.ts && tsx tests/responsiveShellReachability.test.ts && tsx tests/cleanPersona.test.ts && tsx tests/whatsappCloneParser.test.ts && tsx tests/soulCloneAnalysis.test.ts && tsx tests/progressiveCloneAnalysis.test.ts && tsx tests/progressiveCloneJob.test.ts && tsx tests/progressiveCloneUiReachability.test.ts && tsx tests/cloneRouteParityAndProgress.test.ts && tsx tests/clonePersonaRuntime.test.ts && tsx tests/clonePersistence.test.ts && tsx tests/cloneMemoryReplacement.test.ts && tsx tests/livingPersonaCore.test.ts && tsx tests/personalityEvolution.test.ts && tsx tests/groupConversation.test.ts && tsx tests/groupAttachmentReachability.test.ts && tsx tests/humanRealism.test.ts && tsx tests/avatarPrompt.test.ts && tsx tests/chatStoreIsolation.test.ts && tsx tests/dynamicMood.test.ts && tsx tests/messageBurst.test.ts && tsx tests/fileProcessor.test.ts && tsx tests/imageRequestRouter.test.ts && tsx tests/realtimeTools.test.ts && tsx tests/autonomousEvolution.test.ts && tsx tests/imagePromptPolicy.test.ts",
+    "test:p0": "bun run test:security && bun run test:oss-contracts && tsx tests/boundedLru.test.ts && tsx tests/boundedAsyncQueue.test.ts && tsx tests/asyncGenerationGuard.test.ts && tsx tests/chatBubbleComparator.test.ts && tsx tests/storyNavigation.test.ts && tsx tests/rafiqV6Contracts.test.ts && tsx tests/dbV6Migration.test.ts && tsx tests/memoryPolicy.test.ts && tsx tests/storySignals.test.ts && tsx tests/socialAgencyPolicy.test.ts && tsx tests/capabilityHealth.test.ts && tsx tests/webSearchHonesty.test.ts && tsx tests/urlSafety.test.ts && tsx tests/appAuthConfiguration.test.ts && tsx tests/googleClientConfiguration.test.ts && tsx tests/geminiSafetySettings.test.ts && tsx tests/localVectorMemory.test.ts && tsx tests/sharedMemoriesPool.test.ts && tsx tests/vectorMemoryLegacyCleanup.test.ts && tsx tests/agentRouter.test.ts",
+    "test": "bun test",
     "typecheck": "tsc --noEmit",
     "security:tracked": "node scripts/security/check-tracked-sensitive-files.mjs",
     "security:secrets": "node scripts/security/scan-secrets.mjs",
-    "security:scan": "npm run security:tracked && npm run security:secrets",
+    "security:scan": "bun run security:tracked && bun run security:secrets && bun run security:dependencies",
     "build": "vite build",
-    "start": "node server.ts",
-    "preview": "vite preview"
+    "start": "tsx server.ts",
+    "preview": "vite preview",
+    "test:oss-contracts": "tsx tests/envContract.test.ts && tsx tests/agentDocsContract.test.ts && tsx tests/localizationRuntime.test.ts && tsx tests/localizationUiContract.test.ts && tsx tests/ossDocumentationContract.test.ts && tsx tests/ossVisualAssetsContract.test.ts && tsx tests/ossDeliveryContract.test.ts",
+    "security:dependencies": "bun audit --audit-level=high"
   },
   "dependencies": {
-    "@ai-sdk/google": "1.1.11",
     "@google/genai": "^1.30.0",
     "@redis-ai/langcache": "^0.11.1",
     "@redis-iris/agent-memory": "^0.0.5",
     "@types/express": "^5.0.6",
-    "ai": "4.1.45",
     "dexie": "4.0.1",
     "express": "^5.2.1",
     "framer-motion": "^11.0.0",
@@ -66,9 +63,9 @@
   "devDependencies": {
     "@types/bun": "^1.3.14",
     "@types/node": "^22.14.0",
-    "@vercel/node": "^5.5.0",
     "@vitejs/plugin-react": "^5.0.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
-  }
+  },
+  "packageManager": "bun@1.4.2"
 }

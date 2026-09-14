@@ -13,4 +13,4 @@ cp README.md "${TARGET_DIR}/SKILL.md" 2>/dev/null || true
 cp package.json "${TARGET_DIR}/" 2>/dev/null || true
 
 echo "✓ Installed Rafiq-Bot skill to ${TARGET_DIR}"
-echo "✓ Universal install complete. Run 'npx rafiq-bot dev' or 'bun run dev' to launch."
+echo "✓ Documentation skill install complete. Run the application from a Rafiq-Bot repository checkout with 'bun run dev'."

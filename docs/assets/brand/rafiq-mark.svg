@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="rafiq-title rafiq-desc">
+  <title id="rafiq-title">Rafiq open-source mark</title>
+  <desc id="rafiq-desc">A simple monoline companion face inside an open conversation bubble.</desc>
+  <g fill="none" stroke="#171717" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M15 13.5h27c7.2 0 13 5.8 13 13v9c0 7.2-5.8 13-13 13H29l-11.5 8v-8H15c-7.2 0-13-5.8-13-13v-9c0-7.2 5.8-13 13-13Z"/>
+    <path d="M22 27.5v8.5"/>
+    <path d="M22 27.5h6.5c3.3 0 5.5 1.8 5.5 4.4 0 2.6-2.2 4.1-5.5 4.1H22"/>
+    <path d="M29 36l6 7"/>
+    <path d="M41 28.5h.01"/>
+    <path d="M41 39.5c2.7-1 4.6-3.1 5.5-5.6"/>
+  </g>
+</svg>

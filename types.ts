@@ -333,6 +333,11 @@ export const BotSettingsSchema = z.object({
   thinkingLevel: z.enum(['low', 'medium', 'high']).default('low').optional(),
   boostRafiq: z.boolean().default(false).optional(),
   attachmentStyle: z.enum(['secure', 'anxious', 'avoidant']).default('secure').optional(),
+  locale: z.string().trim().min(2).optional(),
+  timezone: z.string().trim().min(1).optional(),
+  direction: z.enum(['ltr', 'rtl']).optional(),
+  conversationLanguage: z.string().trim().min(2).optional(),
+  culture: z.string().trim().min(1).optional(),
   
   // Soul Engine Fields
   soulId: z.string().default('amira_default'), 

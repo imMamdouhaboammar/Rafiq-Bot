@@ -3,21 +3,21 @@
   "sdk_package": "@google/genai",
   "environment_variables": {
     "gemini_api_mode": {
-      "GEMINI_API_KEY": "YOUR_GEMINI_API_KEY"
+      "GEMINI_API_KEY": ""
     },
     "vertex_ai_mode": {
-      "GOOGLE_CLOUD_PROJECT": "YOUR_GOOGLE_CLOUD_PROJECT_ID",
+      "GOOGLE_CLOUD_PROJECT": "",
       "GOOGLE_CLOUD_LOCATION": "global",
-      "GOOGLE_APPLICATION_CREDENTIALS": "/path/to/service-account.json",
-      "GOOGLE_SERVICE_ACCOUNT_JSON": "YOUR_RAW_SERVICE_ACCOUNT_JSON_STRING",
-      "GOOGLE_SERVICE_ACCOUNT_JSON_BASE64": "YOUR_BASE64_ENCODED_SERVICE_ACCOUNT_JSON"
+      "GOOGLE_APPLICATION_CREDENTIALS": "",
+      "GOOGLE_SERVICE_ACCOUNT_JSON": "",
+      "GOOGLE_SERVICE_ACCOUNT_JSON_BASE64": ""
     },
     "web_search": {
-      "RAFIQ_WEB_SEARCH_PROVIDER": "google_custom_search",
-      "RAFIQ_WEB_SEARCH_API_KEY": "YOUR_WEB_SEARCH_API_KEY",
-      "RAFIQ_WEB_SEARCH_ENGINE_ID": "YOUR_SEARCH_ENGINE_ID",
-      "RAFIQ_WEB_SEARCH_LOCALE": "ar-EG",
-      "RAFIQ_WEB_SEARCH_REGION": "eg"
+      "RAFIQ_WEB_SEARCH_PROVIDER": "",
+      "RAFIQ_WEB_SEARCH_API_KEY": "",
+      "RAFIQ_WEB_SEARCH_ENGINE_ID": "",
+      "RAFIQ_WEB_SEARCH_LOCALE": "",
+      "RAFIQ_WEB_SEARCH_REGION": ""
     },
     "vector_memory": {
       "RAFIQ_VECTOR_MEMORY_ENABLED": "false",
@@ -33,9 +33,9 @@
     }
   },
   "models": {
-    "default_chat": "gemini-3.6-flash",
-    "fast_chat": "gemini-3.6-flash",
-    "latest_chat": "gemini-3.6-flash",
+    "default_chat": "gemini-3.1-pro-preview",
+    "fast_chat": "gemini-3.8-flash",
+    "latest_chat": "gemini-3.8-flash",
     "default_embedding": "gemini-embedding-001",
     "image_generation": "gemini-3.1-flash-image"
   },

@@ -1,12 +1,14 @@
 import { GetCurrentTimeArgs, CurrentTimeResult } from "./toolTypes.js";
+import { resolveRuntimeLocale } from "../runtimeLocale.js";
 
 /**
  * Executes the Current Time tool server-side.
  * Returns both structured and human-readable representation of time/date.
  */
 export const getCurrentTime = (args: GetCurrentTimeArgs = {}): CurrentTimeResult => {
-  const tz = args.timezone || process.env.RAFIQ_DEFAULT_TIMEZONE || "Africa/Cairo";
-  const loc = args.locale || process.env.RAFIQ_DEFAULT_LOCALE || "ar-EG";
+  const runtimeLocale = resolveRuntimeLocale({ timezone: args.timezone, locale: args.locale });
+  const tz = runtimeLocale.timezone;
+  const loc = runtimeLocale.locale;
 
   const now = new Date();
 

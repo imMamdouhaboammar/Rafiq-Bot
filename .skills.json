@@ -1,11 +1,11 @@
 {
   "name": "rafiq-bot",
-  "description": "Human-like multimodal AI companion engine tailored for Egyptian Arabic vernacular with psychological state machine and persona synthesizer.",
+  "description": "Open-source AI companion runtime with configurable personas, memory, tools, provider extension seams, and Egyptian Arabic as a reference localization.",
   "repository": "https://github.com/imMamdouhaboammar/Rafiq-Bot",
   "skills": [
     {
       "name": "rafiq-bot",
-      "description": "Human-like multimodal AI companion engine tailored for Egyptian Arabic vernacular with psychological state machine and persona synthesizer.",
+      "description": "Open-source AI companion runtime with configurable personas, memory, tools, provider extension seams, and Egyptian Arabic as a reference localization.",
       "path": "README.md"
     }
   ]

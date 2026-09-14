@@ -49,3 +49,11 @@ client_secret*.json
 .mavis/
 skills-lock.json
 .unslop/
+
+# >>> agent-kernel managed entries >>>
+.agent-kernel/state/
+.agent-kernel/cache/
+.agent-kernel/tmp/
+.agent-kernel/session/
+.agent-kernel/credentials/
+# <<< agent-kernel managed entries <<<

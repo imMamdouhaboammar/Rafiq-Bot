@@ -9,6 +9,7 @@ import { indexVectorMemoryRecords } from './redisVectorMemory.server.js';
 import { executeWebSearch } from './tools/webSearchTool.server.js';
 import { mergeIntoGraph } from './graphMemory.server.js';
 import { BoundedAsyncQueue } from './boundedAsyncQueue.js';
+import { resolveRuntimeLocale } from './runtimeLocale.js';
 
 const MAX_PENDING_EVOLUTION_JOBS = 20;
 const MAX_DEBOUNCE_TIMERS = 100;
@@ -188,12 +189,20 @@ export const runSelfEvolutionStep = async (chatId: string): Promise<void> => {
     .join('\n')
     .slice(0, 12_000);
   const ai = createGoogleGenAIClient();
+  const runtimeLocale = resolveRuntimeLocale({
+    locale: session.settings.locale,
+    timezone: session.settings.timezone,
+    direction: session.settings.direction,
+    culture: session.settings.culture,
+    conversationLanguage: session.settings.conversationLanguage,
+  });
   const reflectionPrompt = `
 Analyze this recent conversation for gradual background persona learning.
 Return only structured JSON matching the supplied schema.
 Do not invent facts. Treat corrections as stronger evidence than casual statements.
 Do not infer hunger, illness, exhaustion, financial distress, death, jealousy, dependency, or crises unless the user explicitly stated them as biography or roleplay.
 Keep personality changes slow and evidence-based.
+Keep free-text analysis fields in the conversation language indicated by ${runtimeLocale.conversationLanguage}; do not impose a different regional dialect.
 
 Transcript:
 ${transcriptText}
@@ -224,7 +233,7 @@ ${transcriptText}
   if (analysis.mistakesToAvoid.length > 0) {
     await indexVectorMemoryRecords(chatId, analysis.mistakesToAvoid.map(mistake => ({
       role: MessageRole.MODEL,
-      text: `تجنب هذا الخطأ: ${mistake}`,
+      text: `[AVOID] ${mistake}`,
       category: 'gotcha',
       timestamp: new Date(),
       salience: 0.9,
@@ -293,7 +302,7 @@ ${transcriptText}
       contents: [{
         role: 'user',
         parts: [{
-          text: `Summarize only the supplied search results in one or two factual Egyptian Arabic sentences. Do not add unsupported claims.\nQuery: ${query}\n${resultsSnippet}`,
+          text: `Summarize only the supplied search results in one or two factual sentences. Use the query's language and the configured conversation language (${runtimeLocale.conversationLanguage}) as guidance. Do not add unsupported claims.\nQuery: ${query}\n${resultsSnippet}`,
         }],
       }],
       config: { temperature: 0.2, safetySettings: GEMINI_SAFETY_OFF_SETTINGS },
@@ -303,7 +312,7 @@ ${transcriptText}
 
     await indexVectorMemoryRecords(chatId, [{
       role: MessageRole.MODEL,
-      text: `معلومة موثقة عن ${query}: ${summary}`,
+      text: `[VERIFIED] ${query}: ${summary}`,
       category: 'fact',
       timestamp: new Date(),
       salience: 0.7,

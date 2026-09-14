@@ -1,0 +1,36 @@
+version = 1
+project_id = "rafiq-bot"
+display_name = "rafiq-bot"
+default_environment = "development"
+
+[identity]
+repository_uuid = "akp_01J_29944D1979E9E160"
+expected_git_remote = "github.com/imMamdouhaboammar/Rafiq-Bot"
+root_marker = "package.json"
+
+[kernel]
+connection = "global"
+minimum_version = "1.20.0"
+auto_session = true
+auto_context = true
+auto_graph_refresh = true
+auto_skill_routing = true
+auto_goal_compilation = true
+auto_subagent_routing = true
+
+[hooks]
+session_start = true
+before_tool = true
+after_tool = true
+session_end = true
+
+[adapters]
+terminal = true
+mcp = true
+ide_instructions = true
+
+[security]
+allow_secret_disclosure = false
+allow_unrestricted_shell = false
+require_repository_verification = true
+require_context_verification = true

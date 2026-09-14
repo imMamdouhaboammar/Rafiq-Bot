@@ -21,6 +21,7 @@ import {
 } from './conversationShapedPersona.js';
 import { compileBackgroundPersona } from './backgroundPersonaCompiler.js';
 import { compileCloneRuntimeContext } from './cloneRuntimeContext.js';
+import { buildConversationLocaleInstruction, resolveRuntimeLocale } from './runtimeLocale.js';
 
 const normalizeMood = (mood?: BotMood): BotMood => (
   mood === BotMood.HANGRY || mood === BotMood.BROKE
@@ -64,6 +65,14 @@ export const getSystemInstruction = (
   userMessage?: string,
   dynamicsInstruction?: string,
 ): string => {
+  const runtimeLocale = resolveRuntimeLocale({
+    locale: settings.locale,
+    timezone: settings.timezone,
+    direction: settings.direction,
+    conversationLanguage: settings.conversationLanguage,
+    culture: settings.culture,
+  });
+  const localeInstruction = buildConversationLocaleInstruction(runtimeLocale);
   const mood = normalizeMood(psychology?.mood);
   const energy = psychology?.energyLevel ?? 7;
   const intimacy = psychology?.intimacyLevel ?? 5;
@@ -91,6 +100,8 @@ export const getSystemInstruction = (
     breakpointState: psychology?.breakpointState || 'none',
     imaginaryWorld: psychology?.imaginaryWorld,
     dynamicsInstruction,
+    localeInstruction,
+    isEgyptianReference: runtimeLocale.isEgyptianReference,
   });
   const cloneContext = compileCloneRuntimeContext(settings.cloneProfile, userMessage);
 
@@ -110,9 +121,14 @@ ${background.stableInstruction}
 ${background.moodInstruction}
 ${background.socialAgencyInstruction}
 
+### LOCALE AND CONVERSATION
+- Locale: ${runtimeLocale.locale}
+- Timezone: ${runtimeLocale.timezone}
+- Direction: ${runtimeLocale.direction}
+- ${localeInstruction}
+
 ### CONVERSATION STYLE PRESET: Grounded
 - Answer the actual message first.
-- Use natural Egyptian Arabic when the conversation uses it, without forcing slang.
 - Keep emotional variation proportional to a clear conversational trigger.
 - Examples and observed phrases are private training signals for rhythm and intent only.
 - Learn timing and structure; do not paste example phrases as canned replies.
@@ -146,6 +162,7 @@ ${compileDreamscapeInstruction(
   mood,
   psychology?.breakpointState,
   energy,
+  localeInstruction,
 )}
 
 ### RESPONSE SAFETY AND HONESTY
@@ -163,10 +180,10 @@ Extract observed patterns only:
 1. formality, rhythm, code-switching, emoji density, sentence length, and punctuation
 2. WhatsApp conversational rhythm: micro-bubble frequency, typical brevity (~3-5 words per bubble), and pinging/nudge habits
 3. repeated conversational preferences and boundaries
-4. how the person handles disagreement, reassurance (grounded Egyptian empathy vs advice), jokes, teasing, and clarification
+4. how the person handles disagreement, reassurance (grounded empathy vs advice), jokes, teasing, and clarification
 5. corrections that should override earlier assumptions
 Do not preserve exact phrases as reusable canned replies. Do not infer physical conditions, private biography, or events that are not explicit.
-Return a concise observed-style profile in Egyptian Arabic.
+Return a concise observed-style profile in the chat's dominant language and dialect.
 
 ${text.slice(0, 30000)}
 `.trim();
@@ -184,6 +201,14 @@ export const getBudgetedSystemInstruction = (
   skillInstruction?: string,
   dynamicsInstruction?: string,
 ): string => {
+  const runtimeLocale = resolveRuntimeLocale({
+    locale: settings.locale,
+    timezone: settings.timezone,
+    direction: settings.direction,
+    conversationLanguage: settings.conversationLanguage,
+    culture: settings.culture,
+  });
+  const localeInstruction = buildConversationLocaleInstruction(runtimeLocale);
   const mood = normalizeMood(psychology?.mood);
   const adaptiveInstruction = compileAdaptivePersonalityInstruction(
     getEffectiveAdaptivePersonality(settings.adaptivePersonality),
@@ -220,6 +245,12 @@ ${background.stableInstruction}
 ${background.moodInstruction}
 ${background.socialAgencyInstruction}
 
+### LOCALE AND CONVERSATION
+- Locale: ${runtimeLocale.locale}
+- Timezone: ${runtimeLocale.timezone}
+- Direction: ${runtimeLocale.direction}
+- ${localeInstruction}
+
 ### CONVERSATION STYLE PRESET: Grounded
 ${compiled.voiceRules.map(rule => `- ${rule}`).join('\n')}
 - Treat examples as private training signals for rhythm and intent only.
@@ -244,6 +275,7 @@ ${compileDreamscapeInstruction(
   mood,
   psychology?.breakpointState,
   psychology?.energyLevel ?? 7,
+  localeInstruction,
 )}
 
 ### FINAL CHECK

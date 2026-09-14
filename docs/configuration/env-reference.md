@@ -1,115 +1,108 @@
-# Environment Variable Reference
+# Environment configuration
 
-All environment variables are loaded by `services/env.server.ts` at server startup. It reads `.env` first, then `.env.local` (which takes precedence). Neither file is committed to the repository.
-
-Copy `.env.example` to `.env.local` to get started:
+`.env.example` is the public configuration schema for Rafiq. Copy it to `.env.local` for local development and replace only the values you need. `services/env.server.ts` loads `.env` first and `.env.local` second, so local values win.
 
 ```bash
 cp .env.example .env.local
 ```
 
----
+Never commit `.env`, `.env.local`, service-account files, tokens, or private keys. Production deployments should provide the same variable names through the hosting platform secret store.
 
-## Server runtime
+## Minimum local configuration
 
-| Variable | Type | Default | Required | Effect |
-|----------|------|---------|----------|--------|
-| `NODE_ENV` | `development \| production` | `development` | No | Controls Vite middleware vs static file serving in `server.ts` |
-| `PORT` | number | `3000` | No | Port the Express dev server listens on |
+Rafiq can boot without every optional integration. For an AI-backed chat flow, configure one Google inference path and the app access gate appropriate to your environment.
 
----
+| Variable | Classification | Default / safe example | Purpose |
+| --- | --- | --- | --- |
+| `NODE_ENV` | runtime | `development` | Development or production runtime mode |
+| `PORT` | runtime | `3000` | Express server port |
+| `RAFIQ_APP_PASSWORD_HASH` | production security | empty | SHA-256 digest used by the app-wide password gate |
+| `RAFIQ_APP_SESSION_SECRET` | production security | empty | HMAC secret for the app session cookie; use a strong independent value |
+| `RAFIQ_DEFAULT_LOCALE` | runtime locale | `en-US` | Default locale when no explicit runtime locale is supplied |
+| `RAFIQ_DEFAULT_TIMEZONE` | runtime timezone | `UTC` | Default timezone when no explicit runtime timezone is supplied |
 
-## App password gate
+Egyptian Arabic remains a bundled `ar-EG` reference preset, but the public example uses neutral global defaults.
 
-These variables gate access to the entire application. Without them set, the password gate in `components/PasswordGate.tsx` accepts any input in development mode.
+## Google Gemini and Vertex AI
 
-| Variable | Type | Default | Required | Effect |
-|----------|------|---------|----------|--------|
-| `RAFIQ_APP_PASSWORD_HASH` | string (SHA-256 hex) | — | Production | SHA-256 hex digest of the app password. Compared by `services/appAuth.server.ts: verifyAppPassword()` |
-| `RAFIQ_APP_SESSION_SECRET` | string (≥32 chars) | — | Production | HMAC signing key for the session cookie. Used by `createAppSessionCookie()` and `hasValidAppSession()` |
+Choose either an API-key flow or an explicit Vertex AI credential flow.
 
-**How to generate `RAFIQ_APP_PASSWORD_HASH`:**
+| Variable | Classification | Default / safe example | Purpose |
+| --- | --- | --- | --- |
+| `GEMINI_API_KEY` | provider secret | empty | Google AI Studio API key |
+| `GOOGLE_CLOUD_PROJECT` | provider config | empty | Vertex AI Google Cloud project ID |
+| `GOOGLE_CLOUD_LOCATION` | provider config | `global` | Vertex AI location |
+| `GOOGLE_APPLICATION_CREDENTIALS` | provider secret path | empty | Path to a local service-account JSON file |
+| `GOOGLE_SERVICE_ACCOUNT_JSON` | provider secret | empty | Inline service-account JSON alternative |
+| `GOOGLE_SERVICE_ACCOUNT_JSON_BASE64` | provider secret | empty | Base64-encoded service-account JSON alternative |
+| `RAFIQ_MODEL_FAST` | advanced model routing | empty | Override fast-chat model |
+| `RAFIQ_MODEL_NORMAL` | advanced model routing | empty | Override normal/tool model |
+| `RAFIQ_MODEL_DEEP` | advanced model routing | empty | Override deep/memory-heavy model |
+| `RAFIQ_HEALTHCHECK_MODEL` | advanced health probe | empty | Model used by the capability health endpoint |
 
-```bash
-echo -n "yourpassword" | shasum -a 256
-# outputs: <hex>  -
-# copy only the hex part
-```
+Do not commit a service-account file. Hosting environments should use their secret management facilities.
 
----
+## AgentRouter
 
-## Gemini API / Vertex AI
+AgentRouter is an optional inference path present in the current runtime. The two token names are accepted aliases.
 
-Rafiq supports two AI backends. Set exactly one group.
+| Variable | Classification | Default / safe example | Purpose |
+| --- | --- | --- | --- |
+| `AGENT_ROUTER_TOKEN` | provider secret | empty | Preferred AgentRouter token name |
+| `AGENTROUTER_API_KEY` | provider secret alias | empty | Legacy/alternate token name |
+| `AGENTROUTER_BASE_URL` | provider config | `https://agentrouter.org/v1` | AgentRouter-compatible API base URL |
+| `AGENTROUTER_MODEL` | provider config | `gpt-5.6-sol` | Default AgentRouter model identifier |
 
-### Option A — Gemini API (Google AI Studio)
-
-| Variable | Type | Default | Required | Effect |
-|----------|------|---------|----------|--------|
-| `GEMINI_API_KEY` | string | — | Yes (if using Gemini API) | Passed to `@google/genai` in `services/geminiService.server.ts` |
-
-### Option B — Vertex AI (GCP service account)
-
-| Variable | Type | Default | Required | Effect |
-|----------|------|---------|----------|--------|
-| `GOOGLE_CLOUD_PROJECT` | string | — | Yes (if using Vertex) | GCP project ID |
-| `GOOGLE_CLOUD_LOCATION` | string | `global` | No | GCP region |
-| `GOOGLE_APPLICATION_CREDENTIALS` | file path | — | Yes (if using Vertex, file-based) | Path to service account JSON. `server.ts` auto-detects `service-account.json` in the project root if this is unset |
-| `GOOGLE_SERVICE_ACCOUNT_JSON` | JSON string | — | Yes (if using Vertex, inline) | Full service account JSON as a string (alternative to file path) |
-| `GOOGLE_SERVICE_ACCOUNT_JSON_BASE64` | base64 string | — | Yes (if using Vertex, base64) | Base64-encoded service account JSON (useful for Vercel env vars) |
-
----
+The presence of this path does not imply every model exposed by an AgentRouter deployment is supported by Rafiq. Provider documentation describes the reachable contracts separately.
 
 ## Web search
 
-Used by `services/tools/webSearchTool.server.ts` (the `web_search` Gemini tool). Leave empty to expose an honest "unavailable" state — the tool will report it cannot search rather than failing silently.
+Search is optional. When provider configuration is incomplete, Rafiq reports search as unavailable instead of fabricating results.
 
-| Variable | Type | Default | Required | Effect |
-|----------|------|---------|----------|--------|
-| `RAFIQ_WEB_SEARCH_PROVIDER` | string | — | No | Search provider identifier |
-| `RAFIQ_WEB_SEARCH_API_KEY` | string | — | No | API key for the search provider |
-| `RAFIQ_WEB_SEARCH_ENGINE_ID` | string | — | No | Search engine ID |
-| `RAFIQ_WEB_SEARCH_LOCALE` | string | `ar-EG` | No | Locale for search results |
-| `RAFIQ_WEB_SEARCH_REGION` | string | `eg` | No | Region for search results |
+| Variable | Classification | Default / safe example | Purpose |
+| --- | --- | --- | --- |
+| `RAFIQ_WEB_SEARCH_PROVIDER` | optional feature | empty | Search provider identifier such as an implementation supported by `webSearchTool.server.ts` |
+| `RAFIQ_WEB_SEARCH_API_KEY` | optional secret | empty | Search-provider API key |
+| `RAFIQ_WEB_SEARCH_ENGINE_ID` | optional config | empty | Engine ID required by providers such as Google Custom Search |
+| `RAFIQ_WEB_SEARCH_LOCALE` | optional locale | blank; derives from runtime locale | Search locale when the caller does not specify one |
+| `RAFIQ_WEB_SEARCH_REGION` | optional region | blank; derives from locale region | Search region when the caller does not specify one |
 
----
+## Vector memory
 
-## Vector memory (Redis)
+Vector memory is optional and disabled by default. The runtime can use Redis Stack, Redis Agent Memory, or its existing local fallback depending on configuration.
 
-Optional. Disabled by default. When enabled, `services/redisVectorMemory.server.ts` uses Redis Iris or self-hosted Redis Stack for semantic memory retrieval across conversations.
+| Variable | Classification | Default / safe example | Purpose |
+| --- | --- | --- | --- |
+| `RAFIQ_VECTOR_MEMORY_ENABLED` | optional feature | `false` | Master vector-memory switch |
+| `REDIS_URL` | optional secret/config | empty | Redis connection URL |
+| `AGENT_MEMORY_API_KEY` | optional secret alias | empty | Redis Agent Memory API key alias |
+| `REDIS_AGENT_MEMORY_API_KEY` | optional secret | empty | Redis Agent Memory API key |
+| `REDIS_AGENT_MEMORY_SERVER_URL` | optional config | empty | Redis Agent Memory server URL |
+| `REDIS_AGENT_MEMORY_STORE_ID` | optional config | empty | Redis Agent Memory store ID |
+| `REDIS_AGENT_MEMORY_NAMESPACE` | optional config | `rafiq` | Agent Memory namespace |
+| `RAFIQ_REDIS_VECTOR_INDEX` | advanced | `idx:rafiq:mem:v1` | RediSearch vector index name |
+| `RAFIQ_REDIS_VECTOR_PREFIX` | advanced | `rafiq:mem:` | Redis key prefix |
+| `RAFIQ_EMBEDDING_MODEL` | advanced | `gemini-embedding-001` | Embedding model |
+| `RAFIQ_EMBEDDING_DIM` | advanced | `768` | Embedding dimensions |
+| `RAFIQ_VECTOR_MAX_TEXT_CHARS` | advanced | `1200` | Maximum text length sent for one embedding |
+| `RAFIQ_VECTOR_RETRIEVAL_LIMIT` | advanced | `5` | Maximum vector results per query |
+| `RAFIQ_VECTOR_MAX_DISTANCE` | advanced | `0.62` | Maximum accepted cosine distance |
 
-| Variable | Type | Default | Required | Effect |
-|----------|------|---------|----------|--------|
-| `RAFIQ_VECTOR_MEMORY_ENABLED` | `true \| false` | `false` | No | Master switch. When `false`, all other vector memory vars are ignored |
-| `REDIS_URL` | Redis URL | — | No | Connection string for self-hosted Redis Stack (e.g. `redis://localhost:6379`) |
-| `REDIS_AGENT_MEMORY_API_KEY` | string | — | No | API key for Redis Iris managed service |
-| `REDIS_AGENT_MEMORY_SERVER_URL` | URL | — | No | Redis Iris server URL |
-| `REDIS_AGENT_MEMORY_STORE_ID` | string | — | No | Store ID within Redis Iris |
-| `REDIS_AGENT_MEMORY_NAMESPACE` | string | `rafiq` | No | Key namespace prefix |
-| `RAFIQ_REDIS_VECTOR_INDEX` | string | `idx:rafiq:mem:v1` | No | RediSearch vector index name |
-| `RAFIQ_REDIS_VECTOR_PREFIX` | string | `rafiq:mem:` | No | Key prefix for vector records |
-| `RAFIQ_EMBEDDING_MODEL` | string | `gemini-embedding-001` | No | Gemini embedding model used to vectorize memory text |
-| `RAFIQ_EMBEDDING_DIM` | number | `768` | No | Embedding dimensions (must match the model) |
-| `RAFIQ_VECTOR_MAX_TEXT_CHARS` | number | `1200` | No | Maximum characters per memory text before truncation |
-| `RAFIQ_VECTOR_RETRIEVAL_LIMIT` | number | `5` | No | Maximum number of vector results returned per query |
-| `RAFIQ_VECTOR_MAX_DISTANCE` | number | `0.62` | No | Cosine distance cutoff — results beyond this threshold are discarded |
+## LangCache
 
----
+LangCache is optional and disabled by default. Both API-key variable names are accepted aliases.
 
-## LangCache (semantic response cache)
+| Variable | Classification | Default / safe example | Purpose |
+| --- | --- | --- | --- |
+| `RAFIQ_LANGCACHE_ENABLED` | optional feature | `false` | Master semantic-cache switch |
+| `LANGCACHE_API_KEY` | optional secret alias | empty | LangCache API key alias |
+| `REDIS_LANGCACHE_API_KEY` | optional secret | empty | Redis LangCache API key |
+| `REDIS_LANGCACHE_SERVER_URL` | optional config | empty | LangCache server URL |
+| `REDIS_LANGCACHE_CACHE_ID` | optional config | empty | LangCache cache ID |
+| `RAFIQ_LANGCACHE_SIMILARITY_THRESHOLD` | advanced | `0.91` | Minimum similarity for semantic cache hits |
+| `RAFIQ_LANGCACHE_TTL_MS` | advanced | `604800000` | Cache TTL in milliseconds |
+| `RAFIQ_LANGCACHE_USE_ATTRIBUTES` | advanced | `false` | Include contextual cache attributes when enabled |
 
-Optional. Disabled by default. `services/langCache.server.ts` caches Gemini responses by semantic similarity to avoid redundant API calls for near-duplicate prompts.
+## Consistency contract
 
-| Variable | Type | Default | Required | Effect |
-|----------|------|---------|----------|--------|
-| `RAFIQ_LANGCACHE_ENABLED` | `true \| false` | `false` | No | Master switch |
-| `RAFIQ_LANGCACHE_TTL_SECONDS` | number | `900` | No | Cache entry time-to-live in seconds |
-
----
-
-## Notes
-
-- `services/env.server.ts` loads `.env` then `.env.local` (`.env.local` wins on conflicts).
-- Never commit `.env.local` or `.env` with real secrets. Both are in `.gitignore`.
-- In Vercel production, all variables are set in the project's Environment Variables dashboard — not in committed files.
-- Boolean variables accept the literal string `"true"` or `"false"`.
+`tests/envContract.test.ts` scans runtime environment reads and requires every discovered key to appear in `.env.example`. It also requires every example key to appear in this reference. When adding or renaming an environment variable, update the runtime, `.env.example`, and this file in the same change.

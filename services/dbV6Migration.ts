@@ -87,7 +87,7 @@ export const buildDefaultSocialAgencyRecord = (
       enabled: true,
       startHour: 23,
       endHour: 8,
-      timezone: 'Africa/Cairo',
+      timezone: 'UTC',
     },
   }),
   updatedAt: now,

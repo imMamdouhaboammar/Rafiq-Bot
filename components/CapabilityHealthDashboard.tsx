@@ -55,7 +55,7 @@ const statusConfig: Record<CapabilityHealth['status'], {
 
 const formatDate = (value?: Date): string => {
   if (!value) return 'لا يوجد نجاح مسجل';
-  return new Intl.DateTimeFormat('ar-EG', {
+  return new Intl.DateTimeFormat(undefined, {
     dateStyle: 'medium',
     timeStyle: 'short',
   }).format(new Date(value));

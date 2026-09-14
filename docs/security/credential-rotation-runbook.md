@@ -41,7 +41,7 @@ Preferred approach for this repository:
 
 1. Rotate credentials first.
 2. Build a clean private snapshot from a verified worktree.
-3. Run `npm run security:tracked` and `npm run security:secrets`.
+3. Run `bun run security:tracked` and `bun run security:secrets`.
 4. Confirm no sensitive files are tracked.
 5. Confirm the snapshot contains no generated caches, local browser data, model artifacts, or binary media.
 6. Update `main` only after the final scan.

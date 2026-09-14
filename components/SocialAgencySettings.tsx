@@ -206,7 +206,7 @@ const SocialAgencySettings: React.FC<SocialAgencySettingsProps> = ({ botId }) =>
             quietHours: { ...current.quietHours, timezone: event.target.value },
           }) : current)}
           className="min-h-11 w-full rounded-xl border border-gray-200 px-3 font-mono text-sm font-normal disabled:bg-gray-100"
-          placeholder="Africa/Cairo"
+          placeholder="UTC or Europe/Paris"
         />
       </label>
 

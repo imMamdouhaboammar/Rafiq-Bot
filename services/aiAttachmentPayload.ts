@@ -71,11 +71,6 @@ const supportedImageMimeTypes = new Set([
   'image/webp',
   'image/heic',
   'image/heif',
-  'image/gif',
-  'image/avif',
-  'image/bmp',
-  'image/svg+xml',
-  'image/tiff',
 ]);
 
 const supportedVideoMimeTypes = new Set([
@@ -124,7 +119,7 @@ const resolveAiMimeType = (attachment: Attachment): string | undefined => {
   if (attachment.category === 'archive' || attachment.category === 'other') return undefined;
 
   if (supportedImageMimeTypes.has(mimeType)) return mimeType;
-  if (mimeType.startsWith('image/')) return mimeType; // Fallback for image types
+  if (mimeType.startsWith('image/')) return undefined;
 
   if (supportedVideoMimeTypes.has(mimeType)) return mimeType;
   if (mimeType.startsWith('video/')) return mimeType;

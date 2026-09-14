@@ -1,6 +1,6 @@
 # Rafiq Research Paper — Publishing Roadmap
 
-> **Status:** Paper complete in repo (`docs/research-paper/05-manuscript.md` + `rafiq-paper.docx`). This document tracks the publishing workflow from preprint to first venue decision.
+> **Status:** Paper complete in repository Markdown. This roadmap is historical planning material and must be revalidated before acting on dates, venue rules, or submission mechanics.
 
 ---
 
@@ -10,7 +10,7 @@ The paper sits at the intersection of four research communities. Each community 
 
 | Venue | Format | Page limit | Deadline (typical) | Acceptance rate | Best fit for Rafiq's |
 |---|---|---|---|---|---|
-| **arXiv** (cs.HC) | PDF or DOCX | n/a | none | n/a | Immediate visibility, citable timestamp, defensive disclosure |
+| **arXiv** (cs.HC) | LaTeX preferred; PDF/HTML accepted | n/a | none | n/a | Immediate visibility, citable timestamp, defensive disclosure |
 | **DIS 2027** (ACM) | SIGCHI two-column | ~9-10 pages + refs | ~September 2026 | ~24% | Design-science case study fits the workshop-to-track ethos |
 | **CHI 2027** (ACM) | SIGCHI two-column | ~9-10 pages | ~September 2026 (LBW) / ~April 2027 (full) | ~26% | HCI general, but very competitive and double-blind |
 | **CSCW 2027** (ACM) | SIGCHI two-column | ~9-10 pages | ~June 2026 (passed) / spring 2027 | ~24% | Sociotechnical, companion AI in group/social settings |
@@ -56,10 +56,10 @@ Three options:
 | **Affiliation** | PrePilot Research (independent) |
 | **Primary category** | cs.HC (Human-Computer Interaction) |
 | **Cross-list** | cs.CL (Computation and Language — for the Arabic NLP contribution), cs.CY (Computers and Society — for the ethics contribution) |
-| **Abstract** | Use the existing Abstract from `05-manuscript.md` |
+| **Abstract** | Use the canonical Abstract from `arxiv-submission-package/manuscript/00-front-matter.md` |
 | **Comments** | "Manuscript in preparation for design-science venues (DIS/AIES 2027). Pre-print released under CC BY-NC-ND 4.0." |
 | **License** | CC BY-NC-ND 4.0 + arXiv non-exclusive license to distribute |
-| **Source upload** | `rafiq-paper.docx` (DOCX is acceptable) + optional `05-manuscript.md` source for the text-overlay view |
+| **Submission artifact** | Generate a currently supported LaTeX, PDF, or HTML artifact from the reviewed Markdown source; verify current arXiv guidance before submission |
 
 **arXiv submission mechanics:**
 1. Create arXiv account at arxiv.org (free; required for first submission)
@@ -68,13 +68,9 @@ Three options:
 4. Hold for moderation: 1-2 business days for the metadata, then paper goes live with the next business-day announcement.
 5. Once live: arXiv DOI assigned. Update the GitHub README to link to the DOI; update the manuscript Appendix A to include the arXiv ID.
 
-### 3.2 Local PDF generation
+### 3.2 Submission artifact generation
 
-arXiv accepts DOCX but PDF is preferred (more stable rendering). On macOS:
-- Open `rafiq-paper.docx` in Word or Pages
-- File → Save as / Print → Save as PDF
-- Or: Cmd+P → "Save as PDF" in the print dialog (faster, no quality loss)
-- Save as `rafiq-paper.pdf` to `docs/research-paper/arxiv-submission-package/`
+The repository keeps Markdown as the review source. Generate a supported LaTeX, PDF, or HTML submission artifact separately, review the rendered result, then verify the current arXiv format rules at https://info.arxiv.org/help/submit/index.html before uploading.
 
 ### 3.3 ORCID
 

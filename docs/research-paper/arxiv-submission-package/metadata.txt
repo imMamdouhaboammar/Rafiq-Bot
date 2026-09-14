@@ -22,7 +22,7 @@ Note: arXiv's order is "FirstName LastName". If your arXiv account has your real
 
 ## Abstract
 
-(copy from `rafiq-paper.docx` Abstract section, exactly as written — word-for-word):
+(copy from `manuscript/00-front-matter.md` Abstract section, exactly as written):
 
 Loneliness and social isolation have been formally reclassified by the World Health Organization and the U.S. Surgeon General as population-level public-health priorities, yet a specific sub-population — adults who experience chronic difficulty forming or sustaining human friendships — remains structurally underserved by existing AI-companion products. The dominant commercial paradigm ships single-prompt personalities tuned for English-speaking mass audiences and has been critiqued for shallow persona rendering, parasocial-facilitation patterns, well-being decrements under intensive use, and ethical hazards including sexual harassment, dependency, and emotional manipulation (Hoel & Sandvik, 2025; Namvarpour et al., 2025). This paper presents Rafiq, an Arabic-speaking, dialect-aware AI companion that operationalizes a candidate design theory built on five interlocking components: a Soul Engine (a five-trait personality vector combined with a multi-dialect selector and a long-form identity kernel); a persistent Psychological State Machine with eight mutable fields preserved across sessions; a WhatsApp-clone synthesis pipeline; a Multimodal Surface (streaming text, image, voice, avatar, and video); and an embedded Ethical Layer. The artifact is documented as a constructive design-science case (Hevner et al., 2004; Peffers et al., 2007; Walls et al., 1992) embedded in autoethnographic reflection (Chang, 2008; Kaltenhauser et al., 2024; Neustaedter & Sengers, 2012) and grounded in postphenomenological reframings of design as moral mediation (Suchman, 2007; Verbeek, 2005; Rosenberger, 2018). Three research questions structure the argument: (RQ1) what architectural decisions enable an AI companion to approximate the felt experience of being heard, (RQ2) how a configurable multi-trait + dialect-aware + persistent-state design compares against single-prompt companions, and (RQ3) what ethical obligations are operationalized inside the artifact itself. The contribution operates at four levels — construct, method, methodology, and ethical operationalization — and is bounded to the Egyptian-dialect instantiation, with Maghrebi, Levantine, and Gulf dialects positioned as future work. The paper integrates 54 peer-reviewed sources across loneliness public-health research, AI-companion empirical studies, parasocial and attachment theory, Arabic natural language processing and dialect chatbots, design-science methodology, and postphenomenological HCI.
 
@@ -36,7 +36,7 @@ Loneliness and social isolation have been formally reclassified by the World Hea
 
 ```
 Manuscript in preparation for design-science venues (DIS 2027 / AIES 2027).
-Underlying artifact: github.com/imMamdouhaboammar/Rafiq-Vercel (Rafiq v1.0-v5.0).
+Underlying artifact: github.com/imMamdouhaboammar/Rafiq-Bot (Rafiq v1.0-v5.0 design lineage).
 Pre-print released under CC BY-NC-ND 4.0.
 ```
 
@@ -55,18 +55,11 @@ License terms explained:
 If you want maximum reach and don't care about patent option: use CC BY 4.0.
 If you want immediate patent filing: use arXiv non-exclusive only (no CC).
 
-## Source files to upload
+## Submission source
 
-This package contains:
+The repository source is the linked Markdown manuscript under `manuscript/`. Markdown is maintained for review and version control. It is not listed by arXiv as a text submission format.
 
-| File | Use |
-|---|---|
-| `rafiq-paper.docx` | The Word manuscript — arXiv accepts DOCX directly |
-| `source-markdown.md` | The same content as markdown (for text-overlay view on arXiv) |
-| `PDF-UPLOAD-INSTRUCTIONS.txt` | How to generate a PDF in Word (Cmd+P → Save as PDF) |
-| `README.md` | This file — package contents and submission flow |
-
-arXiv accepts both DOCX and PDF. **PDF is preferred for stable rendering across browsers.** If you can convert to PDF locally (Pages: File → Print → Save as PDF, or Word: Cmd+P → Save as PDF), upload both.
+For submission, generate a supported artifact and verify the current format rules at https://info.arxiv.org/help/submit/index.html. arXiv currently lists LaTeX as preferred, followed by PDF and HTML.
 
 ## What happens after you submit
 
@@ -74,7 +67,7 @@ arXiv accepts both DOCX and PDF. **PDF is preferred for stable rendering across 
 2. **First-time submitters need a "cs.HC endorsement."** If you haven't published in cs.HC before, your submission is held until an endorsed arXiv user (any of: troyer, ludwig, schneel, etc. — pre-print colleagues from HCI) endorses your submission. This usually takes 24-72 hours; sometimes longer if you submit on a Friday.
 3. Once endorsed, the paper appears at the next business-day announcement (8 PM EST / 5 PM PST).
 4. You get a DOI (e.g., `10.48550/arXiv.2506.NNNNN`).
-5. Update `docs/research-paper/05-manuscript.md` Appendix A and the GitHub `README.md` to include the arXiv URL.
+5. Update `docs/research-paper/arxiv-submission-package/manuscript/09-appendix-a.md` and the GitHub `README.md` to include the arXiv URL.
 
 ## Recommended: endorse back
 

@@ -29,7 +29,7 @@ const kindClasses: Record<BotStoryEvent['kind'], string> = {
   imaginary: 'bg-violet-50 text-violet-700',
 };
 
-const formatDate = (value: Date): string => new Intl.DateTimeFormat('ar-EG', {
+const formatDate = (value: Date): string => new Intl.DateTimeFormat(undefined, {
   dateStyle: 'medium',
   timeStyle: 'short',
 }).format(new Date(value));

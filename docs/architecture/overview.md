@@ -230,8 +230,8 @@ Orchestrates conversations with N AI personas simultaneously:
 
 | Tool name | File | What it does |
 |-----------|------|-------------|
-| `current_time` | `timeTool.server.ts` | Returns date/time in Cairo timezone |
-| `web_search` | `webSearchTool.server.ts` | Google Search (`RAFIQ_WEB_SEARCH_PROVIDER`) |
+| `current_time` | `timeTool.server.ts` | Returns date/time using the resolved runtime locale and timezone |
+| `web_search` | `webSearchTool.server.ts` | Optional search via configured Tavily, SerpAPI, Google Custom Search, Brave, or Bing provider |
 | `open_url` | `webReaderTool.server.ts` | Fetch and extract text from a URL |
 | `search_and_read` | `webReaderTool.server.ts` | Combined search + URL read |
 | `research_tool` | `researchTool.server.ts` | Multi-step research synthesis |
@@ -279,7 +279,7 @@ Event domains: `chat:*`, `ai:*`, `persona:*`, `group:*`, `import:*`, `ui:*`, `sy
 | Environment | Server | Launch command |
 |-------------|--------|---------------|
 | Development | `server.ts` — Express 5 + `tsx`, Vite middleware | `bun run dev` |
-| Production | `api/*.ts` — Vercel Functions (`@vercel/node`) | `vercel deploy` |
+| Production | `api/*.ts` Vercel Functions with local structural request/response types | `vercel deploy` |
 
 **File naming convention:**
 - `services/foo.server.ts` — server-only. May import `node:*`, Redis, Google service account credentials.
@@ -296,7 +296,7 @@ Event domains: `chat:*`, `ai:*`, `persona:*`, `group:*`, `import:*`, `ui:*`, `sy
 - `@/*` alias → project root (`./`)
 - `allowImportingTsExtensions: true` — allows importing `.ts` files directly (Vite resolves them)
 - `noEmit: true` — Vite owns the emit; `tsc` is type-check only
-- 5 test files excluded from type-checking due to mock patterns
+- Test-only mock-heavy modules may be excluded from type-checking; `tsconfig.json` is the canonical exclusion list
 
 ---
 

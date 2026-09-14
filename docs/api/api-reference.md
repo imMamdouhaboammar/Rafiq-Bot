@@ -47,7 +47,7 @@ The response also sets `Set-Cookie` with an HMAC-signed session token.
 { "success": false, "error": "Method not allowed" }
 ```
 
-> Password is verified against `RAFIQ_APP_PASSWORD_HASH` (SHA-256 hex of the real password). Without that env var set, development mode accepts any password.
+> Password is verified against `RAFIQ_APP_PASSWORD_HASH` (a 64-character SHA-256 hex digest). `RAFIQ_APP_SESSION_SECRET` must also be configured independently with at least 32 characters. Missing or invalid auth configuration is treated as a configuration error in every environment.
 
 ---
 
