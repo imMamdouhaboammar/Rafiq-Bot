@@ -11,7 +11,10 @@ assert(!fs.existsSync(path.join(root, 'package-lock.json')), 'package-lock.json 
 assert(fs.existsSync(path.join(root, 'bun.lock')), 'bun.lock must remain the canonical lockfile');
 
 const ci = text('.github/workflows/ci.yml');
-assert(ci.includes('uses: oven-sh/setup-bun@v2'), 'CI must install Bun through setup-bun');
+assert(/uses:\s+oven-sh\/setup-bun@[0-9a-f]{40}\s+# v2/.test(ci), 'CI must pin setup-bun v2 to a full commit SHA');
+assert(/uses:\s+actions\/checkout@[0-9a-f]{40}\s+# v4/.test(ci), 'CI must pin checkout v4 to a full commit SHA');
+assert(ci.includes('persist-credentials: false'), 'CI checkout must not persist GitHub credentials');
+assert(/permissions:\s*\n\s+contents:\s*read/.test(ci), 'CI must use read-only repository permissions');
 assert(!ci.includes('bun-version: latest'), 'CI must not float on Bun latest');
 assert(!ci.includes('bun-version:'), 'CI should resolve Bun from package.json packageManager');
 assert(ci.includes('run: bun install --frozen-lockfile'), 'CI install must be frozen');
