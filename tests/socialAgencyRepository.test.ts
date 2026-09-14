@@ -18,7 +18,7 @@ assert.equal(defaults.boldness, 50);
 assert.equal(defaults.proactivity, 50);
 assert.equal(defaults.unsolicitedDailyLimit, 1);
 assert.equal(defaults.cooldownHours, 12);
-assert.equal(defaults.quietHours.timezone, 'Africa/Cairo');
+assert.equal(defaults.quietHours.timezone, 'UTC');
 assert.equal(values.size, 1);
 
 now = new Date('2026-07-13T13:00:00.000Z');

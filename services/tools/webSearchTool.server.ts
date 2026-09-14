@@ -1,4 +1,5 @@
 import { BoundedLru } from "../boundedLru.js";
+import { resolveRuntimeLocale } from "../runtimeLocale.js";
 import { WebSearchArgs, WebSearchResult, WebSearchResultItem } from "./toolTypes.js";
 
 const CACHE_TTL_MS = 15 * 60 * 1000;
@@ -23,8 +24,13 @@ const unavailableResult = (query: string): WebSearchResult => ({
 
 export const executeWebSearch = async (args: WebSearchArgs): Promise<WebSearchResult> => {
   const query = args.query.trim();
-  const locale = args.locale || process.env.RAFIQ_WEB_SEARCH_LOCALE || "ar-EG";
-  const region = args.region || process.env.RAFIQ_WEB_SEARCH_REGION || "eg";
+  const runtimeLocale = resolveRuntimeLocale({
+    locale: args.locale,
+    searchLocale: args.locale,
+    searchRegion: args.region,
+  });
+  const locale = runtimeLocale.searchLocale;
+  const region = runtimeLocale.searchRegion || '';
   const maxResults = Math.max(1, Math.min(10, args.maxResults || 5));
 
   if (!query) {

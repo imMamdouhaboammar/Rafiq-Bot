@@ -18,10 +18,10 @@ Rafiq can boot without every optional integration. For an AI-backed chat flow, c
 | `PORT` | runtime | `3000` | Express server port |
 | `RAFIQ_APP_PASSWORD_HASH` | production security | empty | SHA-256 digest used by the app-wide password gate |
 | `RAFIQ_APP_SESSION_SECRET` | production security | empty | HMAC secret for the app session cookie; use a strong independent value |
-| `RAFIQ_DEFAULT_LOCALE` | runtime locale | `ar-EG` reference preset | Default locale when no explicit runtime locale is supplied |
-| `RAFIQ_DEFAULT_TIMEZONE` | runtime timezone | `Africa/Cairo` reference preset | Default timezone when no explicit runtime timezone is supplied |
+| `RAFIQ_DEFAULT_LOCALE` | runtime locale | `en-US` | Default locale when no explicit runtime locale is supplied |
+| `RAFIQ_DEFAULT_TIMEZONE` | runtime timezone | `UTC` | Default timezone when no explicit runtime timezone is supplied |
 
-The locale and timezone values above document the current reference behavior. The OSS globalization work keeps Egyptian Arabic as a bundled preset while removing Egypt-specific fallbacks from global core paths.
+Egyptian Arabic remains a bundled `ar-EG` reference preset, but the public example uses neutral global defaults.
 
 ## Google Gemini and Vertex AI
 
@@ -64,8 +64,8 @@ Search is optional. When provider configuration is incomplete, Rafiq reports sea
 | `RAFIQ_WEB_SEARCH_PROVIDER` | optional feature | empty | Search provider identifier such as an implementation supported by `webSearchTool.server.ts` |
 | `RAFIQ_WEB_SEARCH_API_KEY` | optional secret | empty | Search-provider API key |
 | `RAFIQ_WEB_SEARCH_ENGINE_ID` | optional config | empty | Engine ID required by providers such as Google Custom Search |
-| `RAFIQ_WEB_SEARCH_LOCALE` | optional locale | `ar-EG` reference preset | Search locale when the caller does not specify one |
-| `RAFIQ_WEB_SEARCH_REGION` | optional region | `eg` reference preset | Search region when the caller does not specify one |
+| `RAFIQ_WEB_SEARCH_LOCALE` | optional locale | blank; derives from runtime locale | Search locale when the caller does not specify one |
+| `RAFIQ_WEB_SEARCH_REGION` | optional region | blank; derives from locale region | Search region when the caller does not specify one |
 
 ## Vector memory
 

@@ -24,6 +24,7 @@ import {
 } from './services/progressiveCloneJob.js';
 import { useAppController } from './hooks/useAppController.js';
 import { useRafiqStore } from './stores/useRafiqStore.js';
+import { getTextDirection } from './services/runtimeLocale.js';
 
 export default function App() {
   return (
@@ -72,6 +73,14 @@ function RafiqApp() {
 
   const activeChat = chats.find(chat => chat.id === activeChatId);
   const editingChat = chats.find(chat => chat.id === editingChatId);
+  const browserLocale = typeof navigator !== 'undefined' && navigator.language ? navigator.language : 'en-US';
+  const shellLocale = activeChat?.settings.locale || browserLocale;
+  const shellDirection = activeChat?.settings.direction || getTextDirection(shellLocale);
+
+  useEffect(() => {
+    document.documentElement.lang = shellLocale;
+    document.documentElement.dir = shellDirection;
+  }, [shellLocale, shellDirection]);
 
   const openChatEditor = useCallback(async (chatId: string) => {
     const current = useRafiqStore.getState().chats.find(chat => chat.id === chatId);
@@ -517,7 +526,7 @@ function RafiqApp() {
   );
 
   return (
-    <div className="flex h-[100dvh] w-full justify-center overflow-hidden bg-[#d1d7db] font-sans" dir="rtl">
+    <div className="flex h-[100dvh] w-full justify-center overflow-hidden bg-[#d1d7db] font-sans" dir={shellDirection}>
       <div className="relative h-full w-full max-w-[1600px] bg-white shadow-xl">
         <ResponsiveWhatsAppShell
           sidebar={(

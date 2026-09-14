@@ -4,6 +4,7 @@ import {
   type SocialAgency,
 } from '../contracts/rafiqV6.js';
 import { buildSocialAgencyPrompt } from './socialAgencyPolicy.js';
+import { resolveRuntimeLocale } from './runtimeLocale.js';
 
 export const BACKGROUND_PERSONA_BASELINE: SoulTraits = {
   chaos: 20,
@@ -81,7 +82,7 @@ export const compileBackgroundPersona = ({
       enabled: true,
       startHour: 23,
       endHour: 8,
-      timezone: 'Africa/Cairo',
+      timezone: resolveRuntimeLocale({ timezone: settings.timezone, locale: settings.locale }).timezone,
     },
   });
   const biography = settings.botBio?.trim();

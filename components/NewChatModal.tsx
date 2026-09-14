@@ -541,7 +541,7 @@ const NewChatModal: React.FC<NewChatModalProps> = ({ onClose, onCreate, onCreate
                                             </p>
                                             <p className="mt-2 text-[11px] text-gray-400">
                                                 مبني على {adaptivePersonality.observationCount} رسالة مستخدم
-                                                {adaptivePersonality.updatedAt ? ` • آخر تحديث ${new Date(adaptivePersonality.updatedAt).toLocaleDateString('ar-EG')}` : ''}
+                                                {adaptivePersonality.updatedAt ? ` • آخر تحديث ${new Date(adaptivePersonality.updatedAt).toLocaleDateString()}` : ''}
                                             </p>
                                         </div>
                                         <button

@@ -80,7 +80,7 @@ assert.deepEqual(
 );
 
 const prompt = buildSocialAgencyPrompt(agency);
-assert.match(prompt, /الجرأة لا تعني إطالة الرد/);
-assert.match(prompt, /ممنوع التملك أو الإلحاح/);
+assert.match(prompt, /Boldness does not justify longer replies/);
+assert.match(prompt, /Never use possessiveness, pressure/);
 
 console.log('Social agency policy tests passed.');

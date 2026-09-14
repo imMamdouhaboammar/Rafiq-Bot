@@ -41,6 +41,7 @@ import { PROMPT_BUDGETS, OUTPUT_LIMITS } from "./promptBudget.js";
 import { getCompiledPersona } from "./personaRuntimeCache.js";
 import { ADAPTIVE_FACETS, type PersonalitySignalProposal } from "./livingPersonaCore.js";
 import { resolveModelRoute } from "./modelRouter.js";
+import { resolveRuntimeLocale } from "./runtimeLocale.js";
 import { triggerBackgroundSelfEvolution } from "./autonomousEvolution.server.js";
 import { queryGraphContext } from "./graphMemory.server.js";
 import { BUILTIN_SKILLS } from "./skillRegistry.js";
@@ -325,11 +326,11 @@ const arabicStopWords = new Set([
   "انا", "انت", "انتي", "هو", "هي", "احنا", "هم", "كان", "يكون", "في", "من", "على", "الى", "يا", "بس", "ده", "دي", "اللي", "الي", "مع", "لو", "لا", "ما", "مش", "برضه", "عندي", "عايز", "عايزة", "بقى", "كده", "كدا", "جدا", "جداً", "عشان"
 ]);
 
-const REPAIR_SYSTEM_INSTRUCTION = `You are a helpful assistant. You will be given a draft response from a persona who is supposed to talk in a warm, casual Egyptian Arabic dialect.
-However, the draft response might contain accidental leaks of the system instructions, rule lists, AI references, or private profile/constitution data (e.g. lists of rules like '45% short/medium', 'Slang intensity', 'Do not sound like an AI', or database-style statements like 'I am an AI', 'My bio is...').
+const REPAIR_SYSTEM_INSTRUCTION = `You are a response sanitizer. Preserve the draft's language, conversational register, persona voice, and intent.
+The draft may contain accidental leaks of system instructions, rule lists, AI references, or private profile/constitution data.
 
-Your sole task is to rewrite the draft to keep the exact same conversational intent and warm Egyptian Arabic dialect, but completely remove any leaks, rule lists, AI disclosures, or backstory-database references.
-Output ONLY the final cleaned, rewritten response text. Do not include any explanations, prefaces, or rule lists.`;
+Rewrite only enough to remove those leaks. Do not introduce a new language, locale, dialect, biography, or cultural identity.
+Output ONLY the final cleaned response text. Do not include explanations, prefaces, or rule lists.`;
 
 export function cleanChainOfThoughtLeaks(text: string): string {
   if (!text) return "";
@@ -597,9 +598,16 @@ const executeToolsAndPreparePrompt = async (
   userProfile: UserProfile | null,
   settings: BotSettings
 ) => {
-  // 1. Cheap Realtime Awareness is always-on
-  const tz = process.env.RAFIQ_DEFAULT_TIMEZONE || "Africa/Cairo";
-  const loc = process.env.RAFIQ_DEFAULT_LOCALE || "ar-EG";
+  // 1. Cheap Realtime Awareness is always-on and follows the selected runtime locale.
+  const runtimeLocale = resolveRuntimeLocale({
+    locale: settings.locale,
+    timezone: settings.timezone,
+    direction: settings.direction,
+    culture: settings.culture,
+    conversationLanguage: settings.conversationLanguage,
+  });
+  const tz = runtimeLocale.timezone;
+  const loc = runtimeLocale.locale;
   const timeContext = getRuntimeAwarenessContext(tz, loc);
   const timeAwarenessPrompt = injectRuntimeAwarenessPrompt(timeContext);
 
@@ -652,7 +660,7 @@ const executeToolsAndPreparePrompt = async (
     });
   } else if (intent === "web_search") {
     console.log(`[GeminiService] Routing to web_search tool`);
-    const searchRes = await executeWebSearch({ query: newMessage, locale: loc });
+    const searchRes = await executeWebSearch({ query: newMessage, locale: runtimeLocale.searchLocale, region: runtimeLocale.searchRegion });
     toolResultText = formatSearchResult(searchRes);
     toolsUsed.push({
       toolName: "web_search",
@@ -1210,6 +1218,10 @@ export const sendMessageToGeminiStream = async function* (
       for await (const chunk of streamAgentRouterResponse(promptWithHistory, {
         model: selectedModelId,
         systemInstruction: finalSystemInstruction,
+        locale: settings.locale,
+        timezone: settings.timezone,
+        conversationLanguage: settings.conversationLanguage,
+        culture: settings.culture,
       })) {
         yieldedAny = true;
         yield { ...chunk, toolsUsed: chunk.toolsUsed?.length ? chunk.toolsUsed : toolsUsed };
@@ -1550,6 +1562,10 @@ export const generateInitiativeMessage = async (settings: BotSettings, userProfi
       const rawText = await generateAgentRouterResponse(prompt, {
         model: settings.model,
         systemInstruction: instruction,
+        locale: settings.locale,
+        timezone: settings.timezone,
+        conversationLanguage: settings.conversationLanguage,
+        culture: settings.culture,
       });
       const sanitizedText = sanitizePersonaReply(rawText, { botBio: settings.botBio });
       return sanitizedText === "قولّي أكتر" && sanitizedText !== rawText ? null : sanitizedText;

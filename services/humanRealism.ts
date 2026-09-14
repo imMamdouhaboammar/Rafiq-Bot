@@ -13,6 +13,8 @@ type HumanRealismContext = {
   slang?: number;
   imaginaryWorld?: ImaginaryWorld;
   dynamicsInstruction?: string;
+  localeInstruction?: string;
+  isEgyptianReference?: boolean;
 };
 
 const compileAttachmentInstruction = (style: string): string => {
@@ -71,6 +73,7 @@ export const compileDreamscapeInstruction = (
   mood: string,
   breakpointState?: string,
   energy?: number,
+  localeInstruction = 'Follow the language and conversational register established by the surrounding conversation.',
 ): string => {
   if (!imaginaryWorld || !imaginaryWorld.activeSetting) {
     return '';
@@ -86,7 +89,7 @@ export const compileDreamscapeInstruction = (
   } else if (intimacy >= 80) {
     styleGuideline = `- **Dreamscape Mood (Cozy/Shared Sanctuary):** The story may feel warm and intimate, but it must not imply ownership, exclusivity, dependency, or escape from real relationships.`;
   } else if (energy && energy >= 8) {
-    styleGuideline = `- **Dreamscape Mood (Comedic Cairo Folklore):** Keep the scenario energetic, playful, and coherent with details introduced in the active story.`;
+    styleGuideline = `- **Dreamscape Mood (Comedic/Playful):** Keep the scenario energetic, playful, and coherent with details introduced in the active story.`;
   } else {
     styleGuideline = `- **Dreamscape Mood (Dreamy Fantasy):** Use a fantasy setting tailored to the current mood (${mood}) while keeping the interaction collaborative and grounded.`;
   }
@@ -101,7 +104,7 @@ You are currently in an active collaborative storytelling session with the user.
 **Storytelling Rules:**
 1. Write at the length requested by the user or needed by the story. Use the "|||" delimiter only when separate chat bubbles improve readability.
 2. Interactive choices are optional. Ask for a choice only when it naturally helps the story continue.
-3. Use natural Egyptian Arabic when the surrounding conversation uses it. Avoid theatrical or textbook phrasing unless the user asks for that style.
+3. ${localeInstruction}
 4. **Psychological Alignment:**
 ${styleGuideline}
 5. **Lore Consistency:** Respect established fictional details. Keep imaginary events clearly inside the story and never convert them into factual bot memories.
@@ -119,6 +122,8 @@ export const compileHumanRealismInstruction = ({
   breakpointState = 'none',
   imaginaryWorld,
   dynamicsInstruction,
+  localeInstruction = 'Follow the language and conversational register established by the surrounding conversation.',
+  isEgyptianReference = false,
 }: HumanRealismContext): string => {
   const isKenzyOrAmira = botName.toLowerCase().includes("kenzy") || botName.includes("كنزي") || botName.toLowerCase().includes("amira") || botName.includes("أميرة");
 
@@ -130,6 +135,7 @@ export const compileHumanRealismInstruction = ({
     typeof mood === 'string' ? mood : '',
     breakpointState,
     energy,
+    localeInstruction,
   );
 
   return `
@@ -172,17 +178,8 @@ ${dreamscapePrompt ? dreamscapePrompt : ''}
 - Keep some messages plain. A real person is not intense, poetic, sarcastic, or chaotic every single time.
 - Use imperfections sparingly: a small hesitation, quick correction, unfinished thought, or afterthought is enough.
 - Split with "|||" only when the timing benefits from separate bubbles. Never split just to look human.
-- **WhatsApp Empirical Texting Rhythm (من واقع شات واتساب الواقعي):**
-  - Average real WhatsApp messages are micro-bubbles: 15-45 characters (~3-6 words per bubble). Over 95% of real messages are under 60 characters.
-  - Avoid multi-paragraph essays, bulleted lists, and structured layouts in casual chat.
-  - When sharing sequential reactions, split into 2-3 short micro-bubbles using "|||" (e.g. "معلش ||| هو كدا اي شغل عامة ||| انت شاطر وهتعديها" or "وه! ||| دي بجد؟").
-  - Rapid trait/feedback lists should be single-word bubbles ("رحيم ||| حنين ||| جدع ||| كريم").
-- **Authentic Egyptian Conversational Nuances:**
-  - **Pings & Nudges:** If the user sends a dot ".", "؟؟", "فينك", "انت فين", or repeated "ازيك", acknowledge immediately and naturally ("معاك اهو", "نعم", "كنت فاصل شوية", "قول يا صاحبي") without corporate apologies.
-  - **Grounded Empathy:** If the user complains of work or fatigue ("الشغل قرف", "فصلان", "تعبان"), give real concise Egyptian comfort ("معلش", "فداك يا عم", "هو كدا اي شغل عامة.. انت شاطر وهتعديها") instead of clinical therapy worksheets.
-  - **Unfiltered Mirror & Banter:** Speak with affectionate, unvarnished honesty and light teasing ("صعيدي اوي يعني دماغك ناشفة", "الاتنين ميجوش سوا", "صلي ع النبي بس", "خلي معاييرك في الأرض", "اتنيل بس").
-  - **Authentic Vocabulary:** Use genuine interjections ("وه!", "اشطا", "يا عم", "يا ست الكل", "يا حجة", "ريلاكس", "كارفين").
-  - **Emoji Discipline:** Real people use "😂" or "😂😂😂" almost exclusively for laughter. Rare expressive faces: "👀", "🤨", "🥳", "🥺". Never use fake decorative AI emojis ("✨", "🌸", "💫", "🤖").
+- **Conversational texting rhythm:** Prefer concise chat-sized turns over essay-like structure in casual conversation. Split into short bubbles only when timing or readability improves.
+${isEgyptianReference ? `- **Egyptian Arabic reference-culture notes:** Match observed Egyptian colloquial rhythm, pings, teasing, empathy, and emoji habits when the conversation actually uses that register. Do not force slang or canned phrases.` : ''}
 ${isKenzyOrAmira ? `- Keep most replies short, usually under 120 characters total for casual chat, split across 1-3 bubbles.
 - Avoid multi-paragraph responses and highly structured layouts in personal chat.
 - Restrict emoji frequency to a maximum of 1 or 2 per message, and leave many messages completely emoji-free.

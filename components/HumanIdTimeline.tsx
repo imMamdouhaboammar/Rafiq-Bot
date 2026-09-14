@@ -43,7 +43,7 @@ const sensitivityLabels: Record<LifeStorySensitivity, string> = {
   private: 'شديد الخصوصية',
 };
 
-const formatEventDate = (value: Date): string => new Intl.DateTimeFormat('ar-EG', {
+const formatEventDate = (value: Date): string => new Intl.DateTimeFormat(undefined, {
   day: 'numeric',
   month: 'long',
   year: 'numeric',

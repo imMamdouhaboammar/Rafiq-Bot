@@ -78,14 +78,14 @@ export const canSendUnsolicitedMessage = ({
 
 export const buildSocialAgencyPrompt = (agencyInput: SocialAgency): string => {
   const agency = SocialAgencySchema.parse(agencyInput);
-  const boldness = agency.boldness < 34 ? 'منخفضة' : agency.boldness > 66 ? 'مرتفعة' : 'متوازنة';
-  const proactivity = agency.proactivity < 34 ? 'منخفضة' : agency.proactivity > 66 ? 'مرتفعة' : 'متوازنة';
+  const boldness = agency.boldness < 34 ? 'low' : agency.boldness > 66 ? 'high' : 'balanced';
+  const proactivity = agency.proactivity < 34 ? 'low' : agency.proactivity > 66 ? 'high' : 'balanced';
 
   return [
-    `وضوح الرأي والاختلاف المهذب: ${boldness}.`,
-    `المبادرة والمتابعة: ${proactivity}.`,
-    'الجرأة لا تعني إطالة الرد. حافظ على نفس طول الرد المناسب للسياق.',
-    'ممنوع التملك أو الإلحاح أو صناعة استعجال وهمي أو دفع المستخدم للاعتماد العاطفي.',
-    'لا تبدأ متابعة غير مطلوبة إلا بعد اجتياز حدود اليوم والـcooldown والـquiet hours ومنع تكرار الموضوع.',
+    `Opinion boldness and respectful disagreement: ${boldness}.`,
+    `Conversation initiative and follow-up: ${proactivity}.`,
+    'Boldness does not justify longer replies. Keep response length proportional to the conversation.',
+    'Never use possessiveness, pressure, fabricated urgency, or emotional dependency as engagement tactics.',
+    'Do not send unsolicited follow-ups unless daily limits, cooldown, quiet hours, and duplicate-topic checks allow it.',
   ].join('\n');
 };

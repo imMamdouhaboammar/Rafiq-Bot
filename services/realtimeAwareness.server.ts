@@ -1,6 +1,7 @@
 import { RuntimeAwarenessContext } from "./tools/toolTypes.js";
 import { dailyStageDirector } from "./dailyStageDirector.js";
 import { culturalMuezzin } from "./culturalMuezzin.js";
+import { resolveRuntimeLocale } from "./runtimeLocale.js";
 
 /**
  * Returns a compact, performance-optimized real-time awareness context.
@@ -10,8 +11,9 @@ export const getRuntimeAwarenessContext = (
   timezone?: string,
   locale?: string
 ): RuntimeAwarenessContext => {
-  const tz = timezone || process.env.RAFIQ_DEFAULT_TIMEZONE || "Africa/Cairo";
-  const loc = locale || process.env.RAFIQ_DEFAULT_LOCALE || "ar-EG";
+  const runtimeLocale = resolveRuntimeLocale({ timezone, locale });
+  const tz = runtimeLocale.timezone;
+  const loc = runtimeLocale.locale;
 
   const now = new Date();
 
@@ -79,9 +81,9 @@ export const getRuntimeAwarenessContext = (
       timeZone: tz,
     });
 
-    const currentSlot = dailyStageDirector.getCurrentSlot(now);
-    const prayerInfo = culturalMuezzin.getActivePrayerContext(now);
-    const fridayGreeting = culturalMuezzin.getFridayGreeting(now) || undefined;
+    const currentSlot = runtimeLocale.isEgyptianReference ? dailyStageDirector.getCurrentSlot(now) : undefined;
+    const prayerInfo = runtimeLocale.isEgyptianReference ? culturalMuezzin.getActivePrayerContext(now) : undefined;
+    const fridayGreeting = runtimeLocale.isEgyptianReference ? culturalMuezzin.getFridayGreeting(now) || undefined : undefined;
 
     return {
       nowIso,
@@ -89,10 +91,10 @@ export const getRuntimeAwarenessContext = (
       localDate: dateTextFormatter.format(now),
       localTime: timeTextFormatter.format(now),
       dayName: dayNameFormatter.format(now),
-      currentActivityArabic: currentSlot.activityArabic,
-      currentLocation: currentSlot.location,
-      currentAvailability: currentSlot.availability,
-      prayerContext: prayerInfo.reminderMessage,
+      currentActivityArabic: currentSlot?.activityArabic,
+      currentLocation: currentSlot?.location,
+      currentAvailability: currentSlot?.availability,
+      prayerContext: prayerInfo?.reminderMessage,
       fridayGreeting
     };
   } catch (err) {
@@ -112,7 +114,7 @@ export const getRuntimeAwarenessContext = (
  */
 export const injectRuntimeAwarenessPrompt = (context: RuntimeAwarenessContext): string => {
   const livingContextLines = [
-    context.currentActivityArabic ? `- Current Living Activity: ${context.currentActivityArabic} (Location: ${context.currentLocation || 'Cairo'}, Availability: ${context.currentAvailability || 'free'})` : '',
+    context.currentActivityArabic ? `- Current Living Activity: ${context.currentActivityArabic}${context.currentLocation ? ` (Location: ${context.currentLocation}, Availability: ${context.currentAvailability || 'free'})` : ''}` : '',
     context.prayerContext ? `- Prayer Context: ${context.prayerContext}` : '',
     context.fridayGreeting ? `- Friday Context: ${context.fridayGreeting}` : ''
   ].filter(Boolean).join('\n');

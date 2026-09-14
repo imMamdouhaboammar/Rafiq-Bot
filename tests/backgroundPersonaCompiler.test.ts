@@ -59,7 +59,7 @@ assert.doesNotMatch(compilation.stableInstruction, /chaotic_bestie/);
 assert.match(compilation.moodInstruction, /neutral/);
 assert.doesNotMatch(compilation.moodInstruction, /hangry/i);
 assert.match(compilation.moodInstruction, /never creates biography, illness, hunger/);
-assert.match(compilation.socialAgencyInstruction, /الجرأة لا تعني إطالة الرد/);
+assert.match(compilation.socialAgencyInstruction, /Boldness does not justify longer replies/);
 assert.equal(compilation.usedLegacyEvidence, true);
 assert.match(compilation.revision, /^background:/);
 

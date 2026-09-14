@@ -346,7 +346,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
                 ) : errorLogs.map(log => (
                   <article key={log.id} className="space-y-1.5 rounded-xl border border-red-100 bg-red-50/30 p-3 text-right">
                     <div className="flex items-center justify-between gap-2">
-                      <time className="text-[10px] text-gray-400">{new Date(log.timestamp).toLocaleString('ar-EG')}</time>
+                      <time className="text-[10px] text-gray-400">{new Date(log.timestamp).toLocaleString()}</time>
                       <div className="flex items-center gap-2">
                         <span className="rounded bg-red-100 px-1.5 py-0.5 text-[10px] font-bold text-red-700">{log.origin}</span>
                         <button

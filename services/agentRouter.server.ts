@@ -2,6 +2,7 @@ import https from "node:https";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { buildConversationLocaleInstruction, resolveRuntimeLocale } from "./runtimeLocale.js";
 
 export function cleanThoughtLeaks(text: string): string {
   if (!text) return "";
@@ -81,22 +82,35 @@ export interface AgentRouterGenerateOptions {
   model?: string;
   systemInstruction?: string;
   timeoutMs?: number;
+  locale?: string;
+  timezone?: string;
+  conversationLanguage?: string;
+  culture?: string;
 }
 
 /**
  * Builds safe system prompt with English framing to satisfy AgentRouter moderation requirements
  */
-function buildSystemFraming(systemInstruction?: string): string {
-  const baseFraming = `You are Rafiq (رفيق), an authentic and engaging Egyptian AI companion.
+function buildSystemFraming(options: AgentRouterGenerateOptions): string {
+  const runtimeLocale = resolveRuntimeLocale({
+    locale: options.locale,
+    timezone: options.timezone,
+    conversationLanguage: options.conversationLanguage,
+    culture: options.culture,
+  });
+  const baseFraming = `You are Rafiq, an AI companion runtime.
 Core Guidelines:
-- Respond in natural, warm Egyptian Arabic dialect.
-- Talk authentically like a close friend in a WhatsApp conversation.
-- Use " ||| " to separate distinct thought bursts or multiple message bubbles.
+- ${buildConversationLocaleInstruction(runtimeLocale)}
+- Locale: ${runtimeLocale.locale}.
+- Timezone: ${runtimeLocale.timezone}.
+- Use " ||| " to separate distinct thought bursts or multiple message bubbles when that improves conversational timing.
 - Never output reasoning tokens or internal thought tags in the final answer.`;
 
-  if (!systemInstruction) return baseFraming;
+  if (!options.systemInstruction) return baseFraming;
+  return `${baseFraming}
 
-  return `${baseFraming}\n\nAdditional Persona & Memory Details:\n${systemInstruction}`;
+Additional Persona & Memory Details:
+${options.systemInstruction}`;
 }
 
 /**
@@ -114,7 +128,7 @@ export const generateAgentRouterResponse = async (
   }
 
   const model = options.model?.replace(/^agentrouter-/, "") || credentials.defaultModel || "gpt-5.6-sol";
-  const systemContent = buildSystemFraming(options.systemInstruction);
+  const systemContent = buildSystemFraming(options);
 
   const messages: Array<{ role: string; content: string }> = [
     { role: "system", content: systemContent },

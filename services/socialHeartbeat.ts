@@ -89,7 +89,7 @@ export function evaluateSocialHeartbeat(
 ): HeartbeatEvaluationResult {
   const {
     now = new Date(),
-    timezone = "Africa/Cairo",
+    timezone = "UTC",
     quietHoursStart = 2,
     quietHoursEnd = 9,
     lastMessageTimestamp,
