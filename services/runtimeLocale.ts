@@ -45,8 +45,13 @@ export const resolveRuntimeLocale = (
 ): RuntimeLocaleConfig => {
   const locale = clean(input.locale) || clean(env.RAFIQ_DEFAULT_LOCALE) || 'en-US';
   const timezone = clean(input.timezone) || clean(env.RAFIQ_DEFAULT_TIMEZONE) || 'UTC';
-  const isEgyptianReference = locale.toLowerCase() === 'ar-eg';
-  const culture = clean(input.culture) || (isEgyptianReference ? 'egyptian-arabic' : 'neutral');
+  const requestedCulture = clean(input.culture);
+  const normalizedLocale = locale.replace(/_/g, '-').toLowerCase();
+  const localeUsesEgyptianReference = normalizedLocale === 'ar-eg' || normalizedLocale.startsWith('ar-eg-');
+  const culture = requestedCulture || (localeUsesEgyptianReference ? 'egyptian-arabic' : 'neutral');
+  const isEgyptianReference = requestedCulture
+    ? requestedCulture.toLowerCase() === 'egyptian-arabic'
+    : localeUsesEgyptianReference;
   const conversationLanguage = clean(input.conversationLanguage) || locale.split(/[-_]/)[0] || 'en';
   const searchLocale = clean(input.searchLocale) || clean(env.RAFIQ_WEB_SEARCH_LOCALE) || locale;
   const searchRegion = clean(input.searchRegion) || clean(env.RAFIQ_WEB_SEARCH_REGION) || getRegionFromLocale(searchLocale);

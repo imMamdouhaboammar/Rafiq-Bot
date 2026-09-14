@@ -5,7 +5,7 @@
 > **Manuscript draft — 2026-06-29**
 > **Author:** Mamdouh Aboammar
 > **Affiliation:** PrePilot (sole-developer research project)
-> **Artifact:** Rafiq v1.0–v5.0 (development 2023–2026) — https://github.com/imMamdouhaboammar/Rafiq-Vercel
+> **Artifact:** Rafiq v1.0–v5.0 (development 2023–2026) — https://github.com/imMamdouhaboammar/Rafiq-Bot
 > **Citation style:** APA 7th Edition
 > **Methodology:** Design Science Research (Hevner et al., 2004; Peffers et al., 2007; Walls et al., 1992) + autoethnographic reflection (Chang, 2008; Kaltenhauser et al., 2024) + postphenomenological framing (Suchman, 2007; Verbeek, 2005; Rosenberger, 2018)
 

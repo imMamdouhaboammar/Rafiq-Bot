@@ -24,6 +24,17 @@ try {
   assert.equal(japanese.direction, 'ltr');
   assert.equal(japanese.searchRegion, 'jp');
 
+  const egyptianVariant = resolveRuntimeLocale({ locale: 'ar-EG-u-nu-arab' }, {} as NodeJS.ProcessEnv);
+  assert.equal(egyptianVariant.isEgyptianReference, true, 'BCP 47 ar-EG variants must retain the bundled Egyptian reference preset');
+  assert.equal(egyptianVariant.culture, 'egyptian-arabic');
+
+  const explicitEgyptianCulture = resolveRuntimeLocale({ locale: 'en-US', culture: 'egyptian-arabic' }, {} as NodeJS.ProcessEnv);
+  assert.equal(explicitEgyptianCulture.isEgyptianReference, true, 'explicit Egyptian culture must work independently from locale');
+
+  const explicitNeutralCulture = resolveRuntimeLocale({ locale: 'ar-EG', culture: 'neutral' }, {} as NodeJS.ProcessEnv);
+  assert.equal(explicitNeutralCulture.isEgyptianReference, false, 'explicit culture must override locale-derived reference culture');
+  assert.equal(explicitNeutralCulture.direction, 'rtl', 'neutral culture must not change locale-derived text direction');
+
   const neutralTime = getCurrentTime();
   assert.equal(neutralTime.locale, 'en-US', 'global fallback locale must be neutral');
   assert.equal(neutralTime.timezone, 'UTC', 'global fallback timezone must be UTC');

@@ -27,7 +27,7 @@ A constructive design-science case study that uses Rafiq — an Arabic-speaking,
 | `lit-track-c.md` | 3 | ✅ Complete | 12 sources: DSR / autoethnography / methodology |
 | `03-synthesis.md` | 4 | ✅ Complete | 11,172 words across 9 themes |
 | `04-framework.md` | 5 | ✅ Complete | 7,963 words, 7 sections |
-| `05-manuscript.md` | 7 | ✅ Complete | 14,935 words, 11 sections, 55 APA 7 entries |
+| `05-manuscript.md` | 7 | Legacy snapshot | Assembled long-form copy retained for historical comparison; not the canonical manuscript source |
 | `arxiv-submission-package/manuscript/` | 9 | Complete | Linked Markdown manuscript package verified against the former Word export |
 | `qa-report.md` | 8 | ⏳ Pending | Quality assessment (target ≥80/100) — quality gate was run on synthesis and framework only; final QA across the assembled manuscript is in scope for the SIGCHI / TOCHI submission rounds |
 | `publishing-roadmap.md` | 10 | ✅ Complete | Venue matrix, deadlines, anonymization strategy, full timeline |
@@ -42,4 +42,4 @@ The current README `publishing-roadmap.md` is the source of truth for the venue 
 
 ## How to read this folder
 
-If you arrived here from GitHub, start with `arxiv-submission-package/manuscript/README.md` for the linked, section-by-section manuscript. `05-manuscript.md` remains the assembled long-form draft while the documentation consolidation pass decides the final single source of truth.
+If you arrived here from GitHub, start with `arxiv-submission-package/manuscript/README.md`. The linked files under `arxiv-submission-package/manuscript/` are the canonical manuscript source. `05-manuscript.md` is a legacy assembled snapshot retained for historical comparison and may lag the canonical section files.

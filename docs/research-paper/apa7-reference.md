@@ -108,7 +108,7 @@ If author is the same as site name, omit site name.
 
 ### 3.7 Software / artifact (when the artifact is the contribution)
 
-> Author, A. A. (Year). *Rafiq v5.0.0: Soul-engineered Arabic-speaking AI companion* (Version 5.0.0) [Software]. GitHub. https://github.com/imMamdouhaboammar/Rafiq-Vercel/releases/tag/v5.0.0
+> Aboammar, M. (2026). *Rafiq-Bot: Open-source AI companion runtime* [Software]. GitHub. https://github.com/imMamdouhaboammar/Rafiq-Bot
 
 For design-science research, the artifact (Rafiq) gets a citation entry. Software z.citation typically: title italic + `(Software)` in brackets + source URL.
 

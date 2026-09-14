@@ -65,7 +65,7 @@ Three research questions structure the manuscript. They are arranged from descri
 
 > **RQ1 (Descriptive — what):** What architectural decisions in Rafiq enable an AI companion to approximate the *felt experience of being heard by a friend*, rather than the *felt experience of using a tool*?
 
-> **RQ2 (Comparative — how well):** How does a configurable multi-trait personality + dialect-aware linguistic rendering + persistent psychological-state design compare, in user-experience terms, with single-system-prompt conversational agents designed for the same population?
+> **RQ2 (Comparative — how):** How does a configurable multi-trait personality + dialect-aware linguistic rendering + persistent psychological-state design differ, at the design and capability level, from single-system-prompt conversational agents designed for the same population?
 
 > **RQ3 (Ethical — what ought):** What are the ethical obligations of building AI companions that explicitly target users who experience chronic difficulty forming human friendships, and how should those obligations be operationalized inside the artifact itself?
 

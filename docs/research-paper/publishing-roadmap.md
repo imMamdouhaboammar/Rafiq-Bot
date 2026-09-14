@@ -56,7 +56,7 @@ Three options:
 | **Affiliation** | PrePilot Research (independent) |
 | **Primary category** | cs.HC (Human-Computer Interaction) |
 | **Cross-list** | cs.CL (Computation and Language — for the Arabic NLP contribution), cs.CY (Computers and Society — for the ethics contribution) |
-| **Abstract** | Use the existing Abstract from `05-manuscript.md` |
+| **Abstract** | Use the canonical Abstract from `arxiv-submission-package/manuscript/00-front-matter.md` |
 | **Comments** | "Manuscript in preparation for design-science venues (DIS/AIES 2027). Pre-print released under CC BY-NC-ND 4.0." |
 | **License** | CC BY-NC-ND 4.0 + arXiv non-exclusive license to distribute |
 | **Submission artifact** | Generate a currently supported LaTeX, PDF, or HTML artifact from the reviewed Markdown source; verify current arXiv guidance before submission |

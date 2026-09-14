@@ -33,7 +33,7 @@ bun test
 bun run typecheck
 ```
 
-Node 22 is used to run TypeScript tests through native type stripping. The source package has no runtime dependencies.
+Bun is the canonical runtime and test runner for this repository. The source package has no additional runtime dependencies beyond the repository toolchain.
 
 ## Rafiq integration
 

@@ -36,7 +36,7 @@ Loneliness and social isolation have been formally reclassified by the World Hea
 
 ```
 Manuscript in preparation for design-science venues (DIS 2027 / AIES 2027).
-Underlying artifact: github.com/imMamdouhaboammar/Rafiq-Vercel (Rafiq v1.0-v5.0).
+Underlying artifact: github.com/imMamdouhaboammar/Rafiq-Bot (Rafiq v1.0-v5.0 design lineage).
 Pre-print released under CC BY-NC-ND 4.0.
 ```
 
@@ -67,7 +67,7 @@ For submission, generate a supported artifact and verify the current format rule
 2. **First-time submitters need a "cs.HC endorsement."** If you haven't published in cs.HC before, your submission is held until an endorsed arXiv user (any of: troyer, ludwig, schneel, etc. — pre-print colleagues from HCI) endorses your submission. This usually takes 24-72 hours; sometimes longer if you submit on a Friday.
 3. Once endorsed, the paper appears at the next business-day announcement (8 PM EST / 5 PM PST).
 4. You get a DOI (e.g., `10.48550/arXiv.2506.NNNNN`).
-5. Update `docs/research-paper/05-manuscript.md` Appendix A and the GitHub `README.md` to include the arXiv URL.
+5. Update `docs/research-paper/arxiv-submission-package/manuscript/09-appendix-a.md` and the GitHub `README.md` to include the arXiv URL.
 
 ## Recommended: endorse back
 
