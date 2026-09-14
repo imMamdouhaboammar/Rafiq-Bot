@@ -48,6 +48,18 @@ Read [docs/providers/adding-a-provider.md](docs/providers/adding-a-provider.md).
 
 Read [docs/localization/README.md](docs/localization/README.md). Preserve the `ar-EG` reference path while proving that shared runtime behavior works independently from it.
 
+## Persona and soul contributions
+
+Persona presets live in `services/soulRegistry.ts` and consume the shared `BotSettings`/soul contracts in `types.ts`. Keep a preset explicit about its intended culture instead of changing global defaults to make one persona work. Add or update focused tests when a preset changes runtime behavior, and verify that another locale does not inherit culture-specific framing by accident.
+
+A new preset should have a distinct use case rather than duplicating an existing personality with different marketing copy. Clone-derived personas use the `custom_clone` path and should not be converted into hardcoded presets.
+
+## Tool contributions
+
+The current realtime tool path is under `services/tools/`, with intent routing in `toolRouter.server.ts` and orchestration in `services/geminiService.server.ts`. Add tools server-side, validate untrusted inputs at the boundary, make unavailable external services fail honestly, and extend `toolTypes.ts` plus persisted tool metadata only when the new tool is actually reachable.
+
+Test routing, result formatting, failure behavior, and at least one real integration chain without mocking every participating layer. Do not place provider credentials or Node-only tool dependencies in browser-facing components.
+
 ## Conduct and support
 
 Participation is covered by [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). For setup questions and issue routing, see [SUPPORT.md](SUPPORT.md). Security findings belong in the private process described by [SECURITY.md](SECURITY.md).

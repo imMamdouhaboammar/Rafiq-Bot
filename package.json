@@ -38,7 +38,7 @@
     "build": "vite build",
     "start": "tsx server.ts",
     "preview": "vite preview",
-    "test:oss-contracts": "tsx tests/envContract.test.ts && tsx tests/agentDocsContract.test.ts && tsx tests/localizationRuntime.test.ts && tsx tests/localizationUiContract.test.ts && tsx tests/ossDocumentationContract.test.ts"
+    "test:oss-contracts": "tsx tests/envContract.test.ts && tsx tests/agentDocsContract.test.ts && tsx tests/localizationRuntime.test.ts && tsx tests/localizationUiContract.test.ts && tsx tests/ossDocumentationContract.test.ts && tsx tests/ossVisualAssetsContract.test.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "1.1.11",
