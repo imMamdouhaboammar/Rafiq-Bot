@@ -49,3 +49,11 @@ Before changing behavior, inspect `README.md`, `PRODUCT.md`, `DESIGN.md`, `docs/
 ## Definition of done
 
 A change is complete only when its focused tests pass, typecheck passes, relevant security checks pass, the production build succeeds when applicable, and `git diff --check` is clean. User-visible changes also require responsive and accessibility verification at the affected surface. Report anything that could not be verified.
+
+## Repository identity and publication boundary
+
+- `imMamdouhaboammar/Rafiq-Bot` is the public open-source repository and the only OSS publication target for this project.
+- `imMamdouhaboammar/Rafiq-July` is the maintainer's personal/private working version. Treat it only as a historical or implementation reference when explicitly useful.
+- Never publish OSS commits, pull requests, releases, deployment metadata, or contributor-facing changes to `Rafiq-July`.
+- Do not assume a Vercel deployment sourced from `Rafiq-July` proves release readiness for `Rafiq-Bot`; verify the OSS repository and its own branch/deployment independently.
+- Before any push, confirm the Git remote resolves to `imMamdouhaboammar/Rafiq-Bot` and the branch is the intended OSS branch. Never retarget a personal checkout by changing its remote.
