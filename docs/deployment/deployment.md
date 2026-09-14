@@ -17,7 +17,8 @@ Rafiq is wired for **Vercel** out of the box. The `vercel.json` at the project r
 
 ```json
 {
-  "buildCommand": "npm run build",
+  "installCommand": "bun install --frozen-lockfile",
+  "buildCommand": "bun run build",
   "outputDirectory": "dist",
   "framework": "vite",
   "functions": {
@@ -37,7 +38,7 @@ Rafiq is wired for **Vercel** out of the box. The `vercel.json` at the project r
 ### Deploy steps
 
 1. Push to your connected Git branch (GitHub, GitLab, or Bitbucket)
-2. Vercel runs the configured `npm run build` command → `vite build`
+2. Vercel installs with `bun install --frozen-lockfile` and runs `bun run build` → `vite build`
 3. Output is deployed from `dist/`
 4. `api/*.ts` files are deployed as Serverless Functions
 
@@ -110,7 +111,7 @@ To test the production build locally:
 
 ```bash
 bun run build           # compiles SPA to dist/
-NODE_ENV=production tsx server.ts   # serves dist/ + api/* on port 3000
+NODE_ENV=production bun run start  # serves dist/ + api/* on port 3000
 ```
 
 In production mode, `server.ts` serves static files from `dist/` instead of using Vite middleware. The `/api/*` routes remain identical to development.
@@ -136,7 +137,7 @@ These are configured limits, not latency guarantees. Runtime duration still depe
 
 ## Security notes
 
-- `.env*` files are in `.gitignore` — never committed.
+- Real `.env` files are ignored and must never be committed; `.env.example` contains safe names and placeholders only.
 - All Gemini API keys and Redis credentials are server-only (`services/*.server.ts`). The browser never receives them.
 - The session cookie uses HMAC-SHA256 signing. Rotate `RAFIQ_APP_SESSION_SECRET` to invalidate all active sessions.
 - `bun run security:scan` detects accidentally committed secrets. Run before every deploy.

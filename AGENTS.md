@@ -8,11 +8,11 @@ Before changing behavior, inspect `README.md`, `PRODUCT.md`, `DESIGN.md`, `docs/
 
 ## Canonical commands
 
-- Install: `bun install`
+- Install: `bun install --frozen-lockfile`
 - Development: `bun run dev`
 - Typecheck: `bun run typecheck`
 - P0 checks: `bun run test:p0`
-- Full tests: `npm test`
+- Full tests: `bun test`
 - Security scan: `bun run security:scan`
 - Production build: `bun run build`
 

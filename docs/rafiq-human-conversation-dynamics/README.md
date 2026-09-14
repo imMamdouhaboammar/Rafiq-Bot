@@ -29,7 +29,7 @@ Human-like wording is not enough. Natural chat depends on deciding whether the n
 ## Test
 
 ```bash
-npm test
+bun test
 bun run typecheck
 ```
 

@@ -6,6 +6,8 @@ Contributions are welcome when they are scoped, testable, and preserve the proje
 
 Fork `imMamdouhaboammar/Rafiq-Bot` on GitHub and clone the fork using the URL GitHub provides. Add this repository as an `upstream` remote if you want to keep your fork synchronized.
 
+Use the Bun version pinned by `package.json#packageManager`; CI resolves the same version from that field.
+
 ```bash
 cd Rafiq-Bot
 bun install --frozen-lockfile

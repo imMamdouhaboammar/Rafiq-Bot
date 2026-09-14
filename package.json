@@ -2,7 +2,7 @@
   "name": "rafiq-bot",
   "private": false,
   "version": "0.0.1",
-  "description": "Open-source, local-first AI companion runtime with configurable personas, memory, tools, multimodal workflows, provider extension seams, and Egyptian Arabic as a first-class reference localization.",
+  "description": "Open-source, local-first AI companion runtime for persistent personas, memory, tools, multimodal workflows, and localizable conversation.",
   "type": "module",
   "author": "Mamdouh Aboammar <mamdouhfces1997@gmail.com>",
   "license": "MIT",
@@ -38,7 +38,7 @@
     "build": "vite build",
     "start": "tsx server.ts",
     "preview": "vite preview",
-    "test:oss-contracts": "tsx tests/envContract.test.ts && tsx tests/agentDocsContract.test.ts && tsx tests/localizationRuntime.test.ts && tsx tests/localizationUiContract.test.ts && tsx tests/ossDocumentationContract.test.ts && tsx tests/ossVisualAssetsContract.test.ts"
+    "test:oss-contracts": "tsx tests/envContract.test.ts && tsx tests/agentDocsContract.test.ts && tsx tests/localizationRuntime.test.ts && tsx tests/localizationUiContract.test.ts && tsx tests/ossDocumentationContract.test.ts && tsx tests/ossVisualAssetsContract.test.ts && tsx tests/ossDeliveryContract.test.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "1.1.11",
@@ -68,5 +68,6 @@
     "@vitejs/plugin-react": "^5.0.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
-  }
+  },
+  "packageManager": "bun@1.4.2"
 }

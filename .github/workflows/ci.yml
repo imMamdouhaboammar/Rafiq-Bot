@@ -18,23 +18,21 @@ jobs:
 
       - name: Setup Bun Runtime
         uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
 
       - name: Install Dependencies
-        run: bun install
+        run: bun install --frozen-lockfile
 
       - name: Run Typecheck
-        run: npm run typecheck
+        run: bun run typecheck
 
       - name: Run P0 Test Suite
-        run: npm run test:p0
+        run: bun run test:p0
 
       - name: Run Full Test Suite
-        run: npm test
+        run: bun test
 
       - name: Run Security Scan
-        run: npm run security:scan
+        run: bun run security:scan
 
       - name: Verify Production Build
         run: bun run build
