@@ -15,7 +15,7 @@ Quickest way (macOS, no extra software):
    - Cmd+P (print dialog)
    - Click the "PDF" dropdown at the bottom-left
    - Select "Save as PDF"
-   - Save to: /Users/mamdouhaboammar/Documents/Rafiq-Vercel/docs/research-paper/arxiv-submission-package/
+   - Save into this `docs/research-paper/arxiv-submission-package/` directory
    - Filename: rafiq-paper.pdf
 
 3. Upload rafiq-paper.pdf to arXiv submission form (it's the rendered version of the DOCX).
