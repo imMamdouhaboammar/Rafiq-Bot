@@ -1,0 +1,18 @@
+{
+  "name": "rafiq-bot",
+  "version": "0.0.1",
+  "description": "Rafiq (رفيق) — Open-source human-like multimodal AI companion engine tailored for Egyptian Arabic vernacular, featuring psychological state dynamics, WhatsApp persona cloning, and multi-agent skill orchestration.",
+  "author": {
+    "name": "Mamdouh Aboammar",
+    "url": "https://github.com/imMamdouhaboammar"
+  },
+  "homepage": "https://github.com/imMamdouhaboammar/Rafiq-Bot",
+  "repository": "https://github.com/imMamdouhaboammar/Rafiq-Bot.git",
+  "license": "MIT",
+  "skills": [
+    {
+      "name": "rafiq-companion-engine",
+      "path": "docs/architecture/overview.md"
+    }
+  ]
+}

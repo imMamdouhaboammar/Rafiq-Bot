@@ -1,8 +1,34 @@
 {
-  "name": "rafiq-human-like-ai",
-  "private": true,
-  "version": "0.0.0",
+  "name": "rafiq-bot",
+  "private": false,
+  "version": "0.0.1",
+  "description": "Rafiq (رفيق) — Open-source human-like multimodal AI companion engine tailored for Egyptian Arabic vernacular, featuring psychological state dynamics, WhatsApp persona cloning, and multi-agent skill orchestration.",
   "type": "module",
+  "author": "Mamdouh Aboammar <mamdouhfces1997@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/imMamdouhaboammar/Rafiq-Bot#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imMamdouhaboammar/Rafiq-Bot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/imMamdouhaboammar/Rafiq-Bot/issues"
+  },
+  "bin": {
+    "rafiq-bot": "./bin/cli.js"
+  },
+  "keywords": [
+    "ai-companion",
+    "egyptian-arabic",
+    "multimodal-ai",
+    "gemini-api",
+    "react19",
+    "express",
+    "pwa",
+    "agent-skill",
+    "skills-sh",
+    "claude-code"
+  ],
   "scripts": {
     "dev": "tsx server.ts",
     "test:security": "node scripts/security/secret-detectors.test.mjs && node scripts/security/scan-secrets.integration.test.mjs",
