@@ -279,7 +279,7 @@ Event domains: `chat:*`, `ai:*`, `persona:*`, `group:*`, `import:*`, `ui:*`, `sy
 | Environment | Server | Launch command |
 |-------------|--------|---------------|
 | Development | `server.ts` — Express 5 + `tsx`, Vite middleware | `bun run dev` |
-| Production | `api/*.ts` — Vercel Functions (`@vercel/node`) | `vercel deploy` |
+| Production | `api/*.ts` Vercel Functions with local structural request/response types | `vercel deploy` |
 
 **File naming convention:**
 - `services/foo.server.ts` — server-only. May import `node:*`, Redis, Google service account credentials.

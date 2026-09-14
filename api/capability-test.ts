@@ -1,4 +1,4 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+import type { ApiRequest, ApiResponse } from './httpTypes.js';
 import { assertAppSession } from '../services/appAuth.server.js';
 import { createGoogleGenAIClient } from '../services/googleClient.server.js';
 import { GEMINI_SAFETY_OFF_SETTINGS } from '../services/geminiSafety.server.js';
@@ -6,12 +6,12 @@ import { executeWebSearch } from '../services/tools/webSearchTool.server.js';
 
 const SUPPORTED_CAPABILITIES = new Set(['gemini', 'web_search']);
 
-const getRequestCapability = (request: VercelRequest): string => {
+const getRequestCapability = (request: ApiRequest): string => {
   const capability = request.body?.capability;
   return typeof capability === 'string' ? capability.trim() : '';
 };
 
-export default async function handler(request: VercelRequest, response: VercelResponse) {
+export default async function handler(request: ApiRequest, response: ApiResponse) {
   if (request.method !== 'POST') {
     response.setHeader('Allow', 'POST');
     return response.status(405).json({ ok: false, error: 'Method not allowed.' });

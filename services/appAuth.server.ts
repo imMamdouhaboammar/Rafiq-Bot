@@ -1,5 +1,4 @@
 import crypto from "node:crypto";
-import type { VercelRequest } from "@vercel/node";
 
 const COOKIE_NAME = "rafiq_app_session";
 const COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 180;
@@ -80,7 +79,7 @@ export const hasValidAppSession = (cookieHeader: unknown): boolean => {
   return typeof session === "string" && timingSafeEqual(session, getExpectedSession());
 };
 
-export const assertAppSession = (req: Pick<VercelRequest, "headers">) => {
+export const assertAppSession = (req: { headers: { cookie?: string } }) => {
   if (hasValidAppSession(req.headers.cookie)) return;
   const error = new Error("App password required.");
   (error as Error & { statusCode?: number }).statusCode = 401;

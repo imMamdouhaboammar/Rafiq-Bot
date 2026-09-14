@@ -16,6 +16,8 @@ Rafiq separates runtime locale from persona and culture so one reference experie
 
 With no explicit configuration, the public defaults are `en-US`, `UTC`, and LTR. Locale-derived RTL support covers Arabic and other RTL language families. Search region derives from the locale when no explicit region is supplied.
 
+Today, repository-wide locale and timezone defaults are configured through environment variables. `BotSettings` also carries locale, timezone, direction, conversation-language, and culture fields for programmatic/imported persona state, but the current public UI does not yet expose per-persona locale controls. Do not describe those fields as an end-user settings screen until that UI exists.
+
 ## Egyptian Arabic reference localization
 
 `ar-EG` remains a first-class reference path. Egyptian conversation datasets, dialect-specific tools, cultural timing helpers, and persona presets may remain intentionally Egyptian when they are explicitly selected. They must not run as hidden defaults for another locale.

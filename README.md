@@ -226,7 +226,7 @@ Google Gemini API and Vertex AI are the primary integrated inference paths. Agen
 
 ### Does Rafiq work beyond Arabic?
 
-The runtime now supports configurable locale, timezone, LTR/RTL direction, conversation language, culture hints, and search region without forcing Egyptian defaults. The UI still contains Arabic strings, so complete UI translation is not yet claimed.
+The runtime supports configurable locale, timezone, LTR/RTL direction, conversation language, culture hints, and search region without forcing Egyptian defaults. Repository-wide locale and timezone defaults are configurable today, while per-persona locale fields are currently a programmatic/import surface rather than a public settings screen. The UI still contains Arabic strings, so complete UI translation is not yet claimed.
 
 ### Is Egyptian Arabic being removed?
 

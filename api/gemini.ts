@@ -1,4 +1,4 @@
-import type { VercelRequest, VercelResponse } from "@vercel/node";
+import type { ApiRequest, ApiResponse } from "./httpTypes.js";
 import crypto from "node:crypto";
 import { assertAppSession } from "../services/appAuth.server.js";
 import * as GeminiServerService from "../services/geminiService.server.js";
@@ -81,7 +81,7 @@ export const validateReflectionArgs = (args: unknown[]): boolean => {
   });
 };
 
-const clientHash = (req: VercelRequest): string => {
+const clientHash = (req: ApiRequest): string => {
   const forwarded = req.headers["x-forwarded-for"];
   const clientKey = Array.isArray(forwarded) ? forwarded[0] : forwarded?.split(",")[0] || "unknown";
   return crypto.createHash("sha256").update(clientKey).digest("hex");
@@ -104,21 +104,21 @@ const consumeQuota = (
   return true;
 };
 
-const consumePersonalityAnalysisQuota = (req: VercelRequest): boolean => consumeQuota(
+const consumePersonalityAnalysisQuota = (req: ApiRequest): boolean => consumeQuota(
   personalityAnalysisWindows,
   clientHash(req),
   PERSONALITY_ANALYSIS_WINDOW_MS,
   PERSONALITY_ANALYSIS_MAX_PER_WINDOW,
 );
 
-const consumeReflectionQuota = (req: VercelRequest): boolean => consumeQuota(
+const consumeReflectionQuota = (req: ApiRequest): boolean => consumeQuota(
   reflectionWindows,
   clientHash(req),
   REFLECTION_WINDOW_MS,
   REFLECTION_MAX_PER_WINDOW,
 );
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: ApiRequest, res: ApiResponse) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ success: false, error: "Method not allowed" });

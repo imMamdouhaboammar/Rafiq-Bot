@@ -34,19 +34,18 @@
     "typecheck": "tsc --noEmit",
     "security:tracked": "node scripts/security/check-tracked-sensitive-files.mjs",
     "security:secrets": "node scripts/security/scan-secrets.mjs",
-    "security:scan": "bun run security:tracked && bun run security:secrets",
+    "security:scan": "bun run security:tracked && bun run security:secrets && bun run security:dependencies",
     "build": "vite build",
     "start": "tsx server.ts",
     "preview": "vite preview",
-    "test:oss-contracts": "tsx tests/envContract.test.ts && tsx tests/agentDocsContract.test.ts && tsx tests/localizationRuntime.test.ts && tsx tests/localizationUiContract.test.ts && tsx tests/ossDocumentationContract.test.ts && tsx tests/ossVisualAssetsContract.test.ts && tsx tests/ossDeliveryContract.test.ts"
+    "test:oss-contracts": "tsx tests/envContract.test.ts && tsx tests/agentDocsContract.test.ts && tsx tests/localizationRuntime.test.ts && tsx tests/localizationUiContract.test.ts && tsx tests/ossDocumentationContract.test.ts && tsx tests/ossVisualAssetsContract.test.ts && tsx tests/ossDeliveryContract.test.ts",
+    "security:dependencies": "bun audit --audit-level=high"
   },
   "dependencies": {
-    "@ai-sdk/google": "1.1.11",
     "@google/genai": "^1.30.0",
     "@redis-ai/langcache": "^0.11.1",
     "@redis-iris/agent-memory": "^0.0.5",
     "@types/express": "^5.0.6",
-    "ai": "4.1.45",
     "dexie": "4.0.1",
     "express": "^5.2.1",
     "framer-motion": "^11.0.0",
@@ -64,7 +63,6 @@
   "devDependencies": {
     "@types/bun": "^1.3.14",
     "@types/node": "^22.14.0",
-    "@vercel/node": "^5.5.0",
     "@vitejs/plugin-react": "^5.0.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
