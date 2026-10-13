@@ -78,3 +78,5 @@ export const analyzePersonalitySignals = (...args: any[]) => rpc('analyzePersona
 export const runReflectionConsolidation = (...args: any[]) => rpc('runReflectionConsolidation', ...args);
 export const generateVideo = (...args: any[]) => rpc('generateVideo', ...args);
 export const processFileUpload = (...args: any[]) => rpc('processFileUpload', ...args);
+export const generateStorytellerOutlineAndChapter1 = (...args: any[]) => rpc('generateStorytellerOutlineAndChapter1', ...args);
+export const generateStorytellerNextChapter = (...args: any[]) => rpc('generateStorytellerNextChapter', ...args);

@@ -46,15 +46,19 @@ const NewChatModal: React.FC<NewChatModalProps> = ({ onClose, onCreate, onCreate
   const [visualSeed] = useState(() => chatToEdit?.settings.visualSeed || generateVisualSeed());
   
   // Soul & Traits
-  const [selectedSoulId, setSelectedSoulId] = useState<string>(chatToEdit?.settings.soulId || 'amira_default');
-  const [traits, setTraits] = useState<SoulTraits>(chatToEdit?.settings.soulTraits || SOUL_ARCHETYPES[0].baseTraits);
+  const [selectedSoulId, setSelectedSoulId] = useState<string>(chatToEdit?.settings.soulId || 'nova_default');
+  const [traits, setTraits] = useState<SoulTraits>(
+    chatToEdit?.settings.soulTraits
+      ? { ...SOUL_ARCHETYPES[0].baseTraits, ...chatToEdit.settings.soulTraits }
+      : SOUL_ARCHETYPES[0].baseTraits,
+  );
   const [adaptivePersonality, setAdaptivePersonality] = useState(() => (
     chatToEdit?.settings.adaptivePersonality || createAdaptivePersonalityState()
   ));
   const [adaptiveMutation, setAdaptiveMutation] = useState<AdaptivePersonalityMutation | undefined>();
   const [activeTab, setActiveTab] = useState<'identity' | 'soul' | 'voice' | 'clone_analysis'>('identity');
   const [cloneProfileDraft, setCloneProfileDraft] = useState<EditableCloneProfile | undefined>(
-    () => chatToEdit?.settings.cloneProfile,
+    () => chatToEdit?.settings.cloneProfile as EditableCloneProfile | undefined,
   );
   const [cloneProfileDirty, setCloneProfileDirty] = useState(false);
   const [cloneProfileError, setCloneProfileError] = useState('');
@@ -94,7 +98,7 @@ const NewChatModal: React.FC<NewChatModalProps> = ({ onClose, onCreate, onCreate
 
   useEffect(() => {
     if (!cloneProfileDirty) {
-      setCloneProfileDraft(chatToEdit?.settings.cloneProfile);
+      setCloneProfileDraft(chatToEdit?.settings.cloneProfile as EditableCloneProfile | undefined);
     }
   }, [chatToEdit?.settings.cloneProfile, cloneProfileDirty]);
 
@@ -281,7 +285,7 @@ const NewChatModal: React.FC<NewChatModalProps> = ({ onClose, onCreate, onCreate
       setGender(result.settings.botGender);
       setAge(String(result.settings.botAge || 24));
       setBio(result.settings.botBio || '');
-      setTraits(result.settings.soulTraits || { chaos: 50, empathy: 50, slang: 50, intellect: 50, positivity: 50 });
+      setTraits({ chaos: 50, empathy: 50, slang: 50, intellect: 50, positivity: 50, ...result.settings.soulTraits });
       setSelectedSoulId(result.settings.soulId || 'custom_clone');
       if (result.settings.dialect) setDialect(result.settings.dialect);
       
@@ -351,7 +355,7 @@ const NewChatModal: React.FC<NewChatModalProps> = ({ onClose, onCreate, onCreate
     if (mode === 'single' && !name.trim()) return;
     if (mode === 'group' && (!groupName.trim() || selectedBotCount < 2)) return;
 
-    let savedCloneProfile = cloneProfileDraft || chatToEdit?.settings.cloneProfile;
+    let savedCloneProfile: EditableCloneProfile | undefined = cloneProfileDraft || (chatToEdit?.settings.cloneProfile as EditableCloneProfile | undefined);
     if (savedCloneProfile?.analysis?.status === 'ready') {
       const invalidTimelineEvent = savedCloneProfile.timeline?.find(event => (
         (event.title.trim() && !event.details.trim()) || (!event.title.trim() && event.details.trim())
@@ -387,7 +391,7 @@ const NewChatModal: React.FC<NewChatModalProps> = ({ onClose, onCreate, onCreate
         memorySeeds: editableProfile.memorySeeds
           ?.filter(memory => memory.text.trim())
           .map(memory => ({ ...memory, text: memory.text.trim() })),
-      };
+      } as EditableCloneProfile;
     }
 
     const settings: BotSettings = {
@@ -412,7 +416,7 @@ const NewChatModal: React.FC<NewChatModalProps> = ({ onClose, onCreate, onCreate
             speed: voiceSpeed,
             tone: 'energetic'
         },
-        cloneProfile: savedCloneProfile,
+        cloneProfile: savedCloneProfile as BotSettings['cloneProfile'],
         impersonationProfile: formatCloneSpeechStyle(savedCloneProfile),
     };
 

@@ -55,10 +55,13 @@ The browser QA behind these captures uses a 1440x900 desktop viewport and a 390x
 | Capability | Status | Notes |
 | --- | --- | --- |
 | Persistent persona and behavioral state | Available now | Persona configuration, psychology state, continuity, and adaptive communication behavior |
-| Browser-local chat persistence | Available now | Dexie/IndexedDB stores chats, messages, profiles, and local memory data |
+| Cognitive architecture & neuro-cognitive memory (v8) | Available now | Multi-stage perception, situational appraisal, relational state machine, inner monologue, synthetic affect, reflection journal, and inside-jokes ledger |
+| Boundless Storyteller mode | Available now | Interactive co-creative narrative workspace (`/story`) with persistent story arcs, scenes, and companion bridge integration |
+| Companion duplication & `.rafiq.json` v2 packages | Available now | One-click settings-only companion cloning and portable v2 `.rafiq.json` companion package export/import |
+| Browser-local chat persistence | Available now | Dexie/IndexedDB (schema v8) stores chats, messages, profiles, neuro-cognitive records, and storyteller state |
 | Direct and group conversation flows | Available now | Direct personas and multi-member groups use the same local application shell |
 | WhatsApp export persona analysis | Available now | Parses exported chat text and can build a progressively analyzed clone profile |
-| Gemini API / Vertex AI inference | Available now | Primary integrated inference paths |
+| Gemini API / Vertex AI inference with resilience | Available now | Primary integrated inference paths with retry/backoff, circuit-breaker recovery, and fallback model chains |
 | AgentRouter gateway | Optional | Integrated for recognized model IDs when gateway credentials are configured |
 | Redis vector memory | Optional | Remote memory path; local behavior remains available without it |
 | Redis LangCache | Optional | Semantic response cache when explicitly configured |
@@ -66,7 +69,7 @@ The browser QA behind these captures uses a 1440x900 desktop viewport and a 390x
 | Image and media workflows | Provider-dependent | Current integrated flows use the Google inference stack |
 | KoboldCpp local adapter | Experimental integration seam | Adapter and tests exist, but it is not wired into the main chat provider selector |
 
-See the [provider matrix](docs/providers/README.md) for the current integration boundary.
+See the [provider matrix](docs/providers/README.md) and [private-to-OSS synchronization audit](docs/maintainers/private-to-oss-sync.md) for the current integration boundary.
 
 ## Architecture
 

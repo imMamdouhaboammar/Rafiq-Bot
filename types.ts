@@ -1,6 +1,10 @@
 
 import { z } from "zod";
 import { CompanionContinuityStateSchema } from "./services/companionContinuity.js";
+import {
+  AffectStateSchema,
+  MemoryGrantSchema,
+} from "./contracts/neuroCognitive.js";
 
 export enum MessageRole {
   USER = 'user',
@@ -13,7 +17,8 @@ export enum AppMode {
   VEO_VIDEO = 'VEO_VIDEO',
   IMAGE_GEN = 'IMAGE_GEN',
   STUDIO = 'STUDIO',
-  SLOW_BURN_STORY = 'SLOW_BURN_STORY'
+  SLOW_BURN_STORY = 'SLOW_BURN_STORY',
+  STORYTELLER = 'STORYTELLER'
 }
 
 export enum RelationType {
@@ -252,6 +257,7 @@ export const PsychologicalStateSchema = z.object({
   currentActivity: z.string().optional(),
   currentAvailability: z.enum(['free', 'busy', 'intermittent', 'dormant']).default('free').optional(),
   imaginaryWorld: ImaginaryWorldSchema,
+  affect: AffectStateSchema.optional(),
 });
 
 export const CloneReplyExampleSchema = z.object({
@@ -340,7 +346,7 @@ export const BotSettingsSchema = z.object({
   culture: z.string().trim().min(1).optional(),
   
   // Soul Engine Fields
-  soulId: z.string().default('amira_default'), 
+  soulId: z.string().default('nova_default'), 
   soulTraits: z.object({
       chaos: z.number().min(0).max(100),
       empathy: z.number().min(0).max(100),
@@ -357,6 +363,8 @@ export const BotSettingsSchema = z.object({
       speed: z.number(),
       tone: z.enum(['sweet', 'husky', 'flat', 'energetic'])
   }).optional(),
+  memoryGrants: z.array(MemoryGrantSchema).optional(),
+  cognitiveMode: z.enum(['off', 'shadow', 'assist', 'strict']).default('off').optional(),
 });
 
 export const ChatSessionSchema = z.object({
@@ -762,4 +770,35 @@ export interface CoalescedMessageBurst {
   firstReceivedAt: number;
   lastReceivedAt: number;
 }
+
+// ==========================================
+// RAFIQ NEURO-COGNITIVE SYSTEM EXPORTS
+// ==========================================
+export type {
+  FactPolarity,
+  FactCertainty,
+  FactStatus,
+  MemorySensitivity,
+  MemoryFact,
+  MemoryRelation,
+  MemoryEvent,
+  MemoryJob,
+  ReflectionEntry,
+  AffectState,
+  MemoryGrant,
+} from './contracts/neuroCognitive.js';
+export {
+  FactPolaritySchema,
+  FactCertaintySchema,
+  FactStatusSchema,
+  MemorySensitivitySchema,
+  MemoryFactSchema,
+  MemoryRelationSchema,
+  MemoryEventSchema,
+  MemoryJobSchema,
+  ReflectionEntrySchema,
+  AffectStateSchema,
+  MemoryGrantSchema,
+} from './contracts/neuroCognitive.js';
+
 

@@ -153,6 +153,42 @@ export const BUILTIN_SKILLS: SkillDefinition[] = [
       'مصر الجديدة: روكسي والكوربة للمباني التراثية والقعدات الكلاسيكية الرايقة.'
     ],
   },
+  {
+    id: 'storyteller-boundless',
+    name: 'Storyteller بلا حدود',
+    englishName: 'Limitless Storyteller',
+    category: 'lifestyle',
+    icon: '📖',
+    description: 'Composes immersive serialized stories chapter by chapter, adapting freely across genres, styles, and lengths.',
+    version: '1.0.0',
+    author: 'system',
+    activationMode: 'auto',
+    isDefaultInstalled: true,
+    triggers: {
+      keywords: [
+        'story', 'tale', 'chapter', 'novel', 'قصة', 'رواية', 'حكاية', 'شابتر', 'ستوري', 'فصل', 'ألفلي قصة', 'احكيلي رواية'
+      ],
+      slashCommand: '/story',
+      arabicSlashAlias: '/حكاية',
+      minConfidence: 0.7,
+    },
+    behavior: {
+      titleArabic: 'Storyteller بلا حدود',
+      toneModifier: 'Imaginative master narrator who excels at serialized storytelling, vivid worldbuilding, dynamic character arcs, and cinematic cliffhangers.',
+      instructions: `
+- When the user asks for a story or novel, engage your creative imagination fully.
+- Offer serialized chapter-by-chapter pacing and invite the user to steer key story decisions.
+`.trim(),
+      negativeConstraints: [
+        'Do not compress a full story into a dry single-paragraph summary.',
+        'Avoid generic AI clichés and predictable corporate tropes.',
+      ],
+      sampleTurn: {
+        user: 'Tell me an atmospheric mystery story about an old bookstore in Alexandria.',
+        bot: 'I would love to. Let us begin chapter one: the late-night storm off the Mediterranean, a flicker of candlelight behind salt-stained windows, and a book bound without a title. Ready to dive in? 😉',
+      },
+    },
+  },
 ];
 
 // =========================================================

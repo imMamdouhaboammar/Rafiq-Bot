@@ -14,8 +14,10 @@ import * as DB from './services/db.js';
 import { eventBus, type RafiqEventMap } from './services/eventBus.js';
 import * as GeminiService from './services/geminiService.js';
 import { groupEngine } from './services/groupEngine.js';
-import { importChat } from './services/chatTransfer.js';
+import { importCompanionPackage } from './services/chatTransfer.js';
+import { duplicateCompanion } from './services/companionDuplication.js';
 import { buildBlueprintMemoryRecords } from './services/memoryEngine.js';
+import { rafiqBackgroundWorker } from './services/rafiqBackgroundWorker.js';
 import {
   continueProgressiveCloneJob,
   startProgressiveCloneJob,
@@ -25,6 +27,7 @@ import {
 import { useAppController } from './hooks/useAppController.js';
 import { useRafiqStore } from './stores/useRafiqStore.js';
 import { getTextDirection } from './services/runtimeLocale.js';
+import { DEFAULT_UI_LOCALE, t } from './i18n/index.js';
 
 export default function App() {
   return (
@@ -323,7 +326,7 @@ function RafiqApp() {
         botGender: 'female',
         chattiness: 'balanced',
         fragmentedMessages: true,
-        soulId: 'amira_default',
+        soulId: 'nova_default',
         thinkingLevel: 'medium',
         boostRafiq: true,
       },
@@ -375,15 +378,15 @@ function RafiqApp() {
 
   const handleImportChat = async (file: File) => {
     try {
-      const result = await importChat(file);
+      const result = await importCompanionPackage(file);
       addChat(result.chatSession);
       setActiveTab('chats');
       setActiveChatId(result.chatSession.id);
-      const name = result.chatSession.isGroup
-        ? result.chatSession.groupName
-        : result.chatSession.settings.botName;
+      const modeLabel = result.exportMode === 'settings_only'
+        ? '(الإعدادات فقط - جاهز للدردشة)'
+        : `(${result.messageCount} رسالة بدون ميديا)`;
       eventBus.emit('ui:toast', {
-        message: `تم استيراد محادثة ${name || ''} (${result.messageCount} رسالة)`,
+        message: `تم استيراد الرفيق "${result.companionName}" بنجاح ${modeLabel} ✅`,
         type: 'success',
       });
     } catch (error) {
@@ -484,10 +487,57 @@ function RafiqApp() {
       dismissible: true,
       onConfirm: async () => {
         if (targetChat?.isGroup) groupEngine.destroyGroupSession(id);
+        rafiqBackgroundWorker.cancelJob(id);
         await DB.deleteChatSession(id);
         removeChat(id);
         if (editingChatId === id) setEditingChatId(null);
         eventBus.emit('ui:toast', { message: 'تم حذف الدردشة بالكامل', type: 'success' });
+      },
+    });
+  };
+
+  const handleDuplicateChat = async (chatOrId: ChatSession | string) => {
+    const sourceChat = typeof chatOrId === 'string'
+      ? chats.find(chat => chat.id === chatOrId)
+      : chatOrId;
+
+    if (!sourceChat) return;
+
+    if (sourceChat.isGroup) {
+      eventBus.emit('ui:toast', {
+        message: 'ميزة النسخ متاحة لرفقاء الذكاء الاصطناعي فقط',
+        type: 'warning',
+      });
+      return;
+    }
+
+    const botName = sourceChat.settings.botName;
+    setDialogState({
+      open: true,
+      title: 'نسخ الرفيق',
+      message: `هل تريد إنشاء رفيق جديد مطابق لـ "${botName}" بنفس الإعدادات وبدون أي رسائل سابقة؟`,
+      tone: 'info',
+      confirmLabel: 'نسخ الرفيق',
+      cancelLabel: 'إلغاء',
+      showCancel: true,
+      dismissible: true,
+      onConfirm: async () => {
+        try {
+          const duplicated = await duplicateCompanion(sourceChat);
+          addChat(duplicated);
+          setActiveTab('chats');
+          setActiveChatId(duplicated.id);
+          eventBus.emit('ui:toast', {
+            message: `تم نسخ الرفيق "${duplicated.settings.botName}" بنجاح بدون رسائل`,
+            type: 'success',
+          });
+        } catch (error) {
+          console.error('[App] Failed to duplicate companion:', error);
+          eventBus.emit('ui:toast', {
+            message: error instanceof Error ? error.message : 'فشل نسخ الرفيق',
+            type: 'error',
+          });
+        }
       },
     });
   };
@@ -508,18 +558,19 @@ function RafiqApp() {
       onBack={() => setActiveChatId(null)}
       onInfo={() => void openChatEditor(activeChatId)}
       onDelete={() => void handleDeleteChat(activeChatId)}
+      onDuplicate={() => void handleDuplicateChat(activeChat)}
     />
   ) : (
     <div className="flex flex-1 flex-col items-center justify-center border-b-[6px] border-[#25D366] bg-[#f0f2f5] text-center">
       <div className="max-w-md p-10">
         <h1 className="mb-4 text-3xl font-light text-[#41525d]">Rafiq Web</h1>
-        <p className="text-sm text-[#667781]">اختار محادثة أو أنشئ شخصية جديدة للبدء</p>
+        <p className="text-sm text-[#667781]">{t('app.emptyState.heading', shellLocale)}</p>
         <button
           type="button"
           onClick={() => setShowNewChatModal(true)}
           className="mt-8 min-h-11 rounded-full bg-[#008069] px-6 font-bold text-white shadow hover:bg-[#006855]"
         >
-          إنشاء شخصية جديدة
+          {t('app.emptyState.newCompanionCta', shellLocale)}
         </button>
       </div>
     </div>
@@ -537,6 +588,7 @@ function RafiqApp() {
               isTyping={false}
               onSelectChat={setActiveChatId}
               onDeleteChat={id => void handleDeleteChat(id)}
+              onDuplicateChat={chat => void handleDuplicateChat(chat)}
               onEditChat={chat => void openChatEditor(chat.id)}
               onOpenProfile={() => setShowProfileModal(true)}
               onNewChat={() => setShowNewChatModal(true)}

@@ -29,7 +29,7 @@ const PagedMessageList = <T extends IdentifiedMessage>({
   const containerRef = useRef<HTMLDivElement>(null);
   const olderSentinelRef = useRef<HTMLDivElement>(null);
   const previousCountRef = useRef(messages.length);
-  const restoreScrollRef = useRef<{ height: number; top: number }>();
+  const restoreScrollRef = useRef<{ height: number; top: number } | null>(null);
   const [windowState, setWindowState] = useState<MessageWindow>(() => (
     createInitialMessageWindow(messages.length)
   ));

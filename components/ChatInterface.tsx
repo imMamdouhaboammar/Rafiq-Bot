@@ -24,6 +24,7 @@ import {
   BookOpen,
   Sparkles,
   Zap,
+  Copy,
 } from 'lucide-react';
 import { AppMode, BotMood, MessageRole, type ChatMessage, type ChatSession, type UserProfile } from '../types.js';
 import ChatBubble from './ChatBubble.js';
@@ -44,9 +45,12 @@ import { VISIBLE_CHAT_MODELS, THINKING_LEVELS } from '../services/geminiModels.j
 import { downloadBlob, exportChat } from '../services/chatTransfer.js';
 import WhatsAppAttachmentSheet from './WhatsAppAttachmentSheet.js';
 import WhatsAppContactInfoDrawer from './WhatsAppContactInfoDrawer.js';
+import ExportCompanionModal from './ExportCompanionModal.js';
 import { triggerHaptic } from '../utils/haptics.js';
 import { RandomPromptsSettings } from './RandomPromptsSettings.js';
 import { listRandomPrompts, seedDefaultPromptsIfEmpty } from '../services/randomPrompts.js';
+import StorytellerView from './StorytellerView.js';
+import { StorytellerErrorBoundary } from './ErrorBoundary.js';
 
 interface ChatInterfaceProps {
   chat: ChatSession;
@@ -54,6 +58,7 @@ interface ChatInterfaceProps {
   onBack: () => void;
   onInfo: () => void;
   onDelete: () => void;
+  onDuplicate?: () => void;
 }
 
 const EMOJI_OPTIONS = [
@@ -107,7 +112,7 @@ const STUDIO_STYLE_OPTIONS = [
   { value: 'sketch', label: 'رسم' },
 ] as const;
 
-const ChatInterface: React.FC<ChatInterfaceProps> = ({ chat, userProfile, onBack, onInfo, onDelete }) => {
+const ChatInterface: React.FC<ChatInterfaceProps> = ({ chat, userProfile, onBack, onInfo, onDelete, onDuplicate }) => {
   const isGroup = Boolean(chat.isGroup);
   const chatCtrl = useChatController(chat.id);
   const groupCtrl = useGroupController(chat);
@@ -130,6 +135,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ chat, userProfile, onBack
   const [showProfileImage, setShowProfileImage] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
+  const [showExportModal, setShowExportModal] = useState(false);
   const [isDraggingFiles, setIsDraggingFiles] = useState(false);
   const [studioPrompt, setStudioPrompt] = useState('');
   const [showRandomPrompts, setShowRandomPrompts] = useState(false);
@@ -172,7 +178,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ chat, userProfile, onBack
       .then(() => listRandomPrompts())
       .then(setPrompts)
       .catch(error => console.warn('[ChatInterface] prompt load failed:', error));
-  }, [userProfile?.id, setPrompts]);
+  }, [userProfile?.name, setPrompts]);
 
   useEffect(() => {
     const closeTransientPopovers = (event: KeyboardEvent) => {
@@ -234,6 +240,12 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ chat, userProfile, onBack
 
   const submitMessage = () => {
     setShowEmojiPicker(false);
+    const trimmed = input.trim();
+    if (/^\/(?:story|storyteller|حكاية|قصة)(?:\s+(.*))?$/i.test(trimmed)) {
+      setInput('');
+      chatCtrl.setAppMode(AppMode.STORYTELLER);
+      return;
+    }
     void handleSend();
   };
 
@@ -368,6 +380,22 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ chat, userProfile, onBack
 
   if (!isGroup && chatCtrl.appMode === AppMode.LIVE_VOICE) {
     return <LiveVoice onClose={() => chatCtrl.setAppMode(AppMode.CHAT)} settings={chat.settings} userProfile={userProfile} />;
+  }
+
+  if (!isGroup && chatCtrl.appMode === AppMode.STORYTELLER) {
+    return (
+      <StorytellerErrorBoundary onClose={() => chatCtrl.setAppMode(AppMode.CHAT)}>
+        <StorytellerView
+          chat={chat}
+          userProfile={userProfile}
+          onClose={() => chatCtrl.setAppMode(AppMode.CHAT)}
+          onSendToChat={async (text) => {
+            chatCtrl.setAppMode(AppMode.CHAT);
+            await chatCtrl.handleSend(text);
+          }}
+        />
+      </StorytellerErrorBoundary>
+    );
   }
 
   const messageFooter = (
@@ -592,6 +620,19 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ chat, userProfile, onBack
                     onClick={() => {
                       triggerHaptic('light');
                       setShowSettingsMenu(false);
+                      chatCtrl.setAppMode(AppMode.STORYTELLER);
+                    }}
+                    className="flex w-full items-center gap-3 px-4 py-2.5 text-sm hover:bg-[#f0f2f5] active:bg-[#e9edef]"
+                  >
+                    <BookOpen size={17} className="text-purple-600" />
+                    Storyteller بلا حدود 📖✨
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      triggerHaptic('light');
+                      setShowSettingsMenu(false);
                       setShowSkillsModal(true);
                     }}
                     className="flex w-full items-center gap-3 px-4 py-2.5 text-sm hover:bg-[#f0f2f5] active:bg-[#e9edef]"
@@ -615,12 +656,28 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ chat, userProfile, onBack
                 </>
               ) : null}
 
+              {!isGroup && onDuplicate ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    triggerHaptic('light');
+                    setShowSettingsMenu(false);
+                    onDuplicate();
+                  }}
+                  className="flex w-full items-center gap-3 px-4 py-2.5 text-sm hover:bg-[#f0f2f5] active:bg-[#e9edef]"
+                >
+                  <Copy size={17} className="text-[#008069]" />
+                  <span>نسخ الرفيق (الإعدادات فقط)</span>
+                </button>
+              ) : null}
+
               <button
                 type="button"
                 disabled={isExporting}
                 onClick={() => {
                   triggerHaptic('light');
-                  void handleExportChat();
+                  setShowSettingsMenu(false);
+                  setShowExportModal(true);
                 }}
                 className="flex w-full items-center gap-3 px-4 py-2.5 text-sm hover:bg-[#f0f2f5] active:bg-[#e9edef] disabled:opacity-50"
               >
@@ -629,7 +686,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ chat, userProfile, onBack
                 ) : (
                   <Download size={17} className="text-[#54656f]" />
                 )}
-                <span>{isExporting ? 'جاري التصدير...' : 'تصدير المحادثة'}</span>
+                <span>{isExporting ? 'جاري التصدير...' : 'تصدير الرفيق...'}</span>
               </button>
 
               <div className="my-1 border-t border-gray-100" />
@@ -1038,6 +1095,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ chat, userProfile, onBack
         onSelectGallery={() => fileInputRef.current?.click()}
         onSelectAudio={() => docInputRef.current?.click()}
         onSelectStudio={() => chatCtrl.setAppMode(AppMode.STUDIO)}
+        onSelectStoryteller={() => {
+          setShowAttachSheet(false);
+          chatCtrl.setAppMode(AppMode.STORYTELLER);
+        }}
         onSelectQuickPrompts={() => setShowRandomPrompts(true)}
         onSelectCode={() => codeInputRef.current?.click()}
         onSelectImportChat={() => chatExportInputRef.current?.click()}
@@ -1056,12 +1117,17 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ chat, userProfile, onBack
           setShowContactInfoDrawer(false);
           onInfo();
         }}
+        onDuplicateChat={!isGroup && onDuplicate ? () => {
+          setShowContactInfoDrawer(false);
+          onDuplicate();
+        } : undefined}
         onDeleteChat={() => {
           setShowContactInfoDrawer(false);
           onDelete();
         }}
         onExportChat={() => {
-          void handleExportChat();
+          setShowContactInfoDrawer(false);
+          setShowExportModal(true);
         }}
         isExporting={isExporting}
         onOpenSkillsHub={() => {
@@ -1071,6 +1137,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ chat, userProfile, onBack
         onOpenStudio={() => {
           setShowContactInfoDrawer(false);
           chatCtrl.setAppMode(AppMode.STUDIO);
+        }}
+        onOpenStoryteller={() => {
+          setShowContactInfoDrawer(false);
+          chatCtrl.setAppMode(AppMode.STORYTELLER);
         }}
         onStartAudioCall={() => {
           setShowContactInfoDrawer(false);
@@ -1090,6 +1160,13 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ chat, userProfile, onBack
           setShowContactInfoDrawer(false);
           setShowProfileImage(true);
         }}
+      />
+
+      <ExportCompanionModal
+        open={showExportModal}
+        onClose={() => setShowExportModal(false)}
+        chat={chat}
+        messageCount={messages.length}
       />
 
       <RandomPromptsSettings open={showRandomPrompts} onClose={() => setShowRandomPrompts(false)} />

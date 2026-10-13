@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import {
+  BookOpen,
   Camera,
   Code2,
   FileText,
@@ -23,6 +24,7 @@ interface WhatsAppAttachmentSheetProps {
   onSelectQuickPrompts: () => void;
   onSelectCode: () => void;
   onSelectImportChat: () => void;
+  onSelectStoryteller?: () => void;
   onSelectSelfie?: () => void;
 }
 
@@ -37,6 +39,7 @@ export const WhatsAppAttachmentSheet: React.FC<WhatsAppAttachmentSheetProps> = (
   onSelectQuickPrompts,
   onSelectCode,
   onSelectImportChat,
+  onSelectStoryteller,
 }) => {
   const sheetRef = useRef<HTMLDivElement>(null);
 
@@ -86,6 +89,13 @@ export const WhatsAppAttachmentSheet: React.FC<WhatsAppAttachmentSheetProps> = (
       icon: Palette,
       bg: 'bg-[#6366f1]',
       action: onSelectStudio,
+    },
+    {
+      id: 'storyteller',
+      label: 'Storyteller',
+      icon: BookOpen,
+      bg: 'bg-[#9333ea]',
+      action: onSelectStoryteller || (() => {}),
     },
     {
       id: 'prompts',

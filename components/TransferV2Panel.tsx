@@ -57,7 +57,7 @@ const TransferV2Panel: React.FC = () => {
   const [importing, setImporting] = useState(false);
   const [progress, setProgress] = useState<TransferImportProgress>();
   const [warnings, setWarnings] = useState<string[]>([]);
-  const abortControllerRef = useRef<AbortController>();
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const normalizedPassphrase = passphrase.normalize('NFKC');
   const passphraseReady = normalizedPassphrase.length >= MIN_PASSPHRASE_LENGTH;

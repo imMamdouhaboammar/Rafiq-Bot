@@ -570,6 +570,8 @@ const soulBlueprintSchema: Schema = {
     bestArchetypeId: {
       type: Type.STRING,
       enum: [
+        "nova_default",
+        "alex_default",
         "amira_default",
         "chaotic_bestie",
         "wise_mentor",
@@ -663,6 +665,8 @@ const soulBlueprintResultSchema = z.object({
     positivity: z.number().finite().min(0).max(100),
   }).strict(),
   bestArchetypeId: z.enum([
+    "nova_default",
+    "alex_default",
     "amira_default",
     "chaotic_bestie",
     "wise_mentor",
@@ -764,6 +768,8 @@ Generate the following:
    - positivity: How upbeat (0=depressed, 100=manic)
 
 4. **Best Archetype ID:** Pick the closest match from:
+   - nova_default: Thoughtful Companion — warm, grounded, observant
+   - alex_default: Grounded Friend — candid, witty, practical
    - amira_default: The Survivor — realistic, complex, warm but cynical
    - chaotic_bestie: Chaotic Bestie — high energy, zero filter, meme-driven
    - wise_mentor: Wise Mentor — calm, philosophical, stabilizing
