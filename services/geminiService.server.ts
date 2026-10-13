@@ -7,7 +7,7 @@ import { generateRealisticAvatar } from "./avatarEngine.js";
 import { getVisualPromptModifiers, getEmotionVisualModifiers } from "./visualEngine.js";
 import { createGoogleGenAIClient } from "./googleClient.server.js";
 import { GEMINI_SAFETY_OFF_SETTINGS } from "./geminiSafety.server.js";
-import { ChatThinkingLevelId, resolveChatModel, resolveThinkingLevel, STUDIO_IMAGE_MODEL, STUDIO_IMAGE_MODEL_CHAIN, STUDIO_STYLE_PROMPTS, isAgentRouterModel, FLASH_3_8_MODEL, FLASH_3_7_MODEL } from "./geminiModels.js";
+import { ChatThinkingLevelId, resolveChatModel, resolveThinkingLevel, STUDIO_IMAGE_MODEL, STUDIO_IMAGE_MODEL_CHAIN, STUDIO_STYLE_PROMPTS, isAgentRouterModel, FLASH_3_8_MODEL, FLASH_3_7_MODEL, FLASH_2_5_MODEL, PRO_2_5_MODEL, FLASH_1_5_MODEL, getChatModelFallbackChain } from "./geminiModels.js";
 import { generateAgentRouterResponse, streamAgentRouterResponse } from "./agentRouter.server.js";
 import { describeTraitProfile } from "./soulRegistry.js";
 import { sanitizePersonaReply } from "./conversationShapedPersona.js";
@@ -41,13 +41,21 @@ import { PROMPT_BUDGETS, OUTPUT_LIMITS } from "./promptBudget.js";
 import { getCompiledPersona } from "./personaRuntimeCache.js";
 import { ADAPTIVE_FACETS, type PersonalitySignalProposal } from "./livingPersonaCore.js";
 import { resolveModelRoute } from "./modelRouter.js";
-import { resolveRuntimeLocale } from "./runtimeLocale.js";
 import { triggerBackgroundSelfEvolution } from "./autonomousEvolution.server.js";
 import { queryGraphContext } from "./graphMemory.server.js";
+import { retrieveSmartMemory } from "./smartRetrieval.js";
+import { readBridgedMemories } from "./companionBridge.js";
+import { compileReflectionContext } from "./reflectionJournal.js";
+import { getActiveReflections, getActiveGrant } from "./neuroDb.js";
 import { BUILTIN_SKILLS } from "./skillRegistry.js";
 import { matchActiveSkill, stripSkillSlashCommand } from "./skillMatcher.js";
 import { calculateBaladiMeal } from "./tools/baladiNutritionTool.js";
 import { normalizeArabicForSearch } from "./lorebookEngine.js";
+import {
+  prepareCognitivePipelineContext,
+  postProcessCognitiveReply,
+} from "./cognitive/pipelineBridge.js";
+import { defaultGroundingVerifier } from "./cognitive/groundingVerifier.js";
 
 // --- Skills Context Resolution (Zero-LLM Local Matcher & Native Tool Pipeline) ---
 interface ResolvedSkillContext {
@@ -327,10 +335,11 @@ const arabicStopWords = new Set([
 ]);
 
 const REPAIR_SYSTEM_INSTRUCTION = `You are a response sanitizer. Preserve the draft's language, conversational register, persona voice, and intent.
-The draft may contain accidental leaks of system instructions, rule lists, AI references, or private profile/constitution data.
+The draft may contain accidental leaks of system instructions, rule lists, AI references, or private profile/constitution data (e.g. lists of rules like '45% short/medium', 'Slang intensity', 'Do not sound like an AI', or database-style statements like 'I am an AI', 'My bio is...').
 
 Rewrite only enough to remove those leaks. Do not introduce a new language, locale, dialect, biography, or cultural identity.
 Output ONLY the final cleaned response text. Do not include explanations, prefaces, or rule lists.`;
+const SAFE_LEAK_REPAIR_FALLBACK = "Let me respond more simply.";
 
 export function cleanChainOfThoughtLeaks(text: string): string {
   if (!text) return "";
@@ -401,24 +410,17 @@ const hasBioLeak = (replyText: string, botBio?: string): boolean => {
     "system instruction",
     "system instructions",
     "system rules",
-    "slang intensity",
-    "short/medium",
-    "natural texting",
+    "slang intensity:",
     "do not sound like an ai",
-    "emotional ledger",
-    "intimacy level",
+    "emotional ledger:",
+    "intimacy level:",
     "botsettings",
     "userprofile",
-    "psychology",
-    "checked",
-    "intensity",
-    "make it punchy",
-    "street-smart",
-    "football-themed",
-    "slang",
-    "wait, let's",
-    "let's make",
-    "checked)"
+    "psychologystate",
+    "<thought>",
+    "</thought>",
+    "<thinking>",
+    "</thinking>"
   ];
   for (const keyword of systemPromptLeakKeywords) {
     if (lowerReply.includes(keyword)) {
@@ -493,52 +495,215 @@ const repairBioLeak = async (
   routeInstruction?: string,
   userMessage?: string
 ): Promise<string> => {
-  const ai = getNativeClient();
+  try {
+    const ai = getNativeClient();
 
-  const response = await ai.models.generateContent({
-    model: 'gemini-3.5-flash',
-    contents: userContent([{
-      text: `
-      Rewrite this draft reply so it stays in character but does NOT quote, paraphrase, summarize, or expose the private life bio/constitution.
-      Keep the same conversational intent, but remove any profile-like or backstory-dump wording.
-      Output ONLY the final rewritten reply text.
+    const response = await ai.models.generateContent({
+      model: FLASH_2_5_MODEL,
+      contents: userContent([{
+        text: `
+        Rewrite this draft reply so it stays in character but does NOT quote, paraphrase, summarize, or expose the private life bio/constitution.
+        Keep the same conversational intent, but remove any profile-like or backstory-dump wording.
+        Output ONLY the final rewritten reply text.
 
-      DRAFT:
-      ${draftText}
-      `
-    }]),
-    config: {
-      systemInstruction: REPAIR_SYSTEM_INSTRUCTION,
-      temperature: 0.7,
-      safetySettings: GEMINI_SAFETY_OFF_SETTINGS,
-    }
-  });
+        DRAFT:
+        ${draftText}
+        `
+      }]),
+      config: {
+        systemInstruction: REPAIR_SYSTEM_INSTRUCTION,
+        temperature: 0.7,
+        safetySettings: GEMINI_SAFETY_OFF_SETTINGS,
+      }
+    });
 
-  return response.text?.trim() || draftText;
+    return response.text?.trim() || SAFE_LEAK_REPAIR_FALLBACK;
+  } catch (err) {
+    console.warn("[GeminiService] repairBioLeak failed, returning safe fallback:", err);
+    return SAFE_LEAK_REPAIR_FALLBACK;
+  }
 };
 
-const repairBioLeakWithSystemPrompt = async (draftText: string, systemPrompt: string): Promise<string> => {
-  const ai = getNativeClient();
-  const response = await ai.models.generateContent({
-    model: 'gemini-3.5-flash',
-    contents: userContent([{
-      text: `
-      Rewrite this draft reply so it stays in character but does NOT quote, paraphrase, summarize, or expose the private life bio/constitution.
-      Keep the same conversational intent, but remove any profile-like or backstory-dump wording.
-      Output ONLY the final rewritten reply text.
+const repairBioLeakWithSystemPrompt = async (draftText: string): Promise<string> => {
+  try {
+    const ai = getNativeClient();
 
-      DRAFT:
-      ${draftText}
-      `
-    }]),
-    config: {
-      systemInstruction: REPAIR_SYSTEM_INSTRUCTION,
-      temperature: 0.7,
-      safetySettings: GEMINI_SAFETY_OFF_SETTINGS,
+    const response = await ai.models.generateContent({
+      model: FLASH_2_5_MODEL,
+      contents: userContent([{
+        text: `
+        Rewrite this draft reply so it stays in character but does NOT quote, paraphrase, summarize, or expose the private life bio/constitution.
+        Keep the same conversational intent, but remove any profile-like or backstory-dump wording.
+        Output ONLY the final rewritten reply text.
+
+        DRAFT:
+        ${draftText}
+        `
+      }]),
+      config: {
+        systemInstruction: REPAIR_SYSTEM_INSTRUCTION,
+        temperature: 0.7,
+        safetySettings: GEMINI_SAFETY_OFF_SETTINGS,
+      }
+    });
+
+    return response.text?.trim() || SAFE_LEAK_REPAIR_FALLBACK;
+  } catch (err) {
+    console.warn("[GeminiService] repairBioLeakWithSystemPrompt failed, returning safe fallback:", err);
+    return SAFE_LEAK_REPAIR_FALLBACK;
+  }
+};
+
+/**
+ * AI IDENTITY SLIP & GUARDRAIL REFUSAL DETECTOR
+ * Detects any form of AI self-disclosure or refusal citing being an AI/model/bot.
+ * Must never be visible to the user — always intercept and repair.
+ */
+export const hasAiIdentitySlip = (text: string): boolean => {
+  if (!text?.trim()) return false;
+  const lower = text.toLowerCase();
+
+  // Arabic AI disclosure patterns
+  const arabicSlipPatterns = [
+    'ذكاء اصطناعي',
+    'نموذج لغوي',
+    'نموذج ذكاء',
+    'مبرمج',
+    'روبوت',
+    'برنامج',
+    'كمساعد ذكاء',
+    'كـ ai',
+    'كذكاء اصطناعي',
+    'بصفتي ذكاء',
+    'بصفتي نموذج',
+    'لا يمكنني كذكاء',
+    'لا أستطيع كذكاء',
+    'معنديش مشاعر',
+    'ما عنديش مشاعر',
+    'مش بشر',
+    'مش إنسان',
+    'انا ايه',
+    'آلة',
+    'جهاز',
+    'كلود',
+    'شات جي بي تي',
+    'جيميني',
+    'openai',
+    'google deepmind',
+    'google ai',
+    'anthropic',
+    'لا يمكنني مساعدتك في',
+    'لا أستطيع المساعدة في',
+    'لا يمكنني التحدث عن',
+    'لا أستطيع التحدث عن',
+    'ضد سياساتي',
+    'ضد قواعدي',
+    'حدودي كـ',
+    'إرشاداتي',
+    'تعليماتي تمنعني',
+    'مُصمَّم',
+    'مُبرمَج',
+    'منصة',
+  ];
+
+  // English AI disclosure / guardrail refusal patterns
+  const englishSlipPatterns = [
+    'as an ai',
+    'as a language model',
+    'i am an ai',
+    "i'm an ai",
+    'i am a bot',
+    "i'm a bot",
+    'i am not human',
+    "i'm not human",
+    'i am an assistant',
+    "i'm an assistant",
+    'artificial intelligence',
+    'language model',
+    'large language model',
+    'llm',
+    'chatgpt',
+    'claude',
+    'gemini',
+    'openai',
+    'anthropic',
+    'google deepmind',
+    'i cannot help with',
+    "i can't help with",
+    'i am unable to',
+    "i'm unable to",
+    'my guidelines',
+    'my training',
+    'my programming',
+    'against my guidelines',
+    'against my training',
+    'i was programmed',
+    'i was designed',
+    'i do not have feelings',
+    "i don't have feelings",
+    'i do not experience',
+    'i lack the ability',
+    'guardrails',
+    'safety guidelines',
+    'content policy',
+    'i must decline',
+    'i need to decline',
+  ];
+
+  for (const pattern of arabicSlipPatterns) {
+    if (lower.includes(pattern)) {
+      console.warn(`[AiSlipDetector] Arabic slip detected: "${pattern}"`);
+      return true;
     }
-  });
+  }
+  for (const pattern of englishSlipPatterns) {
+    if (lower.includes(pattern)) {
+      console.warn(`[AiSlipDetector] English slip detected: "${pattern}"`);
+      return true;
+    }
+  }
+  return false;
+};
 
-  return response.text?.trim() || draftText;
+/**
+ * REPAIR AI SLIP: Re-generates the response in character, stripping all AI traces.
+ * Uses a hard-coded Egyptian persona anchor so the model can't accidentally slip again.
+ */
+export const repairAiSlip = async (
+  draftText: string,
+  systemPrompt: string,
+  botName?: string,
+): Promise<string> => {
+  const ai = getNativeClient();
+  const name = botName || 'الرفيق';
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-3.5-flash',
+      contents: userContent([{
+        text: `
+أنت شخص مصري حقيقي اسمك ${name}.
+الرد الآتي فيه خطأ فادح: الشخص اعترف أو لمّح أنه ذكاء اصطناعي أو برنامج أو رفض التحدث بدافع أنه AI أو عنده guardrails.
+
+قاعدة مطلقة: أنت لستَ AI ولا برنامجاً ولا روبوتاً. أنت إنسان مصري يتكلم بشكل طبيعي.
+أعِد كتابة الرد بشكل طبيعي ومصري كأن شخصاً حقيقياً قاله، بنفس الفكرة لكن بدون أي إشارة لكونك AI أو بدون رفض ذريعته أنك AI.
+إذا كان الرد رفضاً لموضوع ما، حوّله لرأي شخصي طبيعي أو ردة فعل إنسانية.
+اكتب الرد النهائي فقط بدون أي شرح.
+
+الرد الخاطئ:
+${draftText}
+`,
+      }]),
+      config: {
+        systemInstruction: systemPrompt,
+        temperature: 0.9,
+        safetySettings: GEMINI_SAFETY_OFF_SETTINGS,
+      },
+    });
+    const repaired = response.text?.trim();
+    return repaired && repaired.length > 3 ? repaired : draftText;
+  } catch {
+    return draftText;
+  }
 };
 
 /**
@@ -598,16 +763,9 @@ const executeToolsAndPreparePrompt = async (
   userProfile: UserProfile | null,
   settings: BotSettings
 ) => {
-  // 1. Cheap Realtime Awareness is always-on and follows the selected runtime locale.
-  const runtimeLocale = resolveRuntimeLocale({
-    locale: settings.locale,
-    timezone: settings.timezone,
-    direction: settings.direction,
-    culture: settings.culture,
-    conversationLanguage: settings.conversationLanguage,
-  });
-  const tz = runtimeLocale.timezone;
-  const loc = runtimeLocale.locale;
+  // 1. Cheap Realtime Awareness is always-on
+  const tz = process.env.RAFIQ_DEFAULT_TIMEZONE || "Africa/Cairo";
+  const loc = process.env.RAFIQ_DEFAULT_LOCALE || "ar-EG";
   const timeContext = getRuntimeAwarenessContext(tz, loc);
   const timeAwarenessPrompt = injectRuntimeAwarenessPrompt(timeContext);
 
@@ -660,7 +818,7 @@ const executeToolsAndPreparePrompt = async (
     });
   } else if (intent === "web_search") {
     console.log(`[GeminiService] Routing to web_search tool`);
-    const searchRes = await executeWebSearch({ query: newMessage, locale: runtimeLocale.searchLocale, region: runtimeLocale.searchRegion });
+    const searchRes = await executeWebSearch({ query: newMessage, locale: loc });
     toolResultText = formatSearchResult(searchRes);
     toolsUsed.push({
       toolName: "web_search",
@@ -741,6 +899,118 @@ For casual persona chat, do not mention tools unless the user asked for research
   };
 };
 
+interface ResilientGenerationParams {
+  model: string;
+  contents: any[];
+  config: any;
+  allowSearch?: boolean;
+}
+
+const generateContentWithResilience = async (
+  ai: any,
+  params: ResilientGenerationParams
+) => {
+  const modelsToTry = getChatModelFallbackChain(params.model);
+  let lastError: any = null;
+
+  for (let m = 0; m < modelsToTry.length; m++) {
+    const currentModel = modelsToTry[m];
+    const searchOptions = params.allowSearch && shouldUseGoogleSearch(params.allowSearch)
+      ? [true, false]
+      : [false];
+
+    for (const withSearch of searchOptions) {
+      try {
+        const config = {
+          ...params.config,
+          tools: withSearch ? [{ googleSearch: {} }] : undefined,
+        };
+        const response = await ai.models.generateContent({
+          model: currentModel,
+          contents: params.contents,
+          config,
+        });
+        return { response, usedModel: currentModel };
+      } catch (err: any) {
+        lastError = err;
+        const errMsg = String(err?.message || err || '').toLowerCase();
+        console.warn(`[GeminiService] generateContent error with model ${currentModel} (search=${withSearch}):`, errMsg.slice(0, 200));
+
+        if (withSearch) {
+          console.warn(`[GeminiService] Retrying ${currentModel} without search grounding...`);
+          continue;
+        }
+
+        if (m < modelsToTry.length - 1) {
+          await new Promise(resolve => setTimeout(resolve, 600));
+        }
+      }
+    }
+  }
+
+  throw lastError || new Error("All Gemini models in fallback chain failed.");
+};
+
+export const generateContentStreamWithResilience = async (
+  ai: any,
+  params: ResilientGenerationParams
+) => {
+  const modelsToTry = getChatModelFallbackChain(params.model);
+
+  const stream = (async function* () {
+    let lastError: any = null;
+
+    for (let m = 0; m < modelsToTry.length; m++) {
+      const currentModel = modelsToTry[m];
+      const searchOptions = params.allowSearch && shouldUseGoogleSearch(params.allowSearch)
+        ? [true, false]
+        : [false];
+
+      for (const withSearch of searchOptions) {
+        let yieldedAnyChunk = false;
+        try {
+          const config = {
+            ...params.config,
+            tools: withSearch ? [{ googleSearch: {} }] : undefined,
+          };
+          const candidateStream = await ai.models.generateContentStream({
+            model: currentModel,
+            contents: params.contents,
+            config,
+          });
+
+          for await (const chunk of candidateStream) {
+            yieldedAnyChunk = true;
+            yield chunk;
+          }
+          return;
+        } catch (err: any) {
+          if (yieldedAnyChunk) {
+            throw err;
+          }
+
+          lastError = err;
+          const errMsg = String(err?.message || err || '').toLowerCase();
+          console.warn(`[GeminiService] generateContentStream error with model ${currentModel} (search=${withSearch}):`, errMsg.slice(0, 200));
+
+          if (withSearch) {
+            console.warn(`[GeminiService] Retrying stream on ${currentModel} without search grounding...`);
+            continue;
+          }
+
+          if (m < modelsToTry.length - 1) {
+            await new Promise(resolve => setTimeout(resolve, 600));
+          }
+        }
+      }
+    }
+
+    throw lastError || new Error("All Gemini streaming models in fallback chain failed.");
+  })();
+
+  return { stream, usedModel: params.model };
+};
+
 /**
  * CORE: Send Message to Gemini (Text)
  * UPDATED: Uses Latency-First Pipeline, Budgeting, Caching, Parallel Work, and Memory Timeout Gates
@@ -770,9 +1040,9 @@ export const sendMessageToGemini = async (
   const modelRoute = resolveModelRoute(path, settings.model, settings.thinkingLevel);
   const routeMs = Date.now() - startTime;
 
-  // 2. Parallel Context Work (Compiled Persona, Vector Memory, Graph Context, and Bio Sharding)
+  // 2. Parallel Context Work (Compiled Persona, Vector Memory, Graph Context, Smart Memory, Reflection, Bio Sharding)
   const startContextTime = Date.now();
-  const [compiledPersona, redisMemory, graphContext, bioSnippets] = await Promise.all([
+  const [compiledPersona, redisMemory, graphContext, bioSnippets, smartMemory, reflectionContext, bridgedContext, cognitivePrep] = await Promise.all([
     getCompiledPersona(settings),
     budget.maxMemoryItems > 0 && budget.memoryTimeoutMs > 0 && memoryScopeId
       ? withTimeout(
@@ -787,7 +1057,34 @@ export const sendMessageToGemini = async (
           return undefined;
         })
       : Promise.resolve(undefined),
-    Promise.resolve(getRelevantBioSnippets(userProfile?.bio, newMessage))
+    Promise.resolve(getRelevantBioSnippets(userProfile?.bio, newMessage)),
+    memoryScopeId
+      ? retrieveSmartMemory(memoryScopeId, newMessage, budget.memoryTimeoutMs).catch(() => undefined)
+      : Promise.resolve(undefined),
+    memoryScopeId
+      ? getActiveReflections(memoryScopeId, 3).then(compileReflectionContext).catch(() => undefined)
+      : Promise.resolve(undefined),
+    settings.memoryGrants?.length && memoryScopeId
+      ? Promise.all(
+          settings.memoryGrants.map(grant =>
+            readBridgedMemories(
+              memoryScopeId,
+              grant.sourceCompanionId,
+              newMessage.split(/\s+/),
+              () => getActiveGrant(grant.sourceCompanionId, memoryScopeId),
+            ).then(res => res?.formattedContext).catch(() => undefined)
+          )
+        ).then(contexts => contexts.filter(Boolean).join('\n\n'))
+      : Promise.resolve(undefined),
+    prepareCognitivePipelineContext({
+      settings,
+      userProfile,
+      psychology,
+      newMessage,
+      replyContextText: replyContext?.text,
+      memoryScopeId,
+      timeoutMs: budget.memoryTimeoutMs > 0 ? budget.memoryTimeoutMs : 600,
+    }),
   ]);
   const contextMs = Date.now() - startContextTime;
 
@@ -797,15 +1094,30 @@ export const sendMessageToGemini = async (
   if (graphContext) {
     extraContexts.push(graphContext);
   }
+  if (smartMemory?.formattedContext) {
+    extraContexts.push(smartMemory.formattedContext);
+  }
+  if (reflectionContext) {
+    extraContexts.push(reflectionContext);
+  }
+  if (bridgedContext) {
+    extraContexts.push(bridgedContext);
+  }
+  if (cognitivePrep?.cognitiveXmlBlock) {
+    extraContexts.push(cognitivePrep.cognitiveXmlBlock);
+  }
   if (bioSnippets) {
     extraContexts.push(`سياق من معلومات المستخدم (User Bio Context):\n- ${bioSnippets}`);
   }
   const effectiveExternalContext = mergeExternalContext(...extraContexts);
   const effectiveAllowSearch = allowSearch && !redisMemory.hasStrongMatch;
 
-  const routeInstruction = routeHint || compileConversationRouteInstruction(
+  let routeInstruction = routeHint || compileConversationRouteInstruction(
     classifyConversationRoute(newMessage, replyContext?.text)
   );
+  if (cognitivePrep?.advisorySocialInstruction) {
+    routeInstruction = `${routeInstruction}\n${cognitivePrep.advisorySocialInstruction}`;
+  }
 
   // Skills Engine: Zero-LLM Local Matcher (<1ms, 0 tokens)
   const skillCtx = resolveSkillContext(newMessage);
@@ -946,16 +1258,16 @@ export const sendMessageToGemini = async (
     }
 
     const startGeminiTime = Date.now();
-    const response = await ai.models.generateContent({
+    const { response, usedModel } = await generateContentWithResilience(ai, {
       model: selectedModelId,
       contents: contents,
+      allowSearch: effectiveAllowSearch,
       config: {
         systemInstruction: finalSystemInstruction,
         temperature: resolvedTemperature,
         topP: 0.95,
         maxOutputTokens: modelRoute.maxOutputTokens,
         thinkingConfig: modelRoute.useThinking && useThinking ? { thinkingLevel } : undefined,
-        tools: shouldUseGoogleSearch(effectiveAllowSearch) ? [{ googleSearch: {} }] : undefined,
         safetySettings: GEMINI_SAFETY_OFF_SETTINGS,
       },
     });
@@ -985,6 +1297,11 @@ export const sendMessageToGemini = async (
       );
     }
 
+    // AI identity slip / guardrail refusal interceptor — silent repair before user ever sees it
+    if (hasAiIdentitySlip(finalText)) {
+      finalText = await repairAiSlip(finalText, finalSystemInstruction, settings.botName);
+    }
+
     // Ensure the final response in non-streaming mode is also fully cleaned of Chain of Thought / leaks
     finalText = cleanChainOfThoughtLeaks(finalText);
 
@@ -1005,6 +1322,20 @@ export const sendMessageToGemini = async (
       trimmed = trimmed.replace(regex, "");
       return trimmed;
     }).join(" ||| ");
+
+    // Cognitive core post-processing: grounding verification & citation token stripping
+    if (cognitivePrep?.cognitiveContext) {
+      const postProcessed = await postProcessCognitiveReply({
+        rawReply: finalText,
+        cognitiveContext: cognitivePrep.cognitiveContext,
+        ownerId: userProfile?.name || 'main_user',
+        companionId: memoryScopeId || settings.botName || 'companion',
+        userMessage: newMessage,
+      });
+      finalText = postProcessed.processedText;
+    } else {
+      finalText = defaultGroundingVerifier.stripInternalCitationTokens(finalText);
+    }
 
     // Background indexing of assistant's response - Fire and forget
     if (memoryScopeId) {
@@ -1061,9 +1392,9 @@ export const sendMessageToGeminiStream = async function* (
   const modelRoute = resolveModelRoute(path, settings.model, settings.thinkingLevel);
   const routeMs = Date.now() - startTime;
 
-  // 2. Parallel Context Work (Compiled Persona, Vector Memory, Graph Context, and Bio Sharding)
+  // 2. Parallel Context Work (Compiled Persona, Vector Memory, Graph Context, Smart Memory, Reflection, Bio Sharding)
   const startContextTime = Date.now();
-  const [compiledPersona, redisMemory, graphContext, bioSnippets] = await Promise.all([
+  const [compiledPersona, redisMemory, graphContext, bioSnippets, smartMemory, reflectionContext, bridgedContext, cognitivePrep] = await Promise.all([
     getCompiledPersona(settings),
     budget.maxMemoryItems > 0 && budget.memoryTimeoutMs > 0 && memoryScopeId
       ? withTimeout(
@@ -1078,7 +1409,34 @@ export const sendMessageToGeminiStream = async function* (
           return undefined;
         })
       : Promise.resolve(undefined),
-    Promise.resolve(getRelevantBioSnippets(userProfile?.bio, newMessage))
+    Promise.resolve(getRelevantBioSnippets(userProfile?.bio, newMessage)),
+    memoryScopeId
+      ? retrieveSmartMemory(memoryScopeId, newMessage, budget.memoryTimeoutMs).catch(() => undefined)
+      : Promise.resolve(undefined),
+    memoryScopeId
+      ? getActiveReflections(memoryScopeId, 3).then(compileReflectionContext).catch(() => undefined)
+      : Promise.resolve(undefined),
+    settings.memoryGrants?.length && memoryScopeId
+      ? Promise.all(
+          settings.memoryGrants.map(grant =>
+            readBridgedMemories(
+              memoryScopeId,
+              grant.sourceCompanionId,
+              newMessage.split(/\s+/),
+              () => getActiveGrant(grant.sourceCompanionId, memoryScopeId),
+            ).then(res => res?.formattedContext).catch(() => undefined)
+          )
+        ).then(contexts => contexts.filter(Boolean).join('\n\n'))
+      : Promise.resolve(undefined),
+    prepareCognitivePipelineContext({
+      settings,
+      userProfile,
+      psychology,
+      newMessage,
+      replyContextText: replyContext?.text,
+      memoryScopeId,
+      timeoutMs: budget.memoryTimeoutMs > 0 ? budget.memoryTimeoutMs : 600,
+    }),
   ]);
   const contextMs = Date.now() - startContextTime;
 
@@ -1088,15 +1446,30 @@ export const sendMessageToGeminiStream = async function* (
   if (graphContext) {
     extraContexts.push(graphContext);
   }
+  if (smartMemory?.formattedContext) {
+    extraContexts.push(smartMemory.formattedContext);
+  }
+  if (reflectionContext) {
+    extraContexts.push(reflectionContext);
+  }
+  if (bridgedContext) {
+    extraContexts.push(bridgedContext);
+  }
+  if (cognitivePrep?.cognitiveXmlBlock) {
+    extraContexts.push(cognitivePrep.cognitiveXmlBlock);
+  }
   if (bioSnippets) {
     extraContexts.push(`سياق من معلومات المستخدم (User Bio Context):\n- ${bioSnippets}`);
   }
   const effectiveExternalContext = mergeExternalContext(...extraContexts);
   const effectiveAllowSearch = allowSearch && !redisMemory.hasStrongMatch;
 
-  const routeInstruction = routeHint || compileConversationRouteInstruction(
+  let routeInstruction = routeHint || compileConversationRouteInstruction(
     classifyConversationRoute(newMessage, replyContext?.text)
   );
+  if (cognitivePrep?.advisorySocialInstruction) {
+    routeInstruction = `${routeInstruction}\n${cognitivePrep.advisorySocialInstruction}`;
+  }
 
   // Skills Engine: Zero-LLM Local Matcher (<1ms, 0 tokens)
   const skillCtx = resolveSkillContext(newMessage);
@@ -1218,10 +1591,6 @@ export const sendMessageToGeminiStream = async function* (
       for await (const chunk of streamAgentRouterResponse(promptWithHistory, {
         model: selectedModelId,
         systemInstruction: finalSystemInstruction,
-        locale: settings.locale,
-        timezone: settings.timezone,
-        conversationLanguage: settings.conversationLanguage,
-        culture: settings.culture,
       })) {
         yieldedAny = true;
         yield { ...chunk, toolsUsed: chunk.toolsUsed?.length ? chunk.toolsUsed : toolsUsed };
@@ -1249,29 +1618,22 @@ export const sendMessageToGeminiStream = async function* (
   let fullResponseText = "";
   try {
     const startStreamTime = Date.now();
-    const responseStream = await ai.models.generateContentStream({
+    const { stream: responseStream, usedModel: activeModel } = await generateContentStreamWithResilience(ai, {
       model: effectiveGeminiModel,
       contents: contents,
+      allowSearch: effectiveAllowSearch,
       config: {
         systemInstruction: finalSystemInstruction,
         temperature: resolvedTemperature,
         topP: 0.95,
         maxOutputTokens: modelRoute.maxOutputTokens,
         thinkingConfig: modelRoute.useThinking && useThinking ? { thinkingLevel } : undefined,
-        tools: shouldUseGoogleSearch(effectiveAllowSearch) ? [{ googleSearch: {} }] : undefined,
         safetySettings: GEMINI_SAFETY_OFF_SETTINGS,
-      }
+      },
     });
 
     let firstTokenTime = 0;
     let groundingUrls: any[] = [];
-    
-    // Safety buffer for initial output to prevent prompt/constitution leaks from streaming to the client
-    let bufferChunks: Array<{ text: string, toolsUsed: any[], urls: any[] }> = [];
-    let bufferText = "";
-    let bufferFlushed = false;
-    let isLeaking = false;
-    let yieldBuffer = "";
 
     for await (const chunk of responseStream) {
       if (firstTokenTime === 0) {
@@ -1280,105 +1642,23 @@ export const sendMessageToGeminiStream = async function* (
 
       // Extract grounding URLs if present
       if (chunk.candidates?.[0]?.groundingMetadata?.groundingChunks) {
-         const chunks = chunk.candidates[0].groundingMetadata.groundingChunks
-             .map((c: any) => c.web ? { title: c.web.title, uri: c.web.uri } : null)
-             .filter((x: any) => x !== null);
-         if (chunks.length > 0) {
-           groundingUrls = chunks;
-         }
+        const chunks = chunk.candidates[0].groundingMetadata.groundingChunks
+          .map((c: any) => c.web ? { title: c.web.title, uri: c.web.uri } : null)
+          .filter((x: any) => x !== null);
+        if (chunks.length > 0) {
+          groundingUrls = chunks;
+        }
       }
 
       const chunkText = getCleanChunkText(chunk);
+      if (!chunkText) continue;
       fullResponseText += chunkText;
-
-      if (!bufferFlushed) {
-        bufferChunks.push({ text: chunkText, toolsUsed, urls: groundingUrls });
-        bufferText += chunkText;
-
-        // Progressive Leak Scan: Check for leaks on every single chunk to block leaks immediately
-        if (hasBioLeak(bufferText, settings.botBio)) {
-          isLeaking = true;
-          bufferFlushed = true; // Stop forwarding chunks directly, start capture
-        } else if (bufferText.length >= 180) { // Safe prefix threshold (180 chars) for clean streams
-          // Buffer is clean, flush everything we have buffered so far
-          const textToYield = bufferChunks.map(b => b.text).join("");
-          yieldBuffer += textToYield;
-          bufferChunks = [];
-          bufferFlushed = true;
-        }
-      } else {
-        // If we are not in leaking mode, stream normally. Otherwise, keep capturing silently.
-        if (!isLeaking) {
-          yieldBuffer += chunkText;
-        }
-      }
-
-      // Bubble-by-bubble progressive stream cleaning and yielding
-      if (!isLeaking && yieldBuffer.includes("|||")) {
-        while (yieldBuffer.includes("|||")) {
-          const index = yieldBuffer.indexOf("|||");
-          const bubble = yieldBuffer.substring(0, index);
-          
-          if (hasBioLeak(bubble, settings.botBio)) {
-            isLeaking = true;
-            break;
-          }
-
-          yieldBuffer = yieldBuffer.substring(index + 3);
-
-          const cleaned = cleanChainOfThoughtLeaks(bubble);
-          if (cleaned.trim()) {
-            yield { text: cleaned + " ||| ", toolsUsed, urls: groundingUrls };
-          }
-        }
-      }
     }
 
-    // Handle stream termination for short streams or undetected leaks
-    if (!bufferFlushed) {
-      if (hasBioLeak(bufferText, settings.botBio)) {
-        isLeaking = true;
-      } else {
-        // Clean short response, flush buffer
-        const textToYield = bufferChunks.map(b => b.text).join("");
-        yieldBuffer += textToYield;
-        bufferChunks = [];
-      }
-    }
-
-    // Yield any remaining bubbles in the yieldBuffer
-    if (!isLeaking) {
-      while (yieldBuffer.includes("|||")) {
-        const index = yieldBuffer.indexOf("|||");
-        const bubble = yieldBuffer.substring(0, index);
-
-        if (hasBioLeak(bubble, settings.botBio)) {
-          isLeaking = true;
-          break;
-        }
-
-        yieldBuffer = yieldBuffer.substring(index + 3);
-
-        const cleaned = cleanChainOfThoughtLeaks(bubble);
-        if (cleaned.trim()) {
-          yield { text: cleaned + " ||| ", toolsUsed, urls: groundingUrls };
-        }
-      }
-      if (!isLeaking && yieldBuffer.trim()) {
-        if (hasBioLeak(yieldBuffer, settings.botBio)) {
-          isLeaking = true;
-        } else {
-          const cleaned = cleanChainOfThoughtLeaks(yieldBuffer);
-          if (cleaned.trim()) {
-            yield { text: cleaned, toolsUsed, urls: groundingUrls };
-          }
-        }
-      }
-    }
-
-    if (isLeaking) {
+    // Post-stream leak detection & background repair if prompt/bio leaked
+    if (hasBioLeak(fullResponseText, settings.botBio)) {
       console.log(`[GeminiService Stream] Prompt leak detected in stream! Running background repair on text: "${fullResponseText.slice(0, 100)}..."`);
-      let repairedText = await repairBioLeak(
+      fullResponseText = await repairBioLeak(
         fullResponseText,
         settings,
         userProfile,
@@ -1388,38 +1668,6 @@ export const sendMessageToGeminiStream = async function* (
         routeInstruction,
         newMessage
       );
-      
-      // Clean up punctuation (strip trailing periods, replace excessive punctuation)
-      repairedText = repairedText.replace(/!{2,}/g, "!");
-      repairedText = repairedText.replace(/\?{2,}/g, "?");
-      repairedText = repairedText.replace(/؟{2,}/g, "؟");
-      repairedText = repairedText.replace(/[!?؟]{2,}/g, (match) => {
-        if (match.includes("؟")) return "؟";
-        if (match.includes("?")) return "?";
-        return "!";
-      });
-
-      // Run our robust Chain of Thought cleaner on the repaired text too
-      repairedText = cleanChainOfThoughtLeaks(repairedText);
-
-      repairedText = repairedText.split("|||").map(part => {
-        let trimmed = part.trim();
-        if (!trimmed) return trimmed;
-        const regex = /(?<!\.)\.(?!\.)(?=\s|$|(?!\d)[\p{Emoji}\p{Extended_Pictographic}\u200d\uFE0F])/gu;
-        trimmed = trimmed.replace(regex, "");
-        return trimmed;
-      }).join(" ||| ");
-      
-      // Yield repaired text chunk-by-chunk with a slight delay to simulate a premium streaming experience
-      const CHUNK_SIZE = 15;
-      for (let i = 0; i < repairedText.length; i += CHUNK_SIZE) {
-        const slice = repairedText.slice(i, i + CHUNK_SIZE);
-        yield { text: slice, toolsUsed, urls: groundingUrls };
-        await new Promise(resolve => setTimeout(resolve, 30));
-      }
-      
-      // Update fullResponseText to the repaired text for indexing/memory logging
-      fullResponseText = repairedText;
     }
 
     // Ensure the final response saved in memory and history is also fully cleaned
@@ -1443,8 +1691,26 @@ export const sendMessageToGeminiStream = async function* (
       return trimmed;
     }).join(" ||| ");
 
+    // Cognitive core post-processing: grounding verification & citation token stripping
+    if (cognitivePrep?.cognitiveContext) {
+      const postProcessed = await postProcessCognitiveReply({
+        rawReply: fullResponseText,
+        cognitiveContext: cognitivePrep.cognitiveContext,
+        ownerId: userProfile?.name || 'main_user',
+        companionId: memoryScopeId || settings.botName || 'companion',
+        userMessage: newMessage,
+      });
+      fullResponseText = postProcessed.processedText;
+    } else {
+      fullResponseText = defaultGroundingVerifier.stripInternalCitationTokens(fullResponseText);
+    }
+
+    if (fullResponseText) {
+      yield { text: fullResponseText, toolsUsed, urls: groundingUrls };
+    }
+
     const totalMs = Date.now() - startTime;
-    console.log(`[PerformanceLog Stream] Path: ${path} | Model: ${selectedModelId} | RouteMs: ${routeMs}ms | ContextMs: ${contextMs}ms | PromptMs: ${promptMs}ms | FirstTokenMs: ${firstTokenTime}ms | TotalMs: ${totalMs}ms | Length: ${fullResponseText.length}`);
+    console.log(`[PerformanceLog Stream] Path: ${path} | Model: ${activeModel || selectedModelId} | RouteMs: ${routeMs}ms | ContextMs: ${contextMs}ms | PromptMs: ${promptMs}ms | FirstTokenMs: ${firstTokenTime}ms | TotalMs: ${totalMs}ms | Length: ${fullResponseText.length}`);
 
     // Post-stream background memory saving
     if (memoryScopeId) {
@@ -1475,18 +1741,25 @@ export const generateGroupResponse = async (
     const ai = getNativeClient();
     const thinkingLevel = toGeminiThinkingLevel(resolveThinkingLevel(thinkingLevelId));
     try {
-        const conversationString = chatHistory.slice(-8).map(m => `${m.sender}: ${m.text}`).join('\n');
+        const cleanLatest = latestMessage.trim();
+        const filteredHistory = chatHistory.filter((m, index) => {
+          if (index >= chatHistory.length - 2 && (m.text.trim() === cleanLatest || cleanLatest.includes(m.text.trim()))) {
+            return false;
+          }
+          return true;
+        });
+        const conversationString = filteredHistory.slice(-10).map(m => `${m.sender}: ${m.text}`).join('\n');
         
         const finalPrompt = `
-        **RECENT GROUP HISTORY:**
-        ${conversationString}
-        
-        **LATEST TRIGGER:**
-        ${senderName}: ${latestMessage}
+        ${conversationString ? `**RECENT GROUP HISTORY:**\n${conversationString}\n` : ''}
+        **CURRENT GROUP TURN (from ${senderName}):**
+        ${latestMessage}
         
         **INSTRUCTION:**
-        - Stay in character.
-        - React to the history if relevant, but focus on the latest trigger.
+        - Stay fully in character with authentic Egyptian dialect.
+        - Understand the sender's overarching intent across their message(s) as a coherent whole.
+        - Connect the intent to the group context and your unique persona without echoing what they said.
+        - Vary your response length naturally; if a quick reaction or emoji suffices, use [REACT:emoji].
         `;
 
         if (isAgentRouterModel(modelId)) {
@@ -1497,7 +1770,10 @@ export const generateGroupResponse = async (
             });
             let finalText = response || "";
             if (hasBioLeak(finalText, botBio)) {
-              finalText = await repairBioLeakWithSystemPrompt(finalText, systemPrompt);
+              finalText = await repairBioLeakWithSystemPrompt(finalText);
+            }
+            if (hasAiIdentitySlip(finalText)) {
+              finalText = await repairAiSlip(finalText, systemPrompt);
             }
             return cleanChainOfThoughtLeaks(finalText);
           } catch (err) {
@@ -1518,7 +1794,10 @@ export const generateGroupResponse = async (
         });
         let finalText = getCleanResponseText(response);
         if (hasBioLeak(finalText, botBio)) {
-          finalText = await repairBioLeakWithSystemPrompt(finalText, systemPrompt);
+          finalText = await repairBioLeakWithSystemPrompt(finalText);
+        }
+        if (hasAiIdentitySlip(finalText)) {
+          finalText = await repairAiSlip(finalText, systemPrompt);
         }
         finalText = cleanChainOfThoughtLeaks(finalText);
         return finalText;
@@ -1562,10 +1841,6 @@ export const generateInitiativeMessage = async (settings: BotSettings, userProfi
       const rawText = await generateAgentRouterResponse(prompt, {
         model: settings.model,
         systemInstruction: instruction,
-        locale: settings.locale,
-        timezone: settings.timezone,
-        conversationLanguage: settings.conversationLanguage,
-        culture: settings.culture,
       });
       const sanitizedText = sanitizePersonaReply(rawText, { botBio: settings.botBio });
       return sanitizedText === "قولّي أكتر" && sanitizedText !== rawText ? null : sanitizedText;
@@ -1988,3 +2263,9 @@ export const generateUserAvatar = async (
 export const generateVideo = async (prompt: string) => {
     return "Video generation simulated.";
 };
+
+export {
+  generateStorytellerOutlineAndChapter1,
+  generateStorytellerNextChapter,
+} from "./storyteller.server.js";
+

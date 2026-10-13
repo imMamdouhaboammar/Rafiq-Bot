@@ -1,9 +1,10 @@
 
 import React, { useRef } from 'react';
-import { AlertCircle, CheckCircle2, FolderInput, Loader2, MessageSquarePlus, MoreVertical, Pencil, Search, Trash2, Users, CircleDashed } from 'lucide-react';
+import { AlertCircle, CheckCircle2, Copy, FolderInput, Loader2, MessageSquarePlus, MoreVertical, Pencil, Search, Trash2, Users, CircleDashed } from 'lucide-react';
 import { ChatSession, UserProfile } from '../types.js';
 import Avatar from './Avatar.js';
 import { eventBus } from '../services/eventBus.js';
+import { useRafiqStore } from '../stores/useRafiqStore.js';
 
 
 
@@ -15,6 +16,7 @@ interface SidebarProps {
   onSelectChat: (id: string) => void;
   onDeleteChat: (id: string) => void;
   onEditChat: (chat: ChatSession) => void;
+  onDuplicateChat?: (chat: ChatSession) => void;
   onOpenProfile: () => void;
   onNewChat: () => void;
   onImportChat: (file: File) => void;
@@ -30,10 +32,12 @@ const Sidebar: React.FC<SidebarProps> = ({
   onSelectChat,
   onDeleteChat,
   onEditChat,
+  onDuplicateChat,
   onOpenProfile,
   onNewChat,
   onImportChat
 }) => {
+  const typingByChat = useRafiqStore(state => state.typingByChat);
   const importInputRef = useRef<HTMLInputElement>(null);
 
   const handleComingSoon = (feature: string) => {
@@ -71,13 +75,13 @@ const Sidebar: React.FC<SidebarProps> = ({
               <button onClick={() => handleComingSoon('المجتمعات')} title="Communities"><Users size={22} /></button>
               <button onClick={() => handleComingSoon('الحالات (Status)')} title="Status"><CircleDashed size={22} /></button>
               <button onClick={onNewChat} title="New Chat"><MessageSquarePlus size={22} /></button>
-              <button onClick={() => importInputRef.current?.click()} title="استيراد محادثة"><FolderInput size={22} /></button>
+              <button onClick={() => importInputRef.current?.click()} title="استيراد رفيق / محادثة"><FolderInput size={22} /></button>
               <button onClick={handleMenuClick} title="Menu"><MoreVertical size={22} /></button>
               <input
                 type="file"
                 ref={importInputRef}
                 className="hidden"
-                accept=".rafiq,.json"
+                accept=".rafiq,.rafiq.json,.json"
                 onChange={(e) => {
                   if (e.target.files?.[0]) {
                     onImportChat(e.target.files[0]);
@@ -138,12 +142,24 @@ const Sidebar: React.FC<SidebarProps> = ({
                             </div>
                         ) : null}
                         <span className={`truncate flex-1 text-right text-[13px] ${chat.unreadCount ? 'text-[#111b21] font-medium' : 'text-gray-500'}`}>
-                            {chat.id === activeChatId && isTyping ? <span className="text-[#25D366]">يكتب...</span> : (chat.lastMessage || '...')}
+                            {((chat.id === activeChatId && isTyping) || Boolean(typingByChat[chat.id])) ? (
+                                <span className="text-[#25D366] font-medium">يكتب...</span>
+                            ) : (chat.lastMessage || '...')}
                         </span>
                     </div>
                 </div>
                 
-                {/* Edit Button - Visible on Group Hover */}
+                {/* Actions - Visible on Group Hover */}
+                {!chat.isGroup && onDuplicateChat ? (
+                    <button 
+                        onClick={(e) => { e.stopPropagation(); onDuplicateChat(chat); }}
+                        className="absolute top-1/2 -translate-y-1/2 left-[98px] p-2 bg-white/80 rounded-full shadow-sm text-gray-500 opacity-0 group-hover:opacity-100 hover:text-[#008069] hover:bg-white transition-all z-10"
+                        title="نسخ الرفيق (الإعدادات فقط)"
+                        aria-label="نسخ الرفيق"
+                    >
+                        <Copy size={14} />
+                    </button>
+                ) : null}
                 <button 
                     onClick={(e) => { e.stopPropagation(); onEditChat(chat); }}
                     className="absolute top-1/2 -translate-y-1/2 left-14 p-2 bg-white/80 rounded-full shadow-sm text-gray-500 opacity-0 group-hover:opacity-100 hover:text-wa-teal hover:bg-white transition-all z-10"

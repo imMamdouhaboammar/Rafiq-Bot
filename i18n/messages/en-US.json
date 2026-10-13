@@ -1,0 +1,75 @@
+{
+  "app": {
+    "title": "Rafiq",
+    "subtitle": "Open-Source AI Companion Platform",
+    "emptyState": {
+      "badge": "End-to-end local-first memory & persona workspace",
+      "heading": "Choose a conversation or create a new companion to begin",
+      "description": "Each companion maintains its own persistent persona, neuro-cognitive memory, relationship continuity, and storyteller workspace.",
+      "newCompanionCta": "New Companion",
+      "importPackageCta": "Import Companion (.rafiq.json)"
+    }
+  },
+  "auth": {
+    "welcomeTitle": "Welcome to Rafiq",
+    "passcodePrompt": "Enter your workspace passcode to continue",
+    "unlockButton": "Unlock Workspace",
+    "invalidPasscode": "Invalid passcode. Please try again."
+  },
+  "sidebar": {
+    "searchPlaceholder": "Search conversations or messages...",
+    "newCompanion": "New Companion",
+    "duplicateCompanion": "Duplicate Companion (Settings Only)",
+    "importData": "Import Backup or Companion Package",
+    "exportBackup": "Export Full Backup",
+    "cloudSync": "Cloud Sync",
+    "typing": "typing...",
+    "recordingVoice": "recording audio...",
+    "noChats": "No conversations yet"
+  },
+  "chat": {
+    "composerPlaceholder": "Write a message...",
+    "send": "Send message",
+    "voiceNote": "Record voice note",
+    "attach": "Attach media or open mode",
+    "storytellerMode": "Boundless Storyteller",
+    "contactInfo": "Companion Info",
+    "duplicateCompanion": "Duplicate Companion",
+    "exportCompanion": "Export Companion (.rafiq.json)",
+    "clearHistory": "Clear Conversation",
+    "deleteCompanion": "Delete Companion"
+  },
+  "storyteller": {
+    "title": "Boundless Storyteller",
+    "subtitle": "Interactive co-creative narrative workspace",
+    "newStory": "Start New Story",
+    "continueStory": "Continue Narrative",
+    "backToChat": "Return to Chat"
+  },
+  "companion": {
+    "createTitle": "Create Companion",
+    "editTitle": "Edit Companion",
+    "nameLabel": "Companion Name",
+    "bioLabel": "Identity & Biography",
+    "archetypeLabel": "Soul Archetype",
+    "localeLabel": "Locale & Language",
+    "timezoneLabel": "Timezone",
+    "cultureLabel": "Cultural Profile",
+    "cultureNeutral": "Global Neutral (Default)",
+    "cultureEgyptian": "Egyptian Arabic Preset (Optional)"
+  },
+  "exportModal": {
+    "title": "Export Companion Package",
+    "subtitle": "Save as a portable .rafiq.json v2 file",
+    "settingsOnly": "Settings & Persona Only",
+    "fullPackage": "Full Companion (Memories, Affect & History)",
+    "exportButton": "Download .rafiq.json",
+    "cancelButton": "Cancel"
+  },
+  "status": {
+    "online": "Online",
+    "thinking": "Thinking...",
+    "offline": "Offline",
+    "error": "Something went wrong. Please try again."
+  }
+}

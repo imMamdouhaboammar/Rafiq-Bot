@@ -4,6 +4,7 @@ import type {
   ChatMessage,
   ChatSession,
   RandomPrompt,
+  Reaction,
   UserProfile,
 } from '../types.js';
 import { attachmentRepository } from '../services/attachmentRepository.js';
@@ -25,6 +26,7 @@ interface RafiqState {
   setActiveChatId: (id: string | null) => void;
   setMessages: (chatId: string, messages: ChatMessage[]) => void;
   addMessage: (message: ChatMessage) => void;
+  addMessageReaction: (chatId: string, messageId: string, reaction: Reaction) => void;
   setChatTyping: (chatId: string, isTyping: boolean) => void;
   removeMessage: (chatId: string, messageId: string) => void;
   setRandomPrompts: (prompts: RandomPrompt[]) => void;
@@ -92,6 +94,25 @@ export const useRafiqStore = create<RafiqState>((set) => ({
       [message.chatId]: [...(state.messagesByChat[message.chatId] || []), message],
     },
   })),
+
+  addMessageReaction: (chatId, messageId, reaction) => set(state => {
+    const currentMessages = state.messagesByChat[chatId] || [];
+    return {
+      messagesByChat: {
+        ...state.messagesByChat,
+        [chatId]: currentMessages.map(msg => {
+          if (msg.id !== messageId) return msg;
+          const reactions = (msg.reactions || []).filter(
+            r => r.senderId !== reaction.senderId,
+          );
+          return {
+            ...msg,
+            reactions: [...reactions, reaction],
+          };
+        }),
+      },
+    };
+  }),
 
   setChatTyping: (chatId, isTyping) => set(state => ({
     typingByChat: {

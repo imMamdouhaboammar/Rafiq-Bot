@@ -18,6 +18,7 @@ import {
   Video,
   X,
   BookOpen,
+  Copy,
 } from 'lucide-react';
 import Avatar from './Avatar.js';
 import type { ChatSession } from '../types.js';
@@ -33,11 +34,13 @@ interface WhatsAppContactInfoDrawerProps {
   selectedThinkingLevel: string;
   onSelectThinkingLevel: (levelId: string) => Promise<void> | void;
   onEditChat: () => void;
+  onDuplicateChat?: () => void;
   onDeleteChat: () => void;
   onExportChat: () => void;
   isExporting: boolean;
   onOpenSkillsHub?: () => void;
   onOpenStudio?: () => void;
+  onOpenStoryteller?: () => void;
   onStartAudioCall?: () => void;
   onStartVideoCall?: () => void;
   isSlowBurnActive?: boolean;
@@ -54,11 +57,13 @@ export const WhatsAppContactInfoDrawer: React.FC<WhatsAppContactInfoDrawerProps>
   selectedThinkingLevel,
   onSelectThinkingLevel,
   onEditChat,
+  onDuplicateChat,
   onDeleteChat,
   onExportChat,
   isExporting,
   onOpenSkillsHub,
   onOpenStudio,
+  onOpenStoryteller,
   onStartAudioCall,
   onStartVideoCall,
   isSlowBurnActive,
@@ -79,7 +84,7 @@ export const WhatsAppContactInfoDrawer: React.FC<WhatsAppContactInfoDrawerProps>
   const isGroup = Boolean(chat.isGroup);
   const botName = isGroup ? chat.groupName || 'مجموعة' : chat.settings.botName;
   const mood = chat.psychology?.mood || 'مبتهج';
-  const intimacyStage = chat.relationship?.stage || 'صديق';
+  const intimacyStage = (chat as any).relationship?.stage || (chat.psychology?.intimacyLevel ? `مستوى ${chat.psychology.intimacyLevel}%` : 'صديق');
 
   const moodLabelMap: Record<string, string> = {
     neutral: 'رايق وهادي 😌',
@@ -219,7 +224,7 @@ export const WhatsAppContactInfoDrawer: React.FC<WhatsAppContactInfoDrawerProps>
           <div className="bg-white px-5 py-4 shadow-sm">
             <h3 className="mb-2 text-xs font-bold uppercase tracking-wider text-[#667781]">الحالة والمزاج</h3>
             <p className="text-sm font-medium leading-relaxed text-[#111b21]">
-              {chat.settings.personalityPrompt?.slice(0, 140) || 'مرافق مصري ذكي ومستمع حقيقي يتكلم بلغتك وطريقتك.'}
+              {chat.settings.botBio || (chat.settings as any).personalityPrompt || 'مرافق ذكي ومستمع حقيقي.'}
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               <span className="rounded-full bg-[#e7f7ef] px-3 py-1 text-xs font-bold text-[#008069]">
@@ -370,8 +375,28 @@ export const WhatsAppContactInfoDrawer: React.FC<WhatsAppContactInfoDrawerProps>
             </div>
           </div>
 
-          {/* Actions: Export & Delete */}
+          {/* Actions: Duplicate, Export & Delete */}
           <div className="bg-white shadow-sm">
+            {!isGroup && onDuplicateChat ? (
+              <button
+                type="button"
+                onClick={() => {
+                  triggerHaptic('light');
+                  onDuplicateChat();
+                }}
+                className="flex min-h-12 w-full items-center gap-4 px-5 py-3.5 text-sm font-semibold text-[#111b21] transition-colors hover:bg-gray-50 active:bg-gray-100"
+                aria-label="نسخ الرفيق (الإعدادات فقط)"
+              >
+                <Copy size={20} className="text-[#54656f]" />
+                <div className="flex flex-col text-right">
+                  <span>نسخ الرفيق (الإعدادات فقط)</span>
+                  <span className="text-[11px] font-normal text-[#667781]">
+                    إنشاء رفيق جديد بنفس الإعدادات وبدون أي رسائل سابقة
+                  </span>
+                </div>
+              </button>
+            ) : null}
+
             <button
               type="button"
               disabled={isExporting}
@@ -379,14 +404,19 @@ export const WhatsAppContactInfoDrawer: React.FC<WhatsAppContactInfoDrawerProps>
                 triggerHaptic('light');
                 onExportChat();
               }}
-              className="flex min-h-12 w-full items-center gap-4 px-5 py-3.5 text-sm font-semibold text-[#111b21] transition-colors hover:bg-gray-50 active:bg-gray-100 disabled:opacity-50"
+              className={`flex min-h-12 w-full items-center gap-4 ${!isGroup && onDuplicateChat ? 'border-t border-[#f0f2f5]' : ''} px-5 py-3.5 text-sm font-semibold text-[#111b21] transition-colors hover:bg-gray-50 active:bg-gray-100 disabled:opacity-50`}
             >
               {isExporting ? (
                 <div className="h-5 w-5 animate-spin rounded-full border-2 border-[#008069] border-t-transparent" />
               ) : (
                 <Download size={20} className="text-[#54656f]" />
               )}
-              <span>{isExporting ? 'جاري تصدير المحادثة...' : 'تصدير المحادثة بالكامل'}</span>
+              <div className="flex flex-col text-right">
+                <span>تصدير الرفيق</span>
+                <span className="text-[11px] font-normal text-[#667781]">
+                  مع المحادثة (بدون ميديا) أو الإعدادات فقط
+                </span>
+              </div>
             </button>
 
             <button

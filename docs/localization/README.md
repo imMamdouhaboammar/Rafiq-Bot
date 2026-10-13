@@ -22,9 +22,17 @@ Today, repository-wide locale and timezone defaults are configured through envir
 
 `ar-EG` remains a first-class reference path. Egyptian conversation datasets, dialect-specific tools, cultural timing helpers, and persona presets may remain intentionally Egyptian when they are explicitly selected. They must not run as hidden defaults for another locale.
 
-## UI translation status
+## UI translation and message catalog architecture
 
-The runtime is locale-aware, but the current interface still contains Arabic strings in several components. Rafiq should not be described as fully translated or fully internationalized yet. New UI work should avoid adding another hardcoded locale and should prefer a future message-catalog boundary over scattering translation conditionals.
+Structured UI message catalogs live under `i18n/`:
+
+- `i18n/config.ts` — supported UI locales (`en-US` default, `ar-EG` reference), direction resolution, and completeness descriptors
+- `i18n/messages/en-US.json` — canonical English-first message catalog
+- `i18n/messages/ar-EG.json` — Egyptian Arabic reference message catalog
+- `i18n/formatters/index.ts` — standard `Intl.DateTimeFormat` and `Intl.NumberFormat` helpers
+- `i18n/index.ts` — `t(key, locale, params)` lookup with automatic `en-US` fallback
+
+The top-level application shell (`App.tsx`) and default companion archetypes (`nova_default`, `alex_default` in `services/soulRegistry.ts`) resolve to English-first, globally neutral defaults (`en-US`, `UTC`, LTR), while secondary drawers and legacy components are progressively migrating to `i18n/`. New UI work should always add keys to `i18n/messages/en-US.json` (and `ar-EG.json` when applicable) rather than hardcoding locale strings.
 
 ## Adding or extending a locale
 

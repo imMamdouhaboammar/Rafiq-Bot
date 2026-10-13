@@ -5,10 +5,10 @@ This roadmap describes direction, not a release schedule. Items may change as th
 ## Current priorities
 
 1. Keep the public repository reproducible, secure, and understandable from a fresh clone.
-2. Continue separating locale, culture, persona, provider, and UI language so Egyptian Arabic remains a first-class reference localization rather than a global assumption.
-3. Consolidate inference behind clearer provider boundaries without weakening server-only credential handling.
-4. Improve accessibility, responsive behavior, startup performance, and bundle size with measured regressions tests.
-5. Strengthen import, memory, continuity, and persona behavior with deterministic tests and explicit data boundaries.
+2. Expand the structured `i18n/` message catalog across all secondary drawers and modals while preserving `en-US` as the global default and `ar-EG` as a first-class reference preset.
+3. Consolidate inference behind clearer provider boundaries with resilient fallback chains and without weakening server-only credential handling.
+4. Improve accessibility, responsive behavior, startup performance, and bundle size with measured regression tests.
+5. Strengthen neuro-cognitive memory (v8), Boundless Storyteller continuity, `.rafiq.json` v2 portability, and cognitive pipeline verification.
 
 ## Provider direction
 
@@ -18,4 +18,4 @@ Future provider work should use `docs/providers/adding-a-provider.md`, preserve 
 
 ## Localization direction
 
-The runtime now has neutral locale and timezone defaults plus explicit RTL/LTR resolution. A complete translated UI is still future work. New localization contributions should preserve the `ar-EG` reference experience while proving at least one LTR and one additional locale path.
+The runtime has neutral locale and timezone defaults (`en-US`, `UTC`, LTR), globally neutral default archetypes (`nova_default`, `alex_default`), and a structured message catalog boundary under `i18n/` (`en-US.json` and `ar-EG.json`). New localization contributions should wire remaining component strings through `i18n/` while preserving the `ar-EG` reference experience.

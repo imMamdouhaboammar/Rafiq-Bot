@@ -12,10 +12,13 @@ Rafiq is an open-source AI companion application for configurable conversational
 
 ## Core jobs
 
-- Create or configure a companion and hold an ongoing conversation with persistent local context
+- Create or configure a companion (defaulting to globally neutral English-first archetypes such as Nova or Alex, or optional cultural presets) and hold an ongoing conversation with persistent local context
+- Maintain neuro-cognitive memory (Dexie v8), synthetic affect, inside jokes, and relationship continuity across sessions
+- Co-create interactive narratives in Boundless Storyteller mode (`/story`) with bidirectional companion memory bridge
+- Duplicate companions (settings-only) or export/import portable `.rafiq.json` v2 companion packages
 - Import a WhatsApp text export and derive an editable persona profile from observed conversation evidence
 - Use optional tools and memory integrations without exposing server credentials to the browser
-- Adapt locale and culture without forcing Egyptian defaults into non-Egyptian sessions
+- Adapt locale and culture (`i18n/` catalog + `services/runtimeLocale.ts`) without forcing Egyptian defaults into non-Egyptian sessions
 
 ## Current product boundaries
 

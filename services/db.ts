@@ -721,6 +721,24 @@ export const saveGroupMessageReaction = async (
   });
 };
 
+export const saveMessageReaction = async (
+  chatId: string,
+  messageId: string,
+  reaction: Reaction,
+): Promise<void> => {
+  await (db as any).transaction('rw', db.messages, async () => {
+    const message = await db.messages.get(messageId);
+    if (!message || message.chatId !== chatId) return;
+
+    const reactions = (message.reactions || []).filter(
+      existing => existing.senderId !== reaction.senderId,
+    );
+    await db.messages.update(messageId, {
+      reactions: [...reactions, reaction],
+    });
+  });
+};
+
 export const getMessagesForChat = async (chatId: string, limit?: number, isGroup: boolean = false): Promise<ChatMessage[]> => {
   const table = isGroup ? db.groupMessages : db.messages;
   

@@ -22,6 +22,8 @@ const ACTIONS = {
   runReflectionConsolidation: ReflectionEngine.runReflectionConsolidation,
   generateVideo: GeminiServerService.generateVideo,
   processFileUpload,
+  generateStorytellerOutlineAndChapter1: GeminiServerService.generateStorytellerOutlineAndChapter1,
+  generateStorytellerNextChapter: GeminiServerService.generateStorytellerNextChapter,
   ...CLONE_ACTIONS,
 } as const;
 

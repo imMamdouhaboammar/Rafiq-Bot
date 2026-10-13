@@ -4,7 +4,7 @@ import type { BotSettings, SoulMemorySeed } from '../types.js';
 
 type CloneProfile = NonNullable<BotSettings['cloneProfile']>;
 
-export type EditableCloneProfile = CloneProfile & {
+export type EditableCloneProfile = Omit<CloneProfile, 'memorySeeds'> & {
   memorySeeds?: SoulMemorySeed[];
 };
 

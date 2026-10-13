@@ -1,0 +1,75 @@
+{
+  "app": {
+    "title": "رفيق",
+    "subtitle": "منصة الرفيق الذكي مفتوحة المصدر",
+    "emptyState": {
+      "badge": "مساحة محلية آمنة للشخصيات والذاكرة المستمرة",
+      "heading": "اختر محادثة أو أنشئ رفيقاً جديداً للبدء",
+      "description": "يحتفظ كل رفيق بشخصيته المستقلة وذاكرته العصبية وتطور علاقته ومساحة الحكّاء الخاصة به.",
+      "newCompanionCta": "رفيق جديد",
+      "importPackageCta": "استيراد رفيق (.rafiq.json)"
+    }
+  },
+  "auth": {
+    "welcomeTitle": "أهلاً بك في رفيق",
+    "passcodePrompt": "أدخل رمز المرور للمتابعة",
+    "unlockButton": "فتح المساحة",
+    "invalidPasscode": "رمز المرور غير صحيح. حاول مرة أخرى."
+  },
+  "sidebar": {
+    "searchPlaceholder": "ابحث في المحادثات أو الرسائل...",
+    "newCompanion": "رفيق جديد",
+    "duplicateCompanion": "نسخ الرفيق (الإعدادات فقط)",
+    "importData": "استيراد نسخة احتياطية أو ملف رفيق",
+    "exportBackup": "تصدير نسخة احتياطية كاملة",
+    "cloudSync": "المزامنة السحابية",
+    "typing": "يكتب...",
+    "recordingVoice": "يسجل مقطعاً صوتياً...",
+    "noChats": "لا توجد محادثات بعد"
+  },
+  "chat": {
+    "composerPlaceholder": "اكتب رسالة...",
+    "send": "إرسال الرسالة",
+    "voiceNote": "تسجيل رسالة صوتية",
+    "attach": "إرفاق ملف أو فتح وضع",
+    "storytellerMode": "الحكّاء الحر",
+    "contactInfo": "معلومات الرفيق",
+    "duplicateCompanion": "نسخ الرفيق",
+    "exportCompanion": "تصدير الرفيق (.rafiq.json)",
+    "clearHistory": "مسح المحادثة",
+    "deleteCompanion": "حذف الرفيق"
+  },
+  "storyteller": {
+    "title": "الحكّاء الحر (Boundless Storyteller)",
+    "subtitle": "مساحة سرد قصصي تفاعلي مشترك",
+    "newStory": "بدء قصة جديدة",
+    "continueStory": "متابعة السرد",
+    "backToChat": "العودة للمحادثة"
+  },
+  "companion": {
+    "createTitle": "إنشاء رفيق",
+    "editTitle": "تعديل الرفيق",
+    "nameLabel": "اسم الرفيق",
+    "bioLabel": "الهوية والسيرة",
+    "archetypeLabel": "نمط الروح",
+    "localeLabel": "اللغة والمنطقة",
+    "timezoneLabel": "المنطقة الزمنية",
+    "cultureLabel": "الطابع الثقافي",
+    "cultureNeutral": "محايد عالمياً (افتراضي)",
+    "cultureEgyptian": "الطابع المصري العامي (اختياري)"
+  },
+  "exportModal": {
+    "title": "تصدير حزمة الرفيق",
+    "subtitle": "حفظ كملف .rafiq.json محمول (الإصدار 2)",
+    "settingsOnly": "الإعدادات والشخصية فقط",
+    "fullPackage": "الرفيق الكامل (الذكريات والمشاعر والمحادثات)",
+    "exportButton": "تحميل ملف .rafiq.json",
+    "cancelButton": "إلغاء"
+  },
+  "status": {
+    "online": "متصل",
+    "thinking": "يفكر...",
+    "offline": "غير متصل",
+    "error": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
+  }
+}
